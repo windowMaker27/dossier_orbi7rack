@@ -6,7 +6,7 @@
   <title>Dossier de Projet — Orbi7rack</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
     /* ===== RESET & BASE ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -16,9 +16,16 @@
     }
 
     /* ===== DESIGN TOKENS ===== */
+    @font-face {
+      font-family: 'SF Intermosaic';
+      src: url('./fonts/sf-intermosaic.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
     :root {
       --font-body: 'JetBrains Mono', monospace;
-      --font-display: 'Lora', Georgia, serif;
+      --font-display: 'SF Intermosaic', Georgia, serif;
 
       --color-bg: #0b0f1a;
       --color-surface: #111827;
@@ -184,8 +191,8 @@
     }
 
     h3 {
-      font-family: var(--font-body);
-      font-size: 1.05rem;
+      font-family: var(--font-display);
+      font-size: 1.3rem;
       font-weight: 600;
       color: var(--color-text);
       margin-top: var(--space-8);
@@ -193,7 +200,8 @@
     }
 
     h4 {
-      font-size: 0.9rem;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.06em;
@@ -405,8 +413,8 @@
 
 <!-- COVER PAGE -->
 <div class="cover">
-  <div class="cover-tag">Dossier de Projet — Certification</div>
-  <div class="cover-eyebrow">Développeur Web et Web Mobile</div>
+  <div class="cover-tag">Dossier de Projet — 2026 - Thomas Virassamy</div>
+  <div class="cover-eyebrow">Certification Développeur Web et Web Mobile</div>
   <h1 class="cover-title"><span>Orbi7rack</span></h1>
   <p class="cover-subtitle">Suivi de colis en temps réel sur un globe 3D interactif — visualisation holographique des trajets internationaux via WebGL, Django et l'API 17TRACK.</p>
   <div class="cover-meta">
@@ -438,9 +446,9 @@
   </ul>
 </div>
 
-<h1 id="dossier-de-projet-orbi7rack">Dossier de Projet — Orbi7rack</h1>
+<!-- <h1 id="dossier-de-projet-orbi7rack">Dossier de Projet — Orbi7rack</h1>
 <h3 id="certification-developpeur-web-et-web-mobile">Certification Développeur Web et Web Mobile</h3>
-<hr />
+<hr /> -->
 <h2 id="i-introduction">I. Introduction</h2>
 <h3 id="1-pourquoi-orbi7rack">1. Pourquoi Orbi7rack ?</h3>
 <p>L'idée est venue d'une frustration quotidienne : faire des achats en ligne et n'avoir qu'une liste d'étapes pour suivre son colis. Une ville, un statut en anglais parfois mal traduit, un horaire approximatif. Quand le colis traverse plusieurs pays, plusieurs aéroports, plusieurs transporteurs, cette liste devient quasi illisible. On sait que le colis est "en transit" quelque part entre Shanghai et Paris, mais on ne sait pas <em>où</em>, ni <em>comment</em> il voyage.</p>
