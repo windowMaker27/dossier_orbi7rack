@@ -6,7 +6,7 @@
   <title>Dossier de Projet — Orbi7rack</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
     /* ===== RESET & BASE ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -17,19 +17,19 @@
 
     /* ===== DESIGN TOKENS ===== */
     :root {
-      --font-body: 'Inter', system-ui, sans-serif;
+      --font-body: 'JetBrains Mono', monospace;
       --font-display: 'Lora', Georgia, serif;
 
-      --color-bg: #f7f6f2;
-      --color-surface: #ffffff;
-      --color-surface-2: #f3f0ec;
-      --color-border: #dcd9d5;
-      --color-text: #1a1916;
-      --color-text-muted: #6b6a66;
-      --color-text-faint: #a8a7a3;
-      --color-primary: #01696f;
-      --color-primary-light: #e0f0f0;
-      --color-accent: #e67e22;
+      --color-bg: #0b0f1a;
+      --color-surface: #111827;
+      --color-surface-2: #1a2035;
+      --color-border: rgba(255,68,0,0.15);
+      --color-text: #e2f0f1;
+      --color-text-muted: #9a9a9a;
+      --color-text-faint: #555a66;
+      --color-primary: #ff4400;
+      --color-primary-light: rgba(255,68,0,0.1);
+      --color-accent: #ffaa00;
 
       --space-1: 0.25rem;
       --space-2: 0.5rem;
@@ -65,7 +65,7 @@
       flex-direction: column;
       justify-content: center;
       padding: var(--space-16) var(--space-12);
-      background: var(--color-surface);
+      background: linear-gradient(135deg, #0f1520 0%, #0b0f1a 100%);
       border-bottom: 3px solid var(--color-primary);
       margin-bottom: var(--space-16);
     }
@@ -370,6 +370,35 @@
       margin: 2cm;
       size: A4;
     }
+
+
+    body::before {
+
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+
+      background-image: linear-gradient(rgba(255,68,0,0.025) 1px, transparent 1px),
+
+        linear-gradient(90deg, rgba(255,68,0,0.025) 1px, transparent 1px);
+
+      background-size: 60px 60px;
+
+    }
+
+    h2.section-title { text-shadow: 0 0 24px rgba(255,68,0,0.25); }
+
+    table { border-color: rgba(255,68,0,0.12); }
+
+    th { background: rgba(255,68,0,0.08) !important; color: #e2f0f1 !important; }
+
+    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+    code { background: rgba(255,68,0,0.08); border: 1px solid rgba(255,68,0,0.15); color: #ff6622; }
+
+    .cover-title span { text-shadow: 0 0 24px rgba(255,68,0,0.4); }
+
+    .capture-placeholder { background: rgba(255,68,0,0.04); border: 1.5px dashed rgba(255,68,0,0.2); color: #7a3a20; }
+
+
   </style>
 </head>
 <body>
