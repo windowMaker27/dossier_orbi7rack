@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="slides-format" content="viewport">
+    <title>Orbi7rack – Soutenance Certif</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style type="text/tailwindcss">
+        @font-face {
+            font-family: 'SF Intermosaic';
+            src: url('./fonts/sf-intermosaic.ttf') format('ttf');
+            font-weight: 400 700;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'TaFontBody';
+            src: url('./fonts/ta-font-body.woff2') format('woff2'),
+                 url('./fonts/ta-font-body.woff') format('woff');
+            font-weight: 300 700;
+            font-display: swap;
+        }
+        @theme {
+            --color-bg: #0b0f1a;
+            --color-bg-deep: #060910;
+            --color-surface: #111827;
+            --color-text: #e2f0f1;
+            --color-text-secondary: #bb8870;
+            --color-text-muted: #7a3a20;
+            --color-accent-1: #ff4400;
+            --color-accent-2: #ff6600;
+            --color-accent-3: #ffaa00;
+            --color-glass-bg: rgba(255,68,0,0.04);
+            --color-glass-border: rgba(255,68,0,0.12);
+            --color-vignette: rgba(0,0,0,0.5);
+            --font-display: 'SF Intermosaic', serif;
+            --font-body: 'JetBrains Mono', monospace;
+        }
+    </style>
+
+    <style>
+        :root {
+            --color-bg: #0b0f1a;
+            --color-text: #e2f0f1;
+            --glow-color-rgb: 255,68,0;
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        html, body { background: var(--color-bg); margin: 0; }
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--color-text);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+        .deck { width: 100vw; height: 100vh; position: relative; }
+        .slide {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--color-bg);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            opacity: 0; transform: scale(0.95);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+            pointer-events: none; overflow: hidden;
+        }
+        .slide.active { opacity: 1; transform: scale(1); pointer-events: all; }
+        .slide > .content {
+            position: relative; z-index: 2;
+            width: 100%; max-width: 1100px;
+            padding: clamp(1.5rem, 4vw, 4rem);
+        }
+        .nav-controls {
+            position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+            display: flex; align-items: center; gap: 16px; z-index: 100;
+            background: rgba(255,68,0,0.04);
+            backdrop-filter: blur(12px);
+            padding: 10px 24px; border-radius: 40px;
+            border: 1px solid rgba(255,68,0,0.12);
+        }
+        .nav-btn {
+            width: 38px; height: 38px; border: none;
+            background: rgba(255,68,0,0.06); color: #ff4400;
+            border-radius: 50%; font-size: 1.2rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.3s;
+        }
+        .nav-btn:hover { background: rgba(255,68,0,0.14); }
+        .slide-dots { display: flex; gap: 8px; }
+        .slide-dots .dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: rgba(255,68,0,0.2); cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+        .slide-dots .dot.active { background: #ff4400; transform: scale(1.4); }
+        .slide-counter { font-size: 0.75rem; color: #7a3a20; min-width: 40px; text-align: center; font-family: 'JetBrains Mono', monospace; }
+        .reveal { opacity: 0; transform: translateY(20px); }
+
+        /* Glow */
+        .text-glow { text-shadow: 0 0 20px rgba(255,68,0,0.5), 0 0 40px rgba(255,68,0,0.2); }
+        .stat-glow { text-shadow: 0 0 30px rgba(255,68,0,0.6), 0 0 60px rgba(255,68,0,0.25); }
+        @keyframes glow-pulse {
+            0%,100% { text-shadow: 0 0 20px rgba(255,68,0,0.5), 0 0 40px rgba(255,68,0,0.2); }
+            50% { text-shadow: 0 0 30px rgba(255,68,0,0.9), 0 0 70px rgba(255,68,0,0.4); }
+        }
+        .glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
+
+        /* Blobs */
+        @keyframes float-slow {
+            0% { transform: translate(0,0) scale(1); }
+            25% { transform: translate(60px,-50px) scale(1.12); }
+            50% { transform: translate(-40px,40px) scale(0.9); }
+            75% { transform: translate(50px,20px) scale(1.08); }
+            100% { transform: translate(0,0) scale(1); }
+        }
+        @keyframes float-drift {
+            0% { transform: translate(0,0) scale(1) rotate(0deg); }
+            33% { transform: translate(-50px,-60px) scale(1.15) rotate(3deg); }
+            66% { transform: translate(40px,30px) scale(0.88) rotate(-2deg); }
+            100% { transform: translate(0,0) scale(1) rotate(0deg); }
+        }
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .gradient-mesh { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+        .blob { position: absolute; border-radius: 50%; filter: blur(80px); animation: float-slow 10s ease-in-out infinite; }
+        .blob:nth-child(2) { animation: float-drift 14s ease-in-out infinite; }
+        .blob:nth-child(3) { animation: float-slow 18s ease-in-out infinite reverse; }
+
+        /* Vignette + noise */
+        .slide::before {
+            content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            background-repeat: repeat; background-size: 256px; opacity: 0.04; mix-blend-mode: overlay;
+        }
+        .slide::after {
+            content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+            background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.5) 100%);
+        }
+
+        /* Scan line effet holographique */
+        @keyframes scan { 0% { top: -10%; } 100% { top: 110%; } }
+        .scanline {
+            position: absolute; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255,68,0,0.15), transparent);
+            z-index: 3; pointer-events: none;
+            animation: scan 6s linear infinite;
+        }
+
+        /* Grid holographique background */
+        .holo-grid {
+            position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.04;
+            background-image:
+                linear-gradient(rgba(255,68,0,0.8) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,68,0,0.8) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        /* Cards */
+        .glass-card {
+            background: rgba(255,68,0,0.04);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,68,0,0.12);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .glass-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(255,68,0,0.1); }
+
+        /* Timeline */
+        .timeline-line {
+            position: absolute; left: 20px; top: 0; bottom: 0; width: 2px;
+            background: linear-gradient(180deg, transparent, #ff4400, transparent);
+        }
+        .timeline-dot {
+            width: 12px; height: 12px; border-radius: 50%;
+            background: #ff4400;
+            box-shadow: 0 0 12px rgba(255,68,0,0.8);
+            flex-shrink: 0;
+        }
+
+        /* Bar fill */
+        .bar-fill { height: 100%; border-radius: 4px; width: 0%; transition: width 0.6s ease; }
+
+        /* Code block */
+        .code-chip {
+            display: inline-block;
+            background: rgba(255,68,0,0.08);
+            border: 1px solid rgba(255,68,0,0.2);
+            border-radius: 6px;
+            padding: 0.15rem 0.6rem;
+            font-size: 0.75rem;
+            color: #ff4400;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Badge statut */
+        .badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+        .badge-red { background: rgba(255,68,0,0.12); color: #ff4400; border: 1px solid rgba(255,68,0,0.2); }
+        .badge-green { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.2); }
+        .badge-orange { background: rgba(251,146,60,0.12); color: #fb923c; border: 1px solid rgba(251,146,60,0.2); }
+
+        .logo-video {
+            height: 320px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto 1.5rem auto;
+            transform: translateX(-32px);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="mouse-spotlight" style="position:fixed;inset:0;z-index:99;pointer-events:none;"></div>
+
+<div class="deck">
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 1 — TITRE
+    ═══════════════════════════════════════════ -->
+    <div class="slide active" data-slide="1">
+        <div class="holo-grid"></div>
+        <div class="scanline"></div>
+        <div class="gradient-mesh">
+            <div class="blob" style="width:500px;height:500px;top:-120px;right:-80px;background:#ff4400;opacity:0.12;"></div>
+            <div class="blob" style="width:350px;height:350px;bottom:-80px;left:-60px;background:#ff6600;opacity:0.1;"></div>
+            <div class="blob" style="width:220px;height:220px;top:40%;left:12%;background:#ffaa00;opacity:0.08;"></div>
+        </div>
+        <canvas class="particle-canvas" style="position:absolute;inset:0;z-index:1;width:100%;height:100%;"></canvas>
+        <div class="content text-center">
+            <video
+                autoplay loop muted playsinline
+                data-tx="-32px"
+                class="logo-video reveal">
+                <source src="./media/logo.webm" type="video/webm">
+            </video>
+            <div class="reveal" style="font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:#7a3a20;margin-bottom:1rem;">Soutenance pour la certification d'agent web front et back-end (session 2026)</div>
+            <h1 class="reveal glow-pulse" style="font-family:'SF Intermosaic',serif;font-size:clamp(3rem,7vw,5.5rem);background:linear-gradient(135deg,#ff4400,#ffaa00,#ff4400);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:1rem;line-height:1.1;">
+                Orbi7rack
+            </h1>
+            <p class="reveal" style="font-size:clamp(0.9rem,1.5vw,1.2rem);color:#bb8870;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:2.5rem;">
+                Suivi de colis en temps réel · Globe 3D holographique
+            </p>
+            <div class="reveal" style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;">
+                <span class="badge badge-green">Front-end</span>
+                <span class="badge badge-orange">Back-end</span>
+                <span class="badge badge-red">APIs</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 2 — PRÉSENTATION PERSONNELLE
+    ═══════════════════════════════════════════ -->
+    <div class="slide" data-slide="2">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:300px;height:300px;top:-60px;right:-40px;background:#ff4400;opacity:0.07;"></div>
+            <div class="blob" style="width:250px;height:250px;bottom:-50px;left:-30px;background:#ff6600;opacity:0.06;"></div>
+        </div>
+        <div class="content">
+            <div class="reveal" style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:#7a3a20;margin-bottom:0.75rem;">01 · Qui suis-je</div>
+            <h2 class="reveal" style="font-family:'SF Intermosaic',serif;font-size:clamp(2rem,4vw,3rem);color:#e2f0f1;margin-bottom:2rem;">Présentation</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+                <div class="glass-card reveal">
+                    <div style="color:#ff4400;font-size:1.5rem;margin-bottom:0.75rem;">👤</div>
+                    <div style="font-size:0.7rem;color:#7a3a20;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem;">Profil actuel</div>
+                    <div style="color:#e2f0f1;font-size:0.9rem;line-height:1.6;">Développeur web Full Stack<br><span style="color:#bb8870;">Préférence pour le back-end · UI/UX</span></div>
+                </div>
+                <div class="glass-card reveal">
+                    <div style="color:#ff4400;font-size:1.5rem;margin-bottom:0.75rem;">🎓</div>
+                    <div style="font-size:0.7rem;color:#7a3a20;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem;">Dernière Formation</div>
+                    <div style="color:#e2f0f1;font-size:0.9rem;line-height:1.6;">BTS SNIR (Systèmes Numériques option Information et Réseaux)<br><span style="color:#bb8870;">Infrastructures informatique et développement</span></div>
+                </div>
+                <div class="glass-card reveal">
+                    <div style="color:#ff4400;font-size:1.5rem;margin-bottom:0.75rem;">⚡</div>
+                    <div style="font-size:0.7rem;color:#7a3a20;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem;">Stack principale</div>
+                    <div style="color:#e2f0f1;font-size:0.85rem;line-height:1.8;">
+                        <span class="code-chip">Next.js</span> <span class="code-chip">TypeScript</span><br>
+                        <span class="code-chip">Django</span> <span class="code-chip">PostgreSQL</span>
+                    </div>
+                </div>
+                <div class="glass-card reveal">
+                    <div style="color:#ff4400;font-size:1.5rem;margin-bottom:0.75rem;">🛠️</div>
+                    <div style="font-size:0.7rem;color:#7a3a20;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem;">Outils & Infra</div>
+                    <div style="color:#e2f0f1;font-size:0.85rem;line-height:1.8;">
+                        <span class="code-chip">Docker</span> <span class="code-chip">Vercel</span><br>
+                        <span class="code-chip">GitHub Actions</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 3 — VISION DU PROJET
+    ═══════════════════════════════════════════ -->
+    <div class="slide" data-slide="3">
+        <div class="holo-grid"></div>
+        <div class="gradient-mesh">
+            <div class="blob" style="width:400px;height:400px;top:-100px;right:-60px;background:#ff4400;opacity:0.09;"></div>
+            <div class="blob" style="width:280px;height:280px;bottom:-70px;left:-40px;background:#ffaa00;opacity:0.07;"></div>
+        </div>
+        <div class="content">
+            <div class="reveal" style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:#7a3a20;margin-bottom:0.75rem;">02 · Concept</div>
+            <h2 class="reveal" style="font-family:'SF Intermosaic',serif;font-size:clamp(2rem,4vw,3rem);color:#e2f0f1;margin-bottom:0.75rem;">Vision du projet</h2>
+            <p class="reveal" style="color:#bb8870;font-size:0.9rem;margin-bottom:2rem;max-width:65ch;">Visualiser des colis en transit international sur un <span style="color:#ff4400;">globe 3D holographique</span> — avec une vraie chaîne de données du suivi à la position simulée.</p>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;">
+                <div class="glass-card reveal" style="text-align:center;">
+                    <div style="margin-bottom:0.2rem;justify-items:center;"><img src = "media/parcel.png" style ="width: 200px;"></div>
+                    <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.4rem;">17TRACK API</div>
+                    <div style="color:#bb8870;font-size:0.75rem;">3200+ transporteurs<br>Événements temps réel</div>
+                </div>
+                <div class="glass-card reveal" style="text-align:center;">
+                    <div style="margin-bottom:0.2rem;justify-items:center;"><img src = "media/plane.png" style ="width: 200px;"></div>
+                    <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.4rem;">FlightRadar24/OpenSky APIs</div>
+                    <div style="color:#bb8870;font-size:0.75rem;">Vols live<br>Fallback simulé</div>
+                </div>
+                <div class="glass-card reveal" style="text-align:center;">
+                    <div style="margin-bottom:1.5rem;margin-top:1rem;justify-items:center;"><img src = "media/globe.png" style ="width: 160px;"></div>
+                    <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.4rem;">Globe 3D</div>
+                    <div style="color:#bb8870;font-size:0.75rem;">globe.gl + Three.js<br>Arcs animés</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 4 — STACK TECHNIQUE
+    ═══════════════════════════════════════════ -->
+    <div class="slide" data-slide="4">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:350px;height:350px;top:-80px;left:-60px;background:#ff6600;opacity:0.08;"></div>
+            <div class="blob" style="width:250px;height:250px;bottom:-60px;right:-40px;background:#ff4400;opacity:0.07;"></div>
+        </div>
+        <div class="content">
+            <div class="reveal" style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:#7a3a20;margin-bottom:0.75rem;">03 · Architecture</div>
+            <h2 class="reveal" style="font-family:'SF Intermosaic',serif;font-size:clamp(2rem,4vw,3rem);color:#e2f0f1;margin-bottom:2rem;">Stack technique</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;">
+                <div class="glass-card reveal">
+                    <div style="font-size:0.7rem;color:#7a3a20;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem;border-bottom:1px solid rgba(255,68,0,0.1);padding-bottom:0.5rem;">Frontend</div>
+                    <div style="display:flex;flex-direction:column;gap:0.4rem;">
+                        <span class="code-chip">Next.js 14</span>
+                        <span class="code-chip">TypeScript</span>
+                        <span class="code-chip">globe.gl</span>
+                        <span class="code-chip">Three.js</span>
+                        <span class="code-chip">Tailwind CSS</span>
+                    </div>
+                </div>
+                <div class="glass-card reveal">
+                    <div style="font-size:0.7rem;color:#7a3a20;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem;border-bottom:1px solid rgba(255,68,0,0.1);padding-bottom:0.5rem;">Backend</div>
+                    <div style="display:flex;flex-direction:column;gap:0.4rem;">
+                        <span class="code-chip">Django REST</span>
+                        <span class="code-chip">PostgreSQL</span>
+                        <span class="code-chip">Celery</span>
+                        <span class="code-chip">Redis</span>
+                        <span class="code-chip">JWT Auth</span>
+                    </div>
+                </div>
+                <div class="glass-card reveal">
+                    <div style="font-size:0.7rem;color:#7a3a20;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem;border-bottom:1px solid rgba(255,68,0,0.1);padding-bottom:0.5rem;">Infra & Outils</div>
+                    <div style="display:flex;flex-direction:column;gap:0.4rem;">
+                        <span class="code-chip">Docker Compose</span>
+                        <span class="code-chip">nginx</span>
+                        <span class="code-chip">GitHub Actions</span>
+                        <span class="code-chip">drf-spectacular</span>
+                        <span class="code-chip">pytest</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 5 — CHOIX DU THÈME / GLOBE.GL
+    ═══════════════════════════════════════════ -->
+    <div class="slide" data-slide="5">
+        <div class="holo-grid"></div>
+        <div class="scanline"></div>
+        <div class="gradient-mesh">
+            <div class="blob" style="width:450px;height:450px;top:-100px;right:-80px;background:#ff4400;opacity:0.1;"></div>
+            <div class="blob" style="width:300px;height:300px;bottom:-70px;left:-50px;background:#ff6600;opacity:0.08;"></div>
+        </div>
+        <div class="content">
+            <div class="reveal" style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:#7a3a20;margin-bottom:0.75rem;">04 · Design</div>
+            <h2 class="reveal" style="font-family:'SF Intermosaic',serif;font-size:clamp(2rem,4vw,3rem);color:#e2f0f1;margin-bottom:0.5rem;">Pourquoi ce thème ?</h2>
+            <p class="reveal" style="color:#bb8870;font-size:0.85rem;margin-bottom:1.5rem;">Pas de wireframe traditionnel — <span style="color:#ff4400;">globe.gl a structuré l'UI</span> dès la découverte de la lib.</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+                <div class="glass-card reveal">
+                    <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.75rem;">Layout</div>
+                    <ul style="color:#bb8870;font-size:0.8rem;line-height:1.8;list-style:none;padding:0;">
+                        <li>→ Globe = élément central, pas décoratif</li>
+                        <li>→ Sidebar + TopBar déduits de sa contrainte</li>
+                        <li>→ Architecture UI construite autour du canvas</li>
+                    </ul>
+                </div>
+                <div class="glass-card reveal">
+                    <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.75rem;">Design System</div>
+                    <ul style="color:#bb8870;font-size:0.8rem;line-height:1.8;list-style:none;padding:0;">
+                        <li>→ Palette orange / anthracite</li>
+                        <li>→ Glassmorphism + bloom Three.js</li>
+                        <li>→ Inter + JetBrains Mono</li>
+                        <li>→ Mode clair (palette blanc / bleu marine)</li>
+                    </ul>
+                </div>
+                <div class="glass-card reveal" style="grid-column:span 2;">
+                    <div style="display:flex;gap:2rem;align-items:center;justify-content: space-between;">
+                        <div>
+                            <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.5rem;">Rendu holographique</div>
+                            <div style="color:#bb8870;font-size:0.8rem;">Hexagones H3 · Atmosphère · UnrealBloomPass</div>
+                        </div>
+                        <div style="flex-shrink:0;display:flex;gap:0.5rem;">
+                            <span class="badge badge-orange">globe.gl</span>
+                            <span class="badge badge-red">Three.js</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 6 — FONCTIONNALITÉ : AUTH + TRACKING
+    ═══════════════════════════════════════════ -->
+    <div class="slide" data-slide="6">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:320px;height:320px;top:-70px;right:-50px;background:#ff4400;opacity:0.07;"></div>
+            <div class="blob" style="width:220px;height:220px;bottom:-50px;left:-30px;background:#ff6600;opacity:0.06;"></div>
+        </div>
+        <div class="content">
+            <div class="reveal" style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:#7a3a20;margin-bottom:0.75rem;">05 · Fonctionnalités</div>
+            <h2 class="reveal" style="font-family:'SF Intermosaic',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);color:#e2f0f1;margin-bottom:1.5rem;">Auth JWT & Tracking 17TRACK</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+                <div class="glass-card reveal">
+                    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;">
+                        <span style="font-size:1.4rem;">🔐</span>
+                        <span style="color:#ff4400;font-size:0.85rem;font-weight:700;">Authentification JWT</span>
+                    </div>
+                    <ul style="color:#bb8870;font-size:0.78rem;line-height:1.8;list-style:none;padding:0;margin-bottom:0.75rem;">
+                        <li>→ Login / Register / Logout</li>
+                        <li>→ Access + Refresh token</li>
+                        <li>→ Guards sur routes protégées</li>
+                    </ul>
+                    <span class="code-chip">settings.py · /api/auth/</span>
+                </div>
+                <div class="glass-card reveal">
+                    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;">
+                        <span style="font-size:1.4rem;">📡</span>
+                        <span style="color:#ff4400;font-size:0.85rem;font-weight:700;">Pipeline 17TRACK</span>
+                    </div>
+                    <ul style="color:#bb8870;font-size:0.78rem;line-height:1.8;list-style:none;padding:0;margin-bottom:0.75rem;">
+                        <li>→ Modèle <code style="color:#ffaa00;">Parcel</code> / <code style="color:#ffaa00;">TrackingEvent</code></li>
+                        <li>→ Polling automatique Celery</li>
+                        <li>→ Endpoints <code style="color:#ffaa00;">/api/parcels/</code></li>
+                    </ul>
+                    <span class="code-chip">tasks.py · models.py</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 7 — GÉOCODAGE
+    ═══════════════════════════════════════════ -->
+    <div class="slide" data-slide="7">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:350px;height:350px;top:-80px;left:-60px;background:#ff6600;opacity:0.08;"></div>
+            <div class="blob" style="width:240px;height:240px;bottom:-60px;right:-30px;background:#ff4400;opacity:0.06;"></div>
+        </div>
+        <div class="content">
+            <div class="reveal" style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:#7a3a20;margin-bottom:0.75rem;">06 · Fonctionnalités</div>
+            <h2 class="reveal" style="font-family:'SF Intermosaic',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);color:#e2f0f1;margin-bottom:1rem;">Géocodage & Résolution GPS</h2>
+            <p class="reveal" style="color:#bb8870;font-size:0.85rem;margin-bottom:1.5rem;">Chaîne de fallback pour résoudre chaque événement en coordonnées GPS précises.</p>
+            <div style="position:relative;padding-left:3rem;" class="reveal">
+                <div class="timeline-line"></div>
+                <div style="display:flex;flex-direction:column;gap:0.75rem;">
+                    <div style="display:flex;align-items:center;gap:1rem;">
+                        <div class="timeline-dot"></div>
+                        <div class="glass-card" style="flex:1;padding:0.75rem 1rem;">
+                            <span style="color:#ff4400;font-size:0.8rem;font-weight:700;">1. last_live_lat/lng</span>
+                            <span style="color:#bb8870;font-size:0.75rem;margin-left:0.5rem;">Dernière position live OpenSky</span>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:1rem;">
+                        <div class="timeline-dot" style="background:#ffaa00;box-shadow:0 0 12px rgba(103,232,249,0.8);"></div>
+                        <div class="glass-card" style="flex:1;padding:0.75rem 1rem;">
+                            <span style="color:#ffaa00;font-size:0.8rem;font-weight:700;">2. Événement géocodé</span>
+                            <span style="color:#bb8870;font-size:0.75rem;margin-left:0.5rem;">geopy · base centroïdes</span>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:1rem;">
+                        <div class="timeline-dot" style="background:#ff6600;box-shadow:0 0 12px rgba(8,145,178,0.8);"></div>
+                        <div class="glass-card" style="flex:1;padding:0.75rem 1rem;">
+                            <span style="color:#ff6600;font-size:0.8rem;font-weight:700;">3. Centroïde pays destination</span>
+                            <span style="color:#bb8870;font-size:0.75rem;margin-left:0.5rem;">Fallback pays dest</span>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:1rem;">
+                        <div class="timeline-dot" style="background:#7a3a20;box-shadow:0 0 8px rgba(78,122,128,0.6);"></div>
+                        <div class="glass-card" style="flex:1;padding:0.75rem 1rem;">
+                            <span style="color:#7a3a20;font-size:0.8rem;font-weight:700;">4. Centroïde pays origine</span>
+                            <span style="color:#bb8870;font-size:0.75rem;margin-left:0.5rem;">Dernier recours</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="reveal" style="margin-top:1rem;"><span class="code-chip">geocoding.py</span></div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 8 — EXTRACTION VOL + SIMULATION
+    ═══════════════════════════════════════════ -->
+    <div class="slide" data-slide="8">
+        <div class="holo-grid"></div>
+        <div class="gradient-mesh">
+            <div class="blob" style="width:380px;height:380px;top:-90px;right:-70px;background:#ff4400;opacity:0.09;"></div>
+            <div class="blob" style="width:260px;height:260px;bottom:-60px;left:-40px;background:#ff6600;opacity:0.07;"></div>
+        </div>
+        <div class="content">
+            <div class="reveal" style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:#7a3a20;margin-bottom:0.75rem;">07 · Fonctionnalités</div>
+            <h2 class="reveal" style="font-family:'SF Intermosaic',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);color:#e2f0f1;margin-bottom:1.5rem;">Extraction de vol & SimulationEngine</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+                <div class="glass-card reveal">
+                    <div style="color:#ff4400;font-size:0.85rem;font-weight:700;margin-bottom:0.75rem;">✈️ Flight Extractor</div>
+                    <ul style="color:#bb8870;font-size:0.78rem;line-height:1.8;list-style:none;padding:0;margin-bottom:0.75rem;">
+                        <li>→ Regex <code style="color:#ffaa00;">[A-Z]{`{2,3}`}\d{`{3,4}`}</code></li>
+                        <li>→ Fallback AviationStack API</li>
+                        <li>→ Mapping carrier → airline cargo</li>
+                        <li style="color:#7a3a20;font-size:0.72rem;">UPS→5X · FedEx→FX · DHL→D0</li>
+                        <li>→ Stocke <code style="color:#ffaa00;">flight_iata</code> sur TrackingEvent</li>
+                    </ul>
+                    <span class="code-chip">flight_extractor.py</span>
+                </div>
+                <div class="glass-card reveal">
+                    <div style="color:#ff4400;font-size:0.85rem;font-weight:700;margin-bottom:0.75rem;">⚙️ SimulationEngine</div>
+                    <ul style="color:#bb8870;font-size:0.78rem;line-height:1.8;list-style:none;padding:0;margin-bottom:0.75rem;">
+                        <li>→ Détection mode (flight/road/hub)</li>
+                        <li>→ Calcul Haversine multi-segments</li>
+                        <li>→ <code style="color:#ffaa00;">estimated_departure/arrival</code></li>
+                        <li>→ Flag <code style="color:#ffaa00;">simulated: bool</code></li>
+                        <li>→ <code style="color:#ffaa00;">progress(t)</code> → slerp Globe.tsx</li>
+                    </ul>
+                    <span class="code-chip">simulation_engine.py</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 9 — GLOBE 3D & ANIMATIONS
+    ═══════════════════════════════════════════ -->
+    <div class="slide" data-slide="9">
+        <div class="holo-grid"></div>
+        <div class="scanline"></div>
+        <div class="gradient-mesh">
+            <div class="blob" style="width:500px;height:500px;top:-130px;right:-90px;background:#ff4400;opacity:0.12;"></div>
+            <div class="blob" style="width:350px;height:350px;bottom:-90px;left:-60px;background:#ff6600;opacity:0.09;"></div>
+            <div class="blob" style="width:200px;height:200px;top:30%;left:10%;background:#ffaa00;opacity:0.07;"></div>
+        </div>
+        <canvas class="particle-canvas-ambient" style="position:absolute;inset:0;z-index:1;width:100%;height:100%;"></canvas>
+        <div class="content">
+            <div class="reveal" style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:#7a3a20;margin-bottom:0.75rem;">08 · Fonctionnalités</div>
+            <h2 class="reveal" style="font-family:'SF Intermosaic',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);color:#e2f0f1;margin-bottom:1.5rem;">Globe 3D & Animations</h2>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;">
+                <div class="glass-card reveal" style="text-align:center;">
+                    <div style="font-size:1.8rem;margin-bottom:0.5rem;">🌐</div>
+                    <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.4rem;">Rendu globe</div>
+                    <div style="color:#bb8870;font-size:0.75rem;">Hexagones H3<br>Atmosphère + bloom<br>UnrealBloomPass</div>
+                </div>
+                <div class="glass-card reveal" style="text-align:center;">
+                    <div style="font-size:1.8rem;margin-bottom:0.5rem;">🔴</div>
+                    <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.4rem;">Marqueurs</div>
+                    <div style="color:#bb8870;font-size:0.75rem;">Pin pulsant<br>Tooltip au hover<br>Badge stale</div>
+                </div>
+                <div class="glass-card reveal" style="text-align:center;">
+                    <div style="font-size:1.8rem;margin-bottom:0.5rem;">〰️</div>
+                    <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.4rem;">Arcs animés</div>
+                    <div style="color:#bb8870;font-size:0.75rem;">Sprite avion orientable<br>Mode arc vs live<br>slerp progress(t)</div>
+                </div>
+            </div>
+            <div class="reveal" style="margin-top:1.25rem;display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center;">
+                <span style="color:#7a3a20;font-size:0.75rem;">Sources :</span>
+                <span class="code-chip">Globe.tsx</span>
+                <span class="code-chip">useFlightPosition.ts</span>
+                <span class="code-chip">resolveArcOrigin()</span>
+                <span class="code-chip">resolveArcDest()</span>
+                <span class="code-chip">resolveCurrentPosition()</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 10 — DIFFICULTÉS & SOLUTIONS
+    ═══════════════════════════════════════════ -->
+    <div class="slide" data-slide="10">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:300px;height:300px;top:-60px;left:-40px;background:#ff6600;opacity:0.07;"></div>
+            <div class="blob" style="width:250px;height:250px;bottom:-50px;right:-30px;background:#ff4400;opacity:0.06;"></div>
+        </div>
+        <div class="content">
+            <div class="reveal" style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:#7a3a20;margin-bottom:0.75rem;">09 · Obstacles</div>
+            <h2 class="reveal" style="font-family:'SF Intermosaic',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);color:#e2f0f1;margin-bottom:1.5rem;">Difficultés & Solutions</h2>
+            <div style="display:flex;flex-direction:column;gap:0.75rem;">
+                <div class="glass-card reveal" style="display:grid;grid-template-columns:auto 1fr 1fr;gap:1rem;align-items:center;padding:1rem 1.25rem;">
+                    <span style="font-size:1.2rem;">🗺️</span>
+                    <div><div style="color:#fb923c;font-size:0.78rem;font-weight:700;margin-bottom:0.2rem;">Artefacts globe (H3/GeoJSON)</div><div style="color:#7a3a20;font-size:0.72rem;">TopoJSON simplifié → antiméridien invalide</div></div>
+                    <div style="color:#bb8870;font-size:0.75rem;">Natural Earth GeoJSON + proxy <span class="code-chip">/api/countries</span></div>
+                </div>
+                <div class="glass-card reveal" style="display:grid;grid-template-columns:auto 1fr 1fr;gap:1rem;align-items:center;padding:1rem 1.25rem;">
+                    <span style="font-size:1.2rem;">📍</span>
+                    <div><div style="color:#fb923c;font-size:0.78rem;font-weight:700;margin-bottom:0.2rem;">Colis livré au Kansas</div><div style="color:#7a3a20;font-size:0.72rem;">Fallback centroïde US mal priorisé</div></div>
+                    <div style="color:#bb8870;font-size:0.75rem;">Chaîne <span class="code-chip">live > event > dest > origin</span></div>
+                </div>
+                <div class="glass-card reveal" style="display:grid;grid-template-columns:auto 1fr 1fr;gap:1rem;align-items:center;padding:1rem 1.25rem;">
+                    <span style="font-size:1.2rem;">✈️</span>
+                    <div><div style="color:#fb923c;font-size:0.78rem;font-weight:700;margin-bottom:0.2rem;">Arc pointant au mauvais endroit</div><div style="color:#7a3a20;font-size:0.72rem;">Confusion position courante vs destination</div></div>
+                    <div style="color:#bb8870;font-size:0.75rem;">Refactor 3 fonctions séparées</div>
+                </div>
+                <div class="glass-card reveal" style="display:grid;grid-template-columns:auto 1fr 1fr;gap:1rem;align-items:center;padding:1rem 1.25rem;">
+                    <span style="font-size:1.2rem;">🔀</span>
+                    <div><div style="color:#fb923c;font-size:0.78rem;font-weight:700;margin-bottom:0.2rem;">Conflits merge cleanest→main</div><div style="color:#7a3a20;font-size:0.72rem;">Constantes manquantes (STATUS_COLORS…)</div></div>
+                    <div style="color:#bb8870;font-size:0.75rem;">Branche <span class="code-chip">showcase</span> + config réintégrée</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 11 — TESTS & QUALITÉ
+    ═══════════════════════════════════════════ -->
+    <div class="slide" data-slide="11">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:320px;height:320px;top:-70px;right:-50px;background:#4ade80;opacity:0.06;"></div>
+            <div class="blob" style="width:240px;height:240px;bottom:-50px;left:-30px;background:#ff4400;opacity:0.06;"></div>
+        </div>
+        <div class="content">
+            <div class="reveal" style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:#7a3a20;margin-bottom:0.75rem;">10 · Qualité</div>
+            <h2 class="reveal" style="font-family:'SF Intermosaic',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);color:#e2f0f1;margin-bottom:1.5rem;">Tests & Couverture</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+                <div style="display:flex;flex-direction:column;gap:0.75rem;">
+                    <div class="glass-card reveal" style="display:flex;align-items:center;gap:1rem;padding:0.85rem 1.25rem;">
+                        <span style="color:#4ade80;font-size:1rem;">✓</span>
+                        <div>
+                            <div style="color:#e2f0f1;font-size:0.82rem;font-weight:600;">test_parser</div>
+                            <div style="color:#7a3a20;font-size:0.72rem;">Parsing événements 17TRACK</div>
+                        </div>
+                    </div>
+                    <div class="glass-card reveal" style="display:flex;align-items:center;gap:1rem;padding:0.85rem 1.25rem;">
+                        <span style="color:#4ade80;font-size:1rem;">✓</span>
+                        <div>
+                            <div style="color:#e2f0f1;font-size:0.82rem;font-weight:600;">test_api_parcels</div>
+                            <div style="color:#7a3a20;font-size:0.72rem;">Endpoints REST · CRUD</div>
+                        </div>
+                    </div>
+                    <div class="glass-card reveal" style="display:flex;align-items:center;gap:1rem;padding:0.85rem 1.25rem;">
+                        <span style="color:#4ade80;font-size:1rem;">✓</span>
+                        <div>
+                            <div style="color:#e2f0f1;font-size:0.82rem;font-weight:600;">test_geocoding</div>
+                            <div style="color:#7a3a20;font-size:0.72rem;">Cas normaux + edge cases</div>
+                        </div>
+                    </div>
+                    <div class="glass-card reveal" style="display:flex;align-items:center;gap:1rem;padding:0.85rem 1.25rem;">
+                        <span style="color:#4ade80;font-size:1rem;">✓</span>
+                        <div>
+                            <div style="color:#e2f0f1;font-size:0.82rem;font-weight:600;">test_flight_extractor</div>
+                            <div style="color:#7a3a20;font-size:0.72rem;">Regex + fallback AviationStack</div>
+                        </div>
+                    </div>
+                    <div class="glass-card reveal" style="display:flex;align-items:center;gap:1rem;padding:0.85rem 1.25rem;">
+                        <span style="color:#4ade80;font-size:1rem;">✓</span>
+                        <div>
+                            <div style="color:#e2f0f1;font-size:0.82rem;font-weight:600;">test_simulation_engine</div>
+                            <div style="color:#7a3a20;font-size:0.72rem;">Haversine · multi-segments</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:1rem;">
+                    <div class="glass-card reveal" style="text-align:center;padding:1.5rem;">
+                        <div style="font-size:2.5rem;font-weight:900;color:#4ade80;" data-count="85" data-suffix="%">0%</div>
+                        <div style="color:#7a3a20;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;margin-top:0.25rem;">Couverture visée</div>
+                    </div>
+                    <div class="glass-card reveal">
+                        <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.5rem;">🧪 Branche showcase</div>
+                        <div style="color:#bb8870;font-size:0.78rem;">Knobs de démo : bloom, halo, graticules — sans toucher au core</div>
+                    </div>
+                    <div class="glass-card reveal">
+                        <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.5rem;">🗃️ Seed démo</div>
+                        <div style="color:#bb8870;font-size:0.78rem;">3–4 colis intercontinentaux · 1 live OpenSky · 1 simulé garanti</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 12 — DOC & DÉPLOIEMENT
+    ═══════════════════════════════════════════ -->
+    <div class="slide" data-slide="12">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:340px;height:340px;top:-80px;right:-60px;background:#ff6600;opacity:0.08;"></div>
+            <div class="blob" style="width:240px;height:240px;bottom:-50px;left:-30px;background:#ff4400;opacity:0.06;"></div>
+        </div>
+        <div class="content">
+            <div class="reveal" style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:#7a3a20;margin-bottom:0.75rem;">11 · Production</div>
+            <h2 class="reveal" style="font-family:'SF Intermosaic',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);color:#e2f0f1;margin-bottom:1.5rem;">Documentation & Déploiement</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+                <div class="glass-card reveal">
+                    <div style="color:#ff4400;font-size:0.85rem;font-weight:700;margin-bottom:0.75rem;">📚 API Documentation</div>
+                    <ul style="color:#bb8870;font-size:0.78rem;line-height:1.9;list-style:none;padding:0;">
+                        <li>→ <span class="code-chip">drf-spectacular</span> OpenAPI 3.0</li>
+                        <li>→ Swagger UI <code style="color:#ffaa00;">/api/docs/</code></li>
+                        <li>→ ReDoc <code style="color:#ffaa00;">/api/redoc/</code></li>
+                        <li>→ <code style="color:#ffaa00;">@extend_schema</code> sur actions custom</li>
+                        <li>→ Export Postman collection</li>
+                    </ul>
+                </div>
+                <div class="glass-card reveal">
+                    <div style="color:#ff4400;font-size:0.85rem;font-weight:700;margin-bottom:0.75rem;">🚀 Déploiement</div>
+                    <ul style="color:#bb8870;font-size:0.78rem;line-height:1.9;list-style:none;padding:0;">
+                        <li>→ Docker Compose prod</li>
+                        <li style="color:#7a3a20;font-size:0.72rem;padding-left:1rem;">nginx + gunicorn + Postgres + Redis + Celery</li>
+                        <li>→ <code style="color:#ffaa00;">.env.prod</code> séparé de <code style="color:#ffaa00;">.env.example</code></li>
+                        <li>→ GitHub Actions CI/CD</li>
+                        <li style="color:#7a3a20;font-size:0.72rem;padding-left:1rem;">lint + pytest + build Docker on push main</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 13 — BILAN & PERSPECTIVES
+    ═══════════════════════════════════════════ -->
+    <div class="slide" data-slide="13">
+        <div class="holo-grid"></div>
+        <div class="scanline"></div>
+        <div class="gradient-mesh">
+            <div class="blob" style="width:500px;height:500px;top:-120px;right:-80px;background:#ff4400;opacity:0.13;"></div>
+            <div class="blob" style="width:350px;height:350px;bottom:-90px;left:-60px;background:#ff6600;opacity:0.1;"></div>
+            <div class="blob" style="width:200px;height:200px;top:35%;left:8%;background:#ffaa00;opacity:0.08;"></div>
+        </div>
+        <canvas class="particle-canvas" style="position:absolute;inset:0;z-index:1;width:100%;height:100%;"></canvas>
+        <div class="content text-center">
+            <div style="font-size:4rem;margin-bottom:1.5rem;animation:float 3s ease-in-out infinite;" class="reveal">🛰️</div>
+            <h2 class="reveal glow-pulse" style="font-family:'SF Intermosaic',serif;font-size:clamp(2rem,5vw,4rem);background:linear-gradient(135deg,#ff4400,#ffaa00,#ff4400);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:2rem;">
+                Bilan & Perspectives
+            </h2>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;text-align:left;">
+                <div class="glass-card reveal">
+                    <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.5rem;">✅ Acquis</div>
+                    <ul style="color:#bb8870;font-size:0.75rem;line-height:1.8;list-style:none;padding:0;">
+                        <li>Pipeline données géo</li>
+                        <li>globe.gl + Three.js</li>
+                        <li>Simulation temps réel</li>
+                        <li>Architecture Django DRF</li>
+                    </ul>
+                </div>
+                <div class="glass-card reveal">
+                    <div style="color:#fb923c;font-size:0.8rem;font-weight:700;margin-bottom:0.5rem;">🔁 À refaire</div>
+                    <ul style="color:#bb8870;font-size:0.75rem;line-height:1.8;list-style:none;padding:0;">
+                        <li>Wireframe avant le code</li>
+                        <li>Tests dès le début</li>
+                        <li>Stratégie de branches</li>
+                        <li>Découpage en services</li>
+                    </ul>
+                </div>
+                <div class="glass-card reveal">
+                    <div style="color:#4ade80;font-size:0.8rem;font-weight:700;margin-bottom:0.5rem;">🚀 Évolutions</div>
+                    <ul style="color:#bb8870;font-size:0.75rem;line-height:1.8;list-style:none;padding:0;">
+                        <li>WebSocket live</li>
+                        <li>Mobile natif</li>
+                        <li>Multi-utilisateurs</li>
+                        <li>Notifications push</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- NAVIGATION -->
+<div class="nav-controls">
+    <button class="nav-btn" onclick="changeSlide(-1)">&#8249;</button>
+    <div class="slide-dots" id="dots"></div>
+    <button class="nav-btn" onclick="changeSlide(1)">&#8250;</button>
+    <span class="slide-counter" id="counter">1 / 13</span>
+</div>
+
+<script>
+    /* ═══════════════════════════════════
+       DECK NAVIGATION
+    ═══════════════════════════════════ */
+    let current = 1;
+    const total = document.querySelectorAll('.slide').length;
+    const dotsContainer = document.getElementById('dots');
+    const counter = document.getElementById('counter');
+
+    for (let i = 1; i <= total; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'dot' + (i === 1 ? ' active' : '');
+        dot.onclick = () => goToSlide(i);
+        dotsContainer.appendChild(dot);
+    }
+
+    function goToSlide(n) {
+        const prev = document.querySelector('.slide.active');
+        const next = document.querySelector(`.slide[data-slide="${n}"]`);
+        if (prev) prev.classList.remove('active');
+        if (next) { next.classList.add('active'); animateSlide(next); }
+        current = n; updateNav();
+    }
+    function changeSlide(dir) {
+        let next = current + dir;
+        if (next < 1) next = total;
+        if (next > total) next = 1;
+        goToSlide(next);
+    }
+    function updateNav() {
+        document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i + 1 === current));
+        counter.textContent = current + ' / ' + total;
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); changeSlide(1); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); changeSlide(-1); }
+    });
+
+    let touchStartX = 0;
+    document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+    document.addEventListener('touchend', (e) => {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1);
+    });
+
+    /* ═══════════════════════════════════
+       ANIMATIONS REVEAL + EFFETS
+    ═══════════════════════════════════ */
+    function animateSlide(slide) {
+        slide.querySelectorAll('.reveal').forEach((el, i) => {
+            el.style.transition = 'none';
+            el.style.opacity = '0';
+            const tx = el.dataset.tx || '0px';
+            el.style.transform = `translateX(${tx}) translateY(20px)`;
+            el.offsetHeight;
+            const delay = i * 0.08;
+            el.style.transition = `opacity 0.35s ease ${delay}s, transform 0.35s ease ${delay}s`;
+            el.style.opacity = '1';
+            el.style.transform = `translateX(${tx}) translateY(0px)`;
+        });
+        animateSlideEffects(slide);
+    }
+
+    function animateSlideEffects(slide) {
+        // Compteurs animés
+        slide.querySelectorAll('[data-count]:not(.counted)').forEach(el => {
+            el.classList.add('counted');
+            const target = parseInt(el.dataset.count);
+            const suffix = el.dataset.suffix || '';
+            let cur = 0; const step = target / 40;
+            const timer = setInterval(() => {
+                cur += step;
+                if (cur >= target) { cur = target; clearInterval(timer); }
+                el.textContent = Math.round(cur) + suffix;
+            }, 30);
+        });
+        // Barres horizontales
+        slide.querySelectorAll('.bar-fill:not(.fill-init)').forEach((bar, i) => {
+            bar.classList.add('fill-init');
+            bar.style.width = '0%';
+            bar.style.transition = `width 0.6s ease ${i * 0.1}s`;
+            bar.offsetHeight;
+            bar.style.width = bar.dataset.width + '%';
+        });
+    }
+
+    /* ═══════════════════════════════════
+       MOUSE SPOTLIGHT
+    ═══════════════════════════════════ */
+    document.addEventListener('mousemove', (e) => {
+        const spotlight = document.querySelector('.mouse-spotlight');
+        if (spotlight) {
+            spotlight.style.background = `radial-gradient(600px circle at ${e.clientX}px ${e.clientY}px, rgba(255,68,0,0.05), transparent 10%)`;
+        }
+    });
+
+    /* ═══════════════════════════════════
+       PARTICLES
+    ═══════════════════════════════════ */
+    window.initParticles = function(canvas, options) {
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        const interactive = options.interactive !== false;
+        const count = options.count || (interactive ? 55 : 18);
+        let mx = -1000, my = -1000;
+        const particles = Array.from({ length: count }, () => ({
+            x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
+            size: Math.random() * 2 + 0.6, alpha: Math.random() * 0.3 + 0.08
+        }));
+        if (interactive) {
+            canvas.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                mx = e.clientX - rect.left; my = e.clientY - rect.top;
+            });
+            canvas.addEventListener('mouseleave', () => { mx = -1000; my = -1000; });
+        }
+        (function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                if (interactive) {
+                    const dx = p.x - mx, dy = p.y - my, dist = Math.sqrt(dx*dx+dy*dy);
+                    if (dist < 120) { const force = (120-dist)/120*2; p.vx += dx/dist*force*0.1; p.vy += dy/dist*force*0.1; }
+                }
+                p.vx *= 0.98; p.vy *= 0.98; p.x += p.vx; p.y += p.vy;
+                if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0;
+                if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+                ctx.fillStyle = `rgba(255,68,0,${p.alpha})`; ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        })();
+    };
+
+    document.querySelectorAll('.particle-canvas').forEach(c => window.initParticles(c, { interactive: true, count: 55 }));
+    document.querySelectorAll('.particle-canvas-ambient').forEach(c => window.initParticles(c, { interactive: false, count: 18 }));
+
+    // Init slide 1
+    try { animateSlide(document.querySelector('.slide.active')); } catch(e) {}
+</script>
+</body>
+</html>
