@@ -196,6 +196,20 @@
         .badge-green { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.2); }
         .badge-orange { background: rgba(251,146,60,0.12); color: #fb923c; border: 1px solid rgba(251,146,60,0.2); }
 
+        /* Wireframe placeholder */
+        .wireframe-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,68,0,0.03);
+            border: 1.5px dashed rgba(255,68,0,0.2);
+            border-radius: 8px;
+            color: rgba(255,68,0,0.35);
+            font-size: 0.72rem;
+            font-style: italic;
+            letter-spacing: 0.05em;
+        }
+
         .logo-video {
             height: 320px;
             object-fit: contain;
@@ -234,7 +248,7 @@
                 class="logo-video reveal">
                 <source src="./media/assets/orbi7rack-video.mp4" type="video/mp4">
             </video>
-            <div class="reveal" style="font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:#7a3a20;margin-bottom:1rem;">Soutenance pour la certification d'agent web front et back-end (session 2026)</div>
+            <div class="reveal" style="font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:#7a3a20;margin-bottom:1rem;">Soutenance — Certification Développeur Web et Web Mobile (RNCP — session Juillet 2026)</div>
             <h1 class="reveal glow-pulse" style="font-family:'SF Intermosaic',serif;font-size:clamp(3rem,7vw,5.5rem);background:linear-gradient(135deg,#ff4400,#ffaa00,#ff4400);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:1rem;line-height:1.1;">
                 Orbi7rack
             </h1>
@@ -259,7 +273,7 @@
         </div>
         <div class="content">
             <div class="reveal" style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:#7a3a20;margin-bottom:0.75rem;">01 · Qui suis-je</div>
-            <h2 class="reveal" style="font-family:'SF Intermosaic',serif;font-size:clamp(2rem,4vw,3rem);color:#e2f0f1;margin-bottom:2rem;">Présentation</h2>
+            <h2 class="reveal" style="font-family:'SF Intermosaic',serif;font-size:clamp(2rem,4vw,3rem);color:#e2f0f1;margin-bottom:2rem;">Thomas Virassamy</h2>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
                 <div class="glass-card reveal">
                     <div style="color:#ff4400;font-size:1.5rem;margin-bottom:0.75rem;">👤</div>
@@ -269,7 +283,7 @@
                 <div class="glass-card reveal">
                     <div style="color:#ff4400;font-size:1.5rem;margin-bottom:0.75rem;">🎓</div>
                     <div style="font-size:0.7rem;color:#7a3a20;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem;">Dernière Formation</div>
-                    <div style="color:#e2f0f1;font-size:0.9rem;line-height:1.6;">BTS SNIR (Systèmes Numériques option Information et Réseaux)<br><span style="color:#bb8870;">Infrastructures informatique et développement</span></div>
+                    <div style="color:#e2f0f1;font-size:0.9rem;line-height:1.6;">BTS SNIR (Systèmes Numériques option Information et Réseaux)<br><span style="color:#bb8870;">Infrastructures informatiques et développement</span></div>
                 </div>
                 <div class="glass-card reveal">
                     <div style="color:#ff4400;font-size:1.5rem;margin-bottom:0.75rem;">⚡</div>
@@ -283,7 +297,7 @@
                     <div style="color:#ff4400;font-size:1.5rem;margin-bottom:0.75rem;">🛠️</div>
                     <div style="font-size:0.7rem;color:#7a3a20;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem;">Outils & Infra</div>
                     <div style="color:#e2f0f1;font-size:0.85rem;line-height:1.8;">
-                        <span class="code-chip">Docker</span> <span class="code-chip">Vercel</span><br>
+                        <span class="code-chip">Docker</span> <span class="code-chip">nginx</span><br>
                         <span class="code-chip">GitHub Actions</span>
                     </div>
                 </div>
@@ -302,21 +316,21 @@
         </div>
         <div class="content">
             <div class="reveal" style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:#7a3a20;margin-bottom:0.75rem;">02 · Concept</div>
-            <h2 class="reveal" style="font-family:'SF Intermosaic',serif;font-size:clamp(2rem,4vw,3rem);color:#e2f0f1;margin-bottom:0.75rem;">Vision du projet</h2>
-            <p class="reveal" style="color:#bb8870;font-size:0.9rem;margin-bottom:2rem;max-width:65ch;">Visualiser des colis en transit international sur un <span style="color:#ff4400;">globe 3D holographique</span> — avec une vraie chaîne de données du suivi à la position simulée.</p>
+            <h2 class="reveal" style="font-family:'SF Intermosaic',serif;font-size:clamp(2rem,4vw,3rem);color:#e2f0f1;margin-bottom:0.5rem;">Vision du projet</h2>
+            <p class="reveal" style="color:#bb8870;font-size:0.85rem;margin-bottom:1.5rem;max-width:70ch;">Face aux trackers classiques qui affichent une simple liste d'événements, l'idée est née de combiner le suivi de colis avec la visualisation spatiale en temps réel — inspiré de <span style="color:#ff4400;">conflicty.app</span> et de FlightRadar24.</p>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;">
                 <div class="glass-card reveal" style="text-align:center;">
-                    <div style="margin-bottom:0.2rem;justify-items:center;"><img src = "media/assets/parcel.png" style ="width: 200px;"></div>
+                    <div style="margin-bottom:0.2rem;justify-items:center;"><img src="media/assets/parcel.png" style="width: 200px;"></div>
                     <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.4rem;">17TRACK API</div>
-                    <div style="color:#bb8870;font-size:0.75rem;">3200+ transporteurs<br>Événements temps réel</div>
+                    <div style="color:#bb8870;font-size:0.75rem;">3 200+ transporteurs<br>Événements de suivi</div>
                 </div>
                 <div class="glass-card reveal" style="text-align:center;">
-                    <div style="margin-bottom:0.2rem;justify-items:center;"><img src = "media/assets/plane.png" style ="width: 200px;"></div>
-                    <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.4rem;">FlightRadar24/OpenSky APIs</div>
+                    <div style="margin-bottom:0.2rem;justify-items:center;"><img src="media/assets/plane.png" style="width: 200px;"></div>
+                    <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.4rem;">OpenSky / AviationStack</div>
                     <div style="color:#bb8870;font-size:0.75rem;">Vols live<br>Fallback simulé</div>
                 </div>
                 <div class="glass-card reveal" style="text-align:center;">
-                    <div style="margin-bottom:1.5rem;margin-top:1rem;justify-items:center;"><img src = "media/assets/globe.png" style ="width: 160px;"></div>
+                    <div style="margin-bottom:1.5rem;margin-top:1rem;justify-items:center;"><img src="media/assets/globe.png" style="width: 160px;"></div>
                     <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.4rem;">Globe 3D</div>
                     <div style="color:#bb8870;font-size:0.75rem;">globe.gl + Three.js<br>Arcs animés</div>
                 </div>
@@ -339,21 +353,23 @@
                 <div class="glass-card reveal">
                     <div style="font-size:0.7rem;color:#7a3a20;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem;border-bottom:1px solid rgba(255,68,0,0.1);padding-bottom:0.5rem;">Frontend</div>
                     <div style="display:flex;flex-direction:column;gap:0.4rem;">
-                        <span class="code-chip">Next.js 14</span>
+                        <span class="code-chip">Next.js 14 (App Router)</span>
                         <span class="code-chip">TypeScript</span>
                         <span class="code-chip">globe.gl</span>
-                        <span class="code-chip">Three.js</span>
+                        <span class="code-chip">Three.js + postprocessing</span>
                         <span class="code-chip">Tailwind CSS</span>
+                        <span class="code-chip">Lucide React</span>
                     </div>
                 </div>
                 <div class="glass-card reveal">
                     <div style="font-size:0.7rem;color:#7a3a20;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem;border-bottom:1px solid rgba(255,68,0,0.1);padding-bottom:0.5rem;">Backend</div>
                     <div style="display:flex;flex-direction:column;gap:0.4rem;">
-                        <span class="code-chip">Django REST</span>
+                        <span class="code-chip">Django 5 + DRF</span>
+                        <span class="code-chip">SimpleJWT</span>
                         <span class="code-chip">PostgreSQL</span>
-                        <span class="code-chip">Celery</span>
-                        <span class="code-chip">Redis</span>
-                        <span class="code-chip">JWT Auth</span>
+                        <span class="code-chip">Celery + Redis</span>
+                        <span class="code-chip">drf-spectacular</span>
+                        <span class="code-chip">geopy</span>
                     </div>
                 </div>
                 <div class="glass-card reveal">
@@ -361,8 +377,9 @@
                     <div style="display:flex;flex-direction:column;gap:0.4rem;">
                         <span class="code-chip">WSL2</span>
                         <span class="code-chip">Docker Compose</span>
-                        <span class="code-chip">nginx</span>
-                        <span class="code-chip">GitHub</span>
+                        <span class="code-chip">nginx + Gunicorn</span>
+                        <span class="code-chip">GitHub Actions</span>
+                        <span class="code-chip">Makefile</span>
                         <span class="code-chip">pytest</span>
                     </div>
                 </div>
@@ -383,30 +400,30 @@
         <div class="content">
             <div class="reveal" style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:#7a3a20;margin-bottom:0.75rem;">04 · Design</div>
             <h2 class="reveal" style="font-family:'SF Intermosaic',serif;font-size:clamp(2rem,4vw,3rem);color:#e2f0f1;margin-bottom:0.5rem;">Pourquoi ce thème ?</h2>
-            <p class="reveal" style="color:#bb8870;font-size:0.85rem;margin-bottom:1.5rem;">Pas de wireframe traditionnel — <span style="color:#ff4400;">globe.gl a structuré l'UI</span> dès la découverte de la lib.</p>
+            <p class="reveal" style="color:#bb8870;font-size:0.85rem;margin-bottom:1.5rem;">Pas de wireframe traditionnel — <span style="color:#ff4400;">globe.gl a structuré l'UI</span> dès la découverte de la lib. Le globe est l'interface, pas la décoration.</p>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
                 <div class="glass-card reveal">
                     <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.75rem;">Layout</div>
                     <ul style="color:#bb8870;font-size:0.8rem;line-height:1.8;list-style:none;padding:0;">
-                        <li>→ Globe = élément central, pas décoratif</li>
-                        <li>→ Sidebar + TopBar déduits de sa contrainte</li>
-                        <li>→ UI basée sur cette idée : globe + sidebar</li>
+                        <li>→ Globe = élément central (80–90 % de l'écran)</li>
+                        <li>→ Sidebar ~300px · collapsible mobile</li>
+                        <li>→ Modal contextuel déclenché au clic</li>
                     </ul>
                 </div>
                 <div class="glass-card reveal">
                     <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.75rem;">Design System</div>
                     <ul style="color:#bb8870;font-size:0.8rem;line-height:1.8;list-style:none;padding:0;">
-                        <li>→ Palette orange / anthracite</li>
-                        <li>→ Glassmorphism + bloom Three.js</li>
-                        <li>→ Inter + JetBrains Mono</li>
-                        <li>→ Mode clair (palette blanc / bleu marine)</li>
+                        <li>→ Palette orange / anthracite (mode sombre par défaut)</li>
+                        <li>→ Glassmorphism + bloom Three.js (intensité 1.6)</li>
+                        <li>→ <strong style="color:#e2f0f1;">Inter</strong> (UI) · <strong style="color:#e2f0f1;">JetBrains Mono</strong> (données)</li>
+                        <li>→ Mode clair : palette satellite (verts/beiges/ocre)</li>
                     </ul>
                 </div>
                 <div class="glass-card reveal" style="grid-column:span 2;">
-                    <div style="display:flex;gap:2rem;align-items:center;justify-content: space-between;">
+                    <div style="display:flex;gap:2rem;align-items:center;justify-content:space-between;">
                         <div>
                             <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.5rem;">Rendu holographique</div>
-                            <div style="color:#bb8870;font-size:0.8rem;">Hexagones H3 · Atmosphère · UnrealBloomPass</div>
+                            <div style="color:#bb8870;font-size:0.8rem;">Hexagones H3 · Atmosphère orange (#ff7b00) · UnrealBloomPass · Arcs cyan → transparent</div>
                         </div>
                         <div style="flex-shrink:0;display:flex;gap:0.5rem;">
                             <span class="badge badge-orange">globe.gl</span>
@@ -436,8 +453,8 @@
                         <span style="color:#ff4400;font-size:0.85rem;font-weight:700;">Authentification JWT</span>
                     </div>
                     <ul style="color:#bb8870;font-size:0.78rem;line-height:1.8;list-style:none;padding:0;margin-bottom:0.75rem;">
-                        <li>→ Login / Register / Logout</li>
-                        <li>→ Access + Refresh token</li>
+                        <li>→ Inscription / Connexion / Déconnexion</li>
+                        <li>→ Access token 4h · Refresh token 7j</li>
                         <li>→ Guards sur routes protégées</li>
                     </ul>
                     <span class="code-chip">settings.py · /api/auth/</span>
@@ -448,9 +465,10 @@
                         <span style="color:#ff4400;font-size:0.85rem;font-weight:700;">Pipeline 17TRACK</span>
                     </div>
                     <ul style="color:#bb8870;font-size:0.78rem;line-height:1.8;list-style:none;padding:0;margin-bottom:0.75rem;">
-                        <li>→ Modèle <code style="color:#ffaa00;">Parcel</code> / <code style="color:#ffaa00;">TrackingEvent</code></li>
-                        <li>→ Polling automatique Celery</li>
-                        <li>→ Endpoints <code style="color:#ffaa00;">/api/parcels/</code></li>
+                        <li>→ Modèles <code style="color:#ffaa00;">Parcel</code> / <code style="color:#ffaa00;">TrackingEvent</code></li>
+                        <li>→ Ajout par numéro de tracking · polling Celery</li>
+                        <li>→ Endpoint <code style="color:#ffaa00;">/api/parcels/</code> · rate-limiting</li>
+                        <li>→ Suppression · statuts colorés en sidebar</li>
                     </ul>
                     <span class="code-chip">tasks.py · models.py</span>
                 </div>
@@ -469,7 +487,7 @@
         <div class="content">
             <div class="reveal" style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:#7a3a20;margin-bottom:0.75rem;">06 · Fonctionnalités</div>
             <h2 class="reveal" style="font-family:'SF Intermosaic',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);color:#e2f0f1;margin-bottom:1rem;">Géocodage & Résolution GPS</h2>
-            <p class="reveal" style="color:#bb8870;font-size:0.85rem;margin-bottom:1.5rem;">Chaîne de fallback pour résoudre chaque événement en coordonnées GPS précises.</p>
+            <p class="reveal" style="color:#bb8870;font-size:0.85rem;margin-bottom:1.5rem;">Chaîne de fallback pour résoudre chaque position en coordonnées GPS précises — du plus fiable au dernier recours.</p>
             <div style="position:relative;padding-left:3rem;" class="reveal">
                 <div class="timeline-line"></div>
                 <div style="display:flex;flex-direction:column;gap:0.75rem;">
@@ -477,28 +495,28 @@
                         <div class="timeline-dot"></div>
                         <div class="glass-card" style="flex:1;padding:0.75rem 1rem;">
                             <span style="color:#ff4400;font-size:0.8rem;font-weight:700;">1. last_live_lat/lng</span>
-                            <span style="color:#bb8870;font-size:0.75rem;margin-left:0.5rem;">Dernière position live OpenSky</span>
+                            <span style="color:#bb8870;font-size:0.75rem;margin-left:0.5rem;">Dernière position live OpenSky (vol aérien identifié)</span>
                         </div>
                     </div>
                     <div style="display:flex;align-items:center;gap:1rem;">
-                        <div class="timeline-dot" style="background:#ffaa00;box-shadow:0 0 12px rgba(103,232,249,0.8);"></div>
+                        <div class="timeline-dot" style="background:#ffaa00;box-shadow:0 0 12px rgba(255,170,0,0.8);"></div>
                         <div class="glass-card" style="flex:1;padding:0.75rem 1rem;">
                             <span style="color:#ffaa00;font-size:0.8rem;font-weight:700;">2. Événement géocodé</span>
-                            <span style="color:#bb8870;font-size:0.75rem;margin-left:0.5rem;">geopy · base centroïdes</span>
+                            <span style="color:#bb8870;font-size:0.75rem;margin-left:0.5rem;">geopy · base statique de centroïdes</span>
                         </div>
                     </div>
                     <div style="display:flex;align-items:center;gap:1rem;">
-                        <div class="timeline-dot" style="background:#ff6600;box-shadow:0 0 12px rgba(8,145,178,0.8);"></div>
+                        <div class="timeline-dot" style="background:#ff6600;box-shadow:0 0 12px rgba(255,102,0,0.8);"></div>
                         <div class="glass-card" style="flex:1;padding:0.75rem 1rem;">
                             <span style="color:#ff6600;font-size:0.8rem;font-weight:700;">3. Centroïde pays destination</span>
-                            <span style="color:#bb8870;font-size:0.75rem;margin-left:0.5rem;">Fallback pays dest</span>
+                            <span style="color:#bb8870;font-size:0.75rem;margin-left:0.5rem;">Fallback pays dest (dest_coords)</span>
                         </div>
                     </div>
                     <div style="display:flex;align-items:center;gap:1rem;">
-                        <div class="timeline-dot" style="background:#7a3a20;box-shadow:0 0 8px rgba(78,122,128,0.6);"></div>
+                        <div class="timeline-dot" style="background:#7a3a20;box-shadow:0 0 8px rgba(122,58,32,0.6);"></div>
                         <div class="glass-card" style="flex:1;padding:0.75rem 1rem;">
                             <span style="color:#7a3a20;font-size:0.8rem;font-weight:700;">4. Centroïde pays origine</span>
-                            <span style="color:#bb8870;font-size:0.75rem;margin-left:0.5rem;">Dernier recours</span>
+                            <span style="color:#bb8870;font-size:0.75rem;margin-left:0.5rem;">Dernier recours (origin_coords)</span>
                         </div>
                     </div>
                 </div>
@@ -523,9 +541,9 @@
                 <div class="glass-card reveal">
                     <div style="color:#ff4400;font-size:0.85rem;font-weight:700;margin-bottom:0.75rem;">✈️ Flight Extractor</div>
                     <ul style="color:#bb8870;font-size:0.78rem;line-height:1.8;list-style:none;padding:0;margin-bottom:0.75rem;">
-                        <li>→ Regex <code style="color:#ffaa00;">[A-Z]{`{2,3}`}\d{`{3,4}`}</code></li>
+                        <li>→ Regex <code style="color:#ffaa00;">[A-Z]{2,3}\d{3,4}</code> sur descriptions 17TRACK</li>
                         <li>→ Fallback AviationStack API</li>
-                        <li>→ Mapping carrier → airline cargo</li>
+                        <li>→ Mapping carrier → airline cargo IATA</li>
                         <li style="color:#7a3a20;font-size:0.72rem;">UPS→5X · FedEx→FX · DHL→D0</li>
                         <li>→ Stocke <code style="color:#ffaa00;">flight_iata</code> sur TrackingEvent</li>
                     </ul>
@@ -534,11 +552,11 @@
                 <div class="glass-card reveal">
                     <div style="color:#ff4400;font-size:0.85rem;font-weight:700;margin-bottom:0.75rem;">⚙️ SimulationEngine</div>
                     <ul style="color:#bb8870;font-size:0.78rem;line-height:1.8;list-style:none;padding:0;margin-bottom:0.75rem;">
-                        <li>→ Détection mode (flight/road/hub)</li>
+                        <li>→ Détection mode (air / road / sea / unknown)</li>
                         <li>→ Calcul Haversine multi-segments</li>
-                        <li>→ <code style="color:#ffaa00;">estimated_departure/arrival</code></li>
+                        <li>→ <code style="color:#ffaa00;">estimated_departure / estimated_arrival</code></li>
                         <li>→ Flag <code style="color:#ffaa00;">simulated: bool</code></li>
-                        <li>→ <code style="color:#ffaa00;">progress(t)</code> → slerp Globe.tsx</li>
+                        <li>→ <code style="color:#ffaa00;">progress(t)</code> → slerp dans Globe.tsx</li>
                     </ul>
                     <span class="code-chip">simulation_engine.py</span>
                 </div>
@@ -565,17 +583,17 @@
                 <div class="glass-card reveal" style="text-align:center;">
                     <div style="font-size:1.8rem;margin-bottom:0.5rem;">🌐</div>
                     <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.4rem;">Rendu globe</div>
-                    <div style="color:#bb8870;font-size:0.75rem;">Hexagones H3<br>Atmosphère + bloom<br>UnrealBloomPass</div>
+                    <div style="color:#bb8870;font-size:0.75rem;">Hexagones H3<br>Atmosphère + bloom<br>dynamic import ssr:false</div>
                 </div>
                 <div class="glass-card reveal" style="text-align:center;">
                     <div style="font-size:1.8rem;margin-bottom:0.5rem;">🔴</div>
                     <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.4rem;">Marqueurs</div>
-                    <div style="color:#bb8870;font-size:0.75rem;">Pin pulsant<br>Tooltip au hover<br>Badge stale</div>
+                    <div style="color:#bb8870;font-size:0.75rem;">Points + rings pulsants<br>Couleur selon statut<br>Zoom caméra 1.2s</div>
                 </div>
                 <div class="glass-card reveal" style="text-align:center;">
                     <div style="font-size:1.8rem;margin-bottom:0.5rem;">〰️</div>
-                    <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.4rem;">Arcs animés</div>
-                    <div style="color:#bb8870;font-size:0.75rem;">Sprite avion orientable<br>Mode arc vs live<br>slerp progress(t)</div>
+                    <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.4rem;">Arcs + sprites</div>
+                    <div style="color:#bb8870;font-size:0.75rem;">Avion / camion orientable<br>Mode arc vs live<br>slerp progress(t)</div>
                 </div>
             </div>
             <div class="reveal" style="margin-top:1.25rem;display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center;">
@@ -614,12 +632,12 @@
                 <div class="glass-card reveal" style="display:grid;grid-template-columns:auto 1fr 1fr;gap:1rem;align-items:center;padding:1rem 1.25rem;">
                     <span style="font-size:1.2rem;">✈️</span>
                     <div><div style="color:#fb923c;font-size:0.78rem;font-weight:700;margin-bottom:0.2rem;">Arc pointant au mauvais endroit</div><div style="color:#7a3a20;font-size:0.72rem;">Confusion position courante vs destination</div></div>
-                    <div style="color:#bb8870;font-size:0.75rem;">Refactor 3 fonctions séparées</div>
+                    <div style="color:#bb8870;font-size:0.75rem;">Refactor 3 fonctions séparées<br><span class="code-chip">resolveArcOrigin · resolveArcDest · resolveCurrentPosition</span></div>
                 </div>
                 <div class="glass-card reveal" style="display:grid;grid-template-columns:auto 1fr 1fr;gap:1rem;align-items:center;padding:1rem 1.25rem;">
                     <span style="font-size:1.2rem;">🔀</span>
                     <div><div style="color:#fb923c;font-size:0.78rem;font-weight:700;margin-bottom:0.2rem;">Conflits merge cleanest→main</div><div style="color:#7a3a20;font-size:0.72rem;">Constantes manquantes (STATUS_COLORS…)</div></div>
-                    <div style="color:#bb8870;font-size:0.75rem;">Branche <span class="code-chip">showcase</span> + config réintégrée</div>
+                    <div style="color:#bb8870;font-size:0.75rem;">Branche <span class="code-chip">showcase</span> stabilisée + config réintégrée</div>
                 </div>
             </div>
         </div>
@@ -649,7 +667,7 @@
                         <span style="color:#4ade80;font-size:1rem;">✓</span>
                         <div>
                             <div style="color:#e2f0f1;font-size:0.82rem;font-weight:600;">test_api_parcels</div>
-                            <div style="color:#7a3a20;font-size:0.72rem;">Endpoints REST · CRUD</div>
+                            <div style="color:#7a3a20;font-size:0.72rem;">Endpoints REST · CRUD complet</div>
                         </div>
                     </div>
                     <div class="glass-card reveal" style="display:flex;align-items:center;gap:1rem;padding:0.85rem 1.25rem;">
@@ -670,7 +688,7 @@
                         <span style="color:#4ade80;font-size:1rem;">✓</span>
                         <div>
                             <div style="color:#e2f0f1;font-size:0.82rem;font-weight:600;">test_simulation_engine</div>
-                            <div style="color:#7a3a20;font-size:0.72rem;">Haversine · multi-segments</div>
+                            <div style="color:#7a3a20;font-size:0.72rem;">Haversine · multi-segments · flag simulated</div>
                         </div>
                     </div>
                 </div>
@@ -680,8 +698,8 @@
                         <div style="color:#7a3a20;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;margin-top:0.25rem;">Couverture visée</div>
                     </div>
                     <div class="glass-card reveal">
-                        <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.5rem;">🧪 Branche showcase</div>
-                        <div style="color:#bb8870;font-size:0.78rem;">Knobs de démo : bloom, halo, graticules — sans toucher au core</div>
+                        <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.5rem;">🧪 Branche orbiTests</div>
+                        <div style="color:#bb8870;font-size:0.78rem;">Branche dédiée aux tests pytest — isolée du dev principal</div>
                     </div>
                     <div class="glass-card reveal">
                         <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.5rem;">🗃️ Seed démo</div>
@@ -711,15 +729,16 @@
                         <li>→ Swagger UI <code style="color:#ffaa00;">/api/docs/</code></li>
                         <li>→ ReDoc <code style="color:#ffaa00;">/api/redoc/</code></li>
                         <li>→ <code style="color:#ffaa00;">@extend_schema</code> sur actions custom</li>
-                        <li>→ Export Postman collection</li>
+                        <li>→ Exemples de payloads documentés<br><span style="color:#7a3a20;font-size:0.72rem;">(estimated_position, origin_coords, dest_coords, auth JWT)</span></li>
                     </ul>
                 </div>
                 <div class="glass-card reveal">
                     <div style="color:#ff4400;font-size:0.85rem;font-weight:700;margin-bottom:0.75rem;">🚀 Déploiement</div>
                     <ul style="color:#bb8870;font-size:0.78rem;line-height:1.9;list-style:none;padding:0;">
                         <li>→ Docker Compose prod</li>
-                        <li style="color:#7a3a20;font-size:0.72rem;padding-left:1rem;">nginx + gunicorn + Postgres + Redis + Celery</li>
+                        <li style="color:#7a3a20;font-size:0.72rem;padding-left:1rem;">nginx + Gunicorn + Postgres + Redis + Celery</li>
                         <li>→ <code style="color:#ffaa00;">.env.prod</code> séparé de <code style="color:#ffaa00;">.env.example</code></li>
+                        <li>→ Variables sensibles jamais commitées<br><span style="color:#7a3a20;font-size:0.72rem;">(clés API, SECRET_KEY, credentials OpenSky)</span></li>
                         <li>→ GitHub Actions CI/CD</li>
                         <li style="color:#7a3a20;font-size:0.72rem;padding-left:1rem;">lint + pytest + build Docker on push main</li>
                     </ul>
@@ -749,28 +768,30 @@
                 <div class="glass-card reveal">
                     <div style="color:#ff4400;font-size:0.8rem;font-weight:700;margin-bottom:0.5rem;">✅ Acquis</div>
                     <ul style="color:#bb8870;font-size:0.75rem;line-height:1.8;list-style:none;padding:0;">
-                        <li>Pipeline données géo</li>
-                        <li>globe.gl + Three.js</li>
-                        <li>Simulation temps réel</li>
-                        <li>Architecture Django DRF</li>
+                        <li>Pipeline données géo complète</li>
+                        <li>globe.gl + Three.js + postprocessing</li>
+                        <li>SimulationEngine + vol live</li>
+                        <li>Architecture Django DRF + Celery</li>
+                        <li>Docker Compose prod reproductible</li>
                     </ul>
                 </div>
                 <div class="glass-card reveal">
                     <div style="color:#fb923c;font-size:0.8rem;font-weight:700;margin-bottom:0.5rem;">🔁 À refaire</div>
                     <ul style="color:#bb8870;font-size:0.75rem;line-height:1.8;list-style:none;padding:0;">
                         <li>Wireframe avant le code</li>
-                        <li>Tests dès le début</li>
-                        <li>Stratégie de branches</li>
-                        <li>Découpage en services</li>
+                        <li>Tests écrits dès le début</li>
+                        <li>Stratégie de branches dès le départ</li>
+                        <li>Découpage en services dès la conception</li>
                     </ul>
                 </div>
                 <div class="glass-card reveal">
                     <div style="color:#4ade80;font-size:0.8rem;font-weight:700;margin-bottom:0.5rem;">🚀 Évolutions</div>
                     <ul style="color:#bb8870;font-size:0.75rem;line-height:1.8;list-style:none;padding:0;">
-                        <li>WebSocket live</li>
-                        <li>Mobile natif</li>
-                        <li>Multi-utilisateurs</li>
-                        <li>Notifications push</li>
+                        <li>WebSocket pour mises à jour live</li>
+                        <li>Notifications de changement de statut</li>
+                        <li>Partage de suivi par lien public</li>
+                        <li>Mode envois sortants</li>
+                        <li>Filtres avancés (statut, transporteur, pays)</li>
                     </ul>
                 </div>
             </div>
