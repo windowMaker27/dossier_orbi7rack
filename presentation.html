@@ -210,6 +210,77 @@
             letter-spacing: 0.05em;
         }
 
+        /* ─── Wireframe Carousel (slide 4) ─── */
+        .wf-carousel {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            border: 1px solid rgba(255,68,0,0.15);
+            background: rgba(255,68,0,0.03);
+        }
+        .wf-track {
+            display: flex;
+            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+        }
+        .wf-slide {
+            flex: 0 0 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .wf-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 8px;
+        }
+        .wf-slide .wireframe-placeholder {
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        .wf-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255,68,0,0.12);
+            border: 1px solid rgba(255,68,0,0.25);
+            color: #ff4400;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: background 0.2s;
+        }
+        .wf-arrow:hover { background: rgba(255,68,0,0.25); }
+        .wf-arrow-prev { left: 6px; }
+        .wf-arrow-next { right: 6px; }
+        .wf-dots {
+            position: absolute;
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+            z-index: 10;
+        }
+        .wf-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: rgba(255,68,0,0.25);
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .wf-dot.active { background: #ff4400; transform: scale(1.4); }
+
         .logo-video {
             height: 320px;
             object-fit: contain;
@@ -339,7 +410,7 @@
     </div>
 
     <!-- ═══════════════════════════════════════════
-         SLIDE 4 — STACK TECHNIQUE
+         SLIDE 4 — STACK TECHNIQUE + WIREFRAMES
     ═══════════════════════════════════════════ -->
     <div class="slide" data-slide="4">
         <div class="gradient-mesh">
@@ -348,8 +419,10 @@
         </div>
         <div class="content">
             <div class="reveal" style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:#7a3a20;margin-bottom:0.75rem;">03 · Architecture</div>
-            <h2 class="reveal" style="font-family:'SF Intermosaic',serif;font-size:clamp(2rem,4vw,3rem);color:#e2f0f1;margin-bottom:2rem;">Stack technique</h2>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;">
+            <h2 class="reveal" style="font-family:'SF Intermosaic',serif;font-size:clamp(2rem,4vw,3rem);color:#e2f0f1;margin-bottom:1.25rem;">Stack technique</h2>
+
+            <!-- Stack cards -->
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.25rem;">
                 <div class="glass-card reveal">
                     <div style="font-size:0.7rem;color:#7a3a20;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem;border-bottom:1px solid rgba(255,68,0,0.1);padding-bottom:0.5rem;">Frontend</div>
                     <div style="display:flex;flex-direction:column;gap:0.4rem;">
@@ -382,6 +455,54 @@
                         <span class="code-chip">Makefile</span>
                         <span class="code-chip">pytest</span>
                     </div>
+                </div>
+            </div>
+
+            <!-- Wireframe carousel -->
+            <div class="reveal" style="display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:center;">
+                <div style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#7a3a20;writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;">Wireframes</div>
+                <div class="wf-carousel" id="wfCarousel" style="height:140px;">
+                    <div class="wf-track" id="wfTrack">
+                        <!-- Slide 1 -->
+                        <div class="wf-slide">
+                            <img src="./media/wireframes/wireframe-1.png" alt="Wireframe 1"
+                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                            <div class="wireframe-placeholder" style="display:none;height:100%;">
+                                <span style="font-size:1.2rem;opacity:0.4;">🖼️</span>
+                                <span>wireframe-1.png</span>
+                            </div>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="wf-slide">
+                            <img src="./media/wireframes/wireframe-2.png" alt="Wireframe 2"
+                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                            <div class="wireframe-placeholder" style="display:none;height:100%;">
+                                <span style="font-size:1.2rem;opacity:0.4;">🖼️</span>
+                                <span>wireframe-2.png</span>
+                            </div>
+                        </div>
+                        <!-- Slide 3 -->
+                        <div class="wf-slide">
+                            <img src="./media/wireframes/wireframe-3.png" alt="Wireframe 3"
+                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                            <div class="wireframe-placeholder" style="display:none;height:100%;">
+                                <span style="font-size:1.2rem;opacity:0.4;">🖼️</span>
+                                <span>wireframe-3.png</span>
+                            </div>
+                        </div>
+                        <!-- Slide 4 -->
+                        <div class="wf-slide">
+                            <img src="./media/wireframes/wireframe-4.png" alt="Wireframe 4"
+                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                            <div class="wireframe-placeholder" style="display:none;height:100%;">
+                                <span style="font-size:1.2rem;opacity:0.4;">🖼️</span>
+                                <span>wireframe-4.png</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="wf-arrow wf-arrow-prev" onclick="wfMove(-1)" aria-label="Précédent">&#8249;</button>
+                    <button class="wf-arrow wf-arrow-next" onclick="wfMove(1)" aria-label="Suivant">&#8250;</button>
+                    <div class="wf-dots" id="wfDots"></div>
                 </div>
             </div>
         </div>
@@ -950,6 +1071,44 @@
 
     // Init slide 1
     try { animateSlide(document.querySelector('.slide.active')); } catch(e) {}
+
+    /* ═══════════════════════════════════
+       WIREFRAME CAROUSEL (slide 4)
+    ═══════════════════════════════════ */
+    (function() {
+        const track = document.getElementById('wfTrack');
+        const dotsEl = document.getElementById('wfDots');
+        if (!track || !dotsEl) return;
+
+        const slides = track.querySelectorAll('.wf-slide');
+        const n = slides.length;
+        let idx = 0;
+
+        // Build dots
+        for (let i = 0; i < n; i++) {
+            const d = document.createElement('div');
+            d.className = 'wf-dot' + (i === 0 ? ' active' : '');
+            d.onclick = () => wfGoTo(i);
+            dotsEl.appendChild(d);
+        }
+
+        function wfGoTo(i) {
+            idx = (i + n) % n;
+            track.style.transform = `translateX(-${idx * 100}%)`;
+            dotsEl.querySelectorAll('.wf-dot').forEach((d, j) => d.classList.toggle('active', j === idx));
+        }
+
+        window.wfMove = function(dir) { wfGoTo(idx + dir); };
+
+        // Touch swipe inside carousel
+        const carousel = document.getElementById('wfCarousel');
+        let startX = 0;
+        carousel.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
+        carousel.addEventListener('touchend', (e) => {
+            const diff = startX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 30) wfMove(diff > 0 ? 1 : -1);
+        });
+    })();
 </script>
 </body>
 </html>
