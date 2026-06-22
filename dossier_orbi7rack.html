@@ -501,6 +501,7 @@
 <li>Filtres avancés par statut, transporteur, pays</li>
 <li>Graphique de fréquence d'événements/Dashboard global de suivi</li>
 <li>Mode différent pour des envois sortants</li>
+<li>Page de présentation/landing plutôt que directement un login</li>
 </ul>
 <h3 id="3-personnes-cibles">3. Personnes cibles</h3>
 <h4 id="31-cible-principale">3.1. Cible principale</h4>
@@ -698,11 +699,15 @@
 <tbody>
 <tr>
 <td>Fond de page</td>
-<td><code>#0d0d0d</code> anthracite profond</td>
+<td><code>#0a0000</code> noir</td>
+</tr>
+<tr>
+<td>Couleur d'accent (boutons)</td>
+<td> Orange <code>#ff6600</code></td>
 </tr>
 <tr>
 <td>Hexagones continent</td>
-<td>Palette "feu" orange / amber / brun</td>
+<td>Palette autour de la couleur d'accent : <code>["#ff4400","#ff6600","#ff8800","#ffaa00","#cc3300","#ff5500","#dd7700","#ee4400"]</code></td>
 </tr>
 <tr>
 <td>Atmosphère globe</td>
@@ -713,19 +718,11 @@
 <td>Dégradé cyan → transparent</td>
 </tr>
 <tr>
-<td>Points colis (in_transit)</td>
-<td>Cyan <code>#00d4ff</code></td>
+<td style="padding-top:20px">Palette de statut : </td>
+<td><img src ="media/screenshots/palette_statut.png" style="width: 100%; padding-top:15px"></td>
 </tr>
 <tr>
-<td>Points colis (delivered)</td>
-<td>Vert <code>#4caf50</code></td>
-</tr>
-<tr>
-<td>Points colis (pending)</td>
-<td>Ambre <code>#ff9800</code></td>
-</tr>
-<tr>
-<td>Rings pulsants</td>
+<td>Anneaux pulsants (position du colis)</td>
 <td>Cyan</td>
 </tr>
 <tr>
@@ -749,19 +746,11 @@
 </tr>
 <tr>
 <td>Hexagones continent</td>
-<td>Palette "satellite" : verts, beiges, ocre, marron selon biome simulé</td>
+<td>Palette "satellite" : verts, beiges, ocre, marron etc selon la latitude du lieu qui permet d'en déduire le biome</td>
 </tr>
 <tr>
 <td>Atmosphère globe</td>
 <td>Bleu <code>#4488ff</code></td>
-</tr>
-<tr>
-<td>Arcs de vol</td>
-<td>Dégradé bleu sombre → transparent</td>
-</tr>
-<tr>
-<td>Bloom</td>
-<td>Intensité réduite à 0.5</td>
 </tr>
 </tbody>
 </table>
