@@ -291,7 +291,44 @@
 
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+
         }
+        /* Lightbox */
+        #wfLightbox {
+            display: none;
+            position: fixed; inset: 0; z-index: 9999;
+            background: rgba(0,0,0,0.88);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+        }
+        #wfLightbox.open { display: flex; }
+        #wfLightbox img {
+            max-width: 90vw;
+            max-height: 88vh;
+            object-fit: contain;
+            border-radius: 8px;
+            border: 1px solid rgba(255,68,0,0.2);
+            box-shadow: 0 0 60px rgba(255,68,0,0.15);
+            cursor: default;
+        }
+        #wfLightbox .lb-close {
+            position: absolute; top: 20px; right: 24px;
+            color: rgba(255,68,0,0.7); font-size: 2rem;
+            cursor: pointer; background: none; border: none;
+            line-height: 1;
+        }
+        #wfLightbox .lb-close:hover { color: #ff4400; }
+        #wfLightbox .wf-arrow {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 10001;
+        }
+
+        #wfLightbox .wf-arrow-prev { left: 24px; }
+        #wfLightbox .wf-arrow-next { right: 24px; }
     </style>
 </head>
 <body>
@@ -509,7 +546,7 @@
                     <div class="wf-track" id="wfTrack">
                         <!-- Slide 1 -->
                         <div class="wf-slide">
-                            <img src="./media/screenshots/1.png" alt="Wireframe 1"
+                            <img src="./media/screenshots/1.png" alt="Wireframe 1" onclick="openLightbox(1)" style="cursor:zoom-in;"
                                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
                             <div class="wireframe-placeholder" style="display:none;height:100%;">
                                 <span style="font-size:1.2rem;opacity:0.4;">🖼️</span>
@@ -518,7 +555,7 @@
                         </div>
                         <!-- Slide 2 -->
                         <div class="wf-slide">
-                            <img src="./media/screenshots/2.png" alt="Wireframe 2"
+                            <img src="./media/screenshots/2.png" alt="Wireframe 2" onclick="openLightbox(2)" style="cursor:zoom-in;"
                                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
                             <div class="wireframe-placeholder" style="display:none;height:100%;">
                                 <span style="font-size:1.2rem;opacity:0.4;">🖼️</span>
@@ -527,7 +564,7 @@
                         </div>
                         <!-- Slide 3 -->
                         <div class="wf-slide">
-                            <img src="./media/screenshots/3.png" alt="Wireframe 3"
+                            <img src="./media/screenshots/3.png" alt="Wireframe 3" onclick="openLightbox(3)" style="cursor:zoom-in;"
                                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
                             <div class="wireframe-placeholder" style="display:none;height:100%;">
                                 <span style="font-size:1.2rem;opacity:0.4;">🖼️</span>
@@ -536,7 +573,7 @@
                         </div>
                         <!-- Slide 4 -->
                         <div class="wf-slide">
-                            <img src="./media/screenshots/4.png" alt="Wireframe 4"
+                            <img src="./media/screenshots/4.png" alt="Wireframe 4" onclick="openLightbox(4)" style="cursor:zoom-in;"
                                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
                             <div class="wireframe-placeholder" style="display:none;height:100%;">
                                 <span style="font-size:1.2rem;opacity:0.4;">🖼️</span>
@@ -545,7 +582,7 @@
                         </div>
                         <!-- Slide 5 -->
                         <div class="wf-slide">
-                            <img src="./media/screenshots/5.png" alt="Wireframe 5"
+                            <img src="./media/screenshots/5.png" alt="Wireframe 5" onclick="openLightbox(5)" style="cursor:zoom-in;"
                                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
                             <div class="wireframe-placeholder" style="display:none;height:100%;">
                                 <span style="font-size:1.2rem;opacity:0.4;">🖼️</span>
@@ -554,7 +591,7 @@
                         </div>
                         <!-- Slide 6 -->
                         <div class="wf-slide">
-                            <img src="./media/screenshots/6.png" alt="Wireframe 6"
+                            <img src="./media/screenshots/6.png" alt="Wireframe 6" onclick="openLightbox(6)" style="cursor:zoom-in;"
                                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
                             <div class="wireframe-placeholder" style="display:none;height:100%;">
                                 <span style="font-size:1.2rem;opacity:0.4;">🖼️</span>
@@ -655,8 +692,9 @@
                         </div>
                     </div>
                 </div>
+                <img src="media/screenshots/pipeline.png" style="max-width: 100%; border-radius: 8px; margin: var(--space-6) 0;" />
             </div>
-            <div class="reveal" style="margin-top:1rem;"><span class="code-chip">geocoding.py</span></div>
+            <div class="reveal" style="margin-top:1rem;"><span class="code-chip">geocoding.py</span>+<span class="code-chip">Globe.tsx</span></div>
         </div>
     </div>
 
@@ -695,7 +733,38 @@
                     </ul>
                     <span class="code-chip">simulation_engine.py</span>
                 </div>
-            </div>
+                </div>
+                <div class="wf-carousel" id="wfCarousel" style="height:140px;">
+                    <div class="wf-track" id="wfTrack">
+                        <!-- Slide 1 -->
+                        <div class="wf-slide">
+                            <img src="media/screenshots/simengine.png" alt="Wireframe 1" onclick="openLightbox(9)" style="cursor:zoom-in;"
+                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                            <div class="wireframe-placeholder" style="display:none;height:100%;">
+                                <span style="font-size:1.2rem;opacity:0.4;">🖼️</span>
+                                <span>wireframe-1.png</span>
+                            </div>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="wf-slide">
+                            <img src="media/screenshots/endpointflight.png" alt="Wireframe 1" onclick="openLightbox(9)" style="cursor:zoom-in;"
+                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                            <div class="wireframe-placeholder" style="display:none;height:100%;">
+                                <span style="font-size:1.2rem;opacity:0.4;">🖼️</span>
+                                <span>wireframe-1.png</span>
+                            </div>
+                        </div>
+                        <!-- Slide 3 -->
+                        <div class="wf-slide">
+                            <img src="media/screenshots/parser.png" alt="Wireframe 1" onclick="openLightbox(9)" style="cursor:zoom-in;"
+                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                            <div class="wireframe-placeholder" style="display:none;height:100%;">
+                                <span style="font-size:1.2rem;opacity:0.4;">🖼️</span>
+                                <span>wireframe-1.png</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
     </div>
 
@@ -731,6 +800,18 @@
                     <div style="color:#bb8870;font-size:0.75rem;">Avion / camion orientable<br>Mode arc vs live<br>slerp progress(t)</div>
                 </div>
             </div>
+            <div class="wf-carousel" id="wfCarousel" style="height:140px;">
+                    <div class="wf-track" id="wfTrack">
+                        <div class="wf-slide">
+                            <img src="media/screenshots/globetsx.png" alt="Wireframe 1" onclick="openLightbox(9)" style="cursor:zoom-in;"
+                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                            <div class="wireframe-placeholder" style="display:none;height:100%;">
+                                <span style="font-size:1.2rem;opacity:0.4;">🖼️</span>
+                                <span>wireframe-1.png</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <div class="reveal" style="margin-top:1.25rem;display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center;">
                 <span style="color:#7a3a20;font-size:0.75rem;">Sources :</span>
                 <span class="code-chip">Globe.tsx</span>
@@ -1122,6 +1203,63 @@
             if (Math.abs(diff) > 30) wfMove(diff > 0 ? 1 : -1);
         });
     })();
+    const wfImages = [
+      "./media/screenshots/1.png",
+      "./media/screenshots/2.png",
+      "./media/screenshots/3.png",
+      "./media/screenshots/4.png",
+      "./media/screenshots/5.png",
+      "./media/screenshots/6.png"
+    ];
+
+    let wfLightboxIndex = 0;
+
+    function openLightbox(index) {
+      wfLightboxIndex = index;
+      updateLightboxImage();
+      document.getElementById('wfLightbox').classList.add('open');
+    }
+
+    function updateLightboxImage() {
+      const img = document.getElementById('wfLightboxImg');
+      img.src = wfImages[wfLightboxIndex];
+      img.alt = `Wireframe ${wfLightboxIndex + 1}`;
+    }
+
+    function lightboxMove(direction) {
+      wfLightboxIndex = (wfLightboxIndex + direction + wfImages.length) % wfImages.length;
+      updateLightboxImage();
+      wfMove(direction);
+    }
+
+    function closeLightbox(e) {
+      if (e.target === document.getElementById('wfLightbox')) {
+        document.getElementById('wfLightbox').classList.remove('open');
+      }
+    }
 </script>
+<div id="wfLightbox" onclick="closeLightbox(event)">
+  <button
+    class="lb-close"
+    onclick="event.stopPropagation(); document.getElementById('wfLightbox').classList.remove('open')">
+    ✕
+  </button>
+
+  <button
+    class="wf-arrow wf-arrow-prev"
+    onclick="event.stopPropagation(); lightboxMove(-1)"
+    aria-label="Précédent">
+    &#8249;
+  </button>
+
+  <img id="wfLightboxImg" src="" alt="" onclick="event.stopPropagation()">
+
+  <button
+    class="wf-arrow wf-arrow-next"
+    onclick="event.stopPropagation(); lightboxMove(1)"
+    aria-label="Suivant">
+    &#8250;
+  </button>
+</div>
 </body>
 </html>
