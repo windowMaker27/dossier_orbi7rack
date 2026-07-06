@@ -572,12 +572,12 @@
 <h3 id="1-pourquoi-orbi7rack">1. Pourquoi Orbi7rack ?</h3>
 <p>L'idée est venue d'une frustration face à un problème assez fréquent : faire une commande en ligne et n'avoir qu'une liste d'étapes pour suivre son colis. Parfois une ville ou un pays, mais en général (surtout pour des commandes internationales) les informations sont très limitées (départ d'un pays, arrivé dans un autre, douane). Quand le colis traverse plusieurs pays, plusieurs aéroports, plusieurs transporteurs, cette liste devient vite incompréhensible. On sait que le colis est "en transit" quelque part entre son départ et la destination, mais on ne sait rarement <em>où</em>, et encore moins <em>comment</em> il voyage.</p>
 <p>La meilleure solution actuelle, c'est 17TRACK — un agrégateur de suivi avec plus de 3 000 transporteurs en base de données. Outil efficace, mais qui renvoie toujours la même chose : une timeline verticale d'événements, ligne par ligne.</p>
-<p>À cette même période, je travaillais sur un gros projet Django. Je cherchais une idée de vrai projet personnel plutôt qu'un simple portfolio ou autre chose qui ne me permettrait pas vraiment de faire évoluer mes compétences, donc j'ai réfléchi et l'idée de lier le suivi de colis et les outils de visualisation qu'il m'arrivait d'utiliser (FlightRadar24 notamment, application qui affiche tous les vols en direct). Je me suis donc demandé si c'était possible de retrouver le transport lié a une commande, et de le suivre en direct avec FlightRadar24 ?</p>
+<p>À cette même période, je travaillais sur un gros projet Django. Je cherchais une idée de vrai projet personnel plutôt qu'un simple portfolio ou autre chose qui ne me permettrait pas vraiment de faire évoluer mes compétences, donc j'ai réfléchi et l'idée de lier le suivi de colis et les outils de visualisation qu'il m'arrivait d'utiliser (FlightRadar24 notamment, application qui affiche tous les vols en direct) m'est apparue. Je me suis donc demandé si c'était possible de retrouver le transport lié a une commande, et de le suivre en direct avec FlightRadar24 ?</p>
 <p>L'idée d'Orbi7rack était née : <strong>suivre ses colis visuellement et en direct, partout à travers le monde, et plus par un enchaînement d'événements ligne par ligne</strong>.</p>
 <h3 id="2-le-globe-comme-interface">2. Le globe comme interface</h3>
 <p>L'inspiration visuelle est venue de sites qui ont eu beaucoup de visibilité et de clones pendant les périodes de conflits du début d'année, notamment <strong>conflicty.app</strong>, qui permettait de visualiser en live sur un globe les zones de tension avec affichage d'événements en modal et d'autres informations (bourse, estimations, paris Polymarket). Un rendu futuriste, presque holographique, qui rendait la recherche d'informations et la compréhensiion du contexte mondial facilement accessible et compréhensible.</p>
 <img src="media/screenshots/conflictly.png" alt="Capture d'écran de l'application Conflicty.app" style="max-width: 100%; border-radius: 8px; margin: var(--space-6) 0;" />
-<p>C'est cette vision que j'ai voulu appliquer au suivi de colis : pas une carte 2D statique, mais un globe 3D interactif, avec des arcs lumineux entre les origines et les destinations, des marqueurs pulsants sur les positions en cours, et des imaages de transport (avion, camion, illustration de colis) qui se déplacent en temps réel ou de façon simulée, quand les données en direct sont absentes.</p>
+<p>C'est cette vision que j'ai voulu appliquer au suivi de colis : pas une carte 2D statique, mais un globe 3D interactif, avec des arcs lumineux entre les origines et les destinations, des marqueurs pulsants sur les positions en cours, et des images de transport (avion, camion, illustration de colis) qui se déplacent en temps réel ou de façon simulée, quand les données en direct sont absentes.</p>
 <hr />
 <h2 id="ii-cahier-des-charges">II. Cahier des Charges</h2>
 <h3 id="1-enjeux">1. Enjeux</h3>
@@ -632,7 +632,7 @@
 <h4 id="32-cible-secondaire">3.2. Cible secondaire</h4>
 <ul>
 <li>Les petits revendeurs en ligne (dropshipping, Etsy, etc.) qui suivent plusieurs colis en même temps et veulent une vue consolidée.</li>
-<li>Le grand public en général, avec son interface moderner, intuitive et efficace.</li>
+<li>Le grand public en général, avec son interface moderne, intuitive et efficace.</li>
 </ul>
 <h4 id="33-cur-de-cible">3.3. Cœur de cible</h4>
 <p>Acheteurs réguliers sur des sites internationaux, habitués aux longues livraisons, frustrés par les trackers classiques, à l'aise avec une interface web moderne.</p>
@@ -803,7 +803,7 @@
 </tr>
 </tbody>
 </table>
-<p>Orbi7rack ne cherche pas à remplacer 17TRACK sur la couverture des transporteurs, il s'appuie dessus. La différence s'appuie la couche de visualisation spatiale : transformer une liste d'événements en expérience visuelle immersive. Le positionnement est celui d'un outil complémentaire, pensé pour les utilisateurs qui veulent <em>comprendre</em> le trajet de leur colis, pas juste en lire le statut.</p>
+<p>Orbi7rack ne cherche pas à remplacer 17TRACK sur la couverture des transporteurs, il s'appuie dessus. La différence s'appuie sur la couche de visualisation spatiale : transformer une liste d'événements en expérience visuelle immersive. Le positionnement est celui d'un outil complémentaire, pensé pour les utilisateurs qui veulent <em>comprendre</em> le trajet de leur colis, pas juste en lire le statut.</p>
 <hr />
 <h2 id="iii-conception-uxui">III. Conception UX/UI</h2>
 <h3 id="1-ui-charte-graphique">1. UI — Charte Graphique</h3>
@@ -878,7 +878,7 @@
 </tr>
 </tbody>
 </table>
-<p>Le mode sombre est le mode par défaut car le site à été pensé avec cette identitié visuelle. Le mode clair offre une lisibilité alternative, notamment en extérieur.</p>
+<p>Le mode sombre est le mode par défaut car le site a été pensé avec cette identitié visuelle. Le mode clair offre une lisibilité alternative, notamment en extérieur.</p>
 <h4 id="12-typographie">1.2. Typographie</h4>
 <ul>
 <li><strong>Interface (labels, sidebar, modales)</strong> : Inter — police sans-serif moderne, excellente lisibilité à toute taille.</li>
@@ -904,7 +904,7 @@
 </code></pre>
 <h4 id="22-user-flows-principaux">2.2. User Flows principaux</h4>
 <p><strong>Inscription/Connexion</strong><br />
-L'utilisateur arrive directement sur cette page, il entre ses informations puis clique sur de connexion qui le renvoie directement vers la page principale.</p>
+L'utilisateur arrive directement sur cette page, il entre ses informations puis clique sur le bouton de connexion qui le renvoie directement vers la page principale.</p>
 <p><strong>Ajout d'un colis</strong><br />
 L'utilisateur clique sur le bouton "+" dans la sidebar → saisit son numéro de tracking → valide → le backend appelle 17TRACK, parse les événements, géocode, calcule la position → le colis apparaît sur le globe avec son arc et sa position.</p>
 <p><strong>Consultation d'un colis</strong><br />
@@ -1349,13 +1349,13 @@ SPEED_KMH = {<span class="tok-str">"air"</span>: <span class="tok-num">900</span
 <p>La résolution a demandé de tracer chaque erreur à sa cause racine, de comprendre quelle version de chaque fichier était la bonne, et de les réintroduire manuellement avec une stratégie <code>--strategy-option theirs</code> contrôlée. Ce type d'incident est finalement formateur : il oblige à comprendre ce que fait réellement Git pendant un merge, au-delà des commandes usuelles.</p>
 <h4 id="la-separation-des-responsabilites-sur-le-globe">La séparation des responsabilités sur le globe</h4>
 <p>Un bug récurrent a été l'inversion des origines/destinations sur les arcs : la fonction qui calculait la position courante du transport était la même que celle qui calculait les extrémités de l'arc. Quand la position live changeait, les deux bougaient.</p>
-<p>Le fix a imposé un refactor clair : trois fonctions distinctes et explicitement nommées —</p>
+<p>Le fix a imposé un refactor clair, trois fonctions distinctes et explicitement nommées :</p>
 <ul>
 <li><code>resolveArcOrigin(p)</code> : coordonnées du point de départ de l'arc.</li>
 <li><code>resolveArcDest(p)</code> : coordonnées du point d'arrivée de l'arc.</li>
 <li><code>resolveCurrentPosition(p, flightPositions)</code> : position actuelle du transport (mobile).</li>
 </ul>
-<p>Un exemple typique où un bug de logique se corrige mieux par une meilleure organisation du code que par un patch ponctuel.</p>
+<p>Un exemple typique où un bug de logique se corrige mieux par une meilleure organisation du code que par un patch ponctuel :</p>
 <div class="codeblock">
   <div class="codeblock-header">
     <span class="codeblock-title">frontend/components/Globe.tsx</span>
