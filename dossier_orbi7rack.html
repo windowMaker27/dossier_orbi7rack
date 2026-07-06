@@ -929,10 +929,14 @@ Un bouton dans la sidebar permet de basculer entre la vue "arc" (trajet origine-
 <img src="media/screenshots/maquette.png" alt="Interface mode clair" style="max-width: 100%; border-radius: 8px; margin: var(--space-6) 0;" />
 <img src="media/screenshots/maquetteclear.png" alt="Interface mode clair" style="max-width: 100%; border-radius: 8px; margin: var(--space-6) 0;" />
 <h3 id="3-captures-de-linterface-finale">3. Captures de l'interface finale</h3>
+<h4>Interface desktop</h4>
 <img src="media/screenshots/finalclear.png" alt="Interface mode clair" style="max-width: 100%; border-radius: 8px; margin: var(--space-6) 0;" />
 <img src="media/screenshots/finalclearmodal.png" alt="Interface mode clair" style="max-width: 100%; border-radius: 8px; margin: var(--space-6) 0;" />
 <img src="media/screenshots/addparcel.png" alt="Interface mode clair" style="max-width: 100%; border-radius: 8px; margin: var(--space-6) 0;" />
-<img src="media/screenshots/mobile.png" alt="Interface mode clair" style="max-width: 70%; border-radius: 8px; margin: var(--space-6) 0;" />
+<h4>Interface mobile</h4>
+<img src="media/screenshots/mobile1.png" alt="Interface mobile 1" style="max-width: 30%; border-radius: 8px; margin: var(--space-6) 0;" />
+<img src="media/screenshots/mobile2.png" alt="Interface mobile 2" style="max-width: 30%; border-radius: 8px; margin: var(--space-6) 0;" />
+<img src="media/screenshots/mobile3.png" alt="Interface mobile 3" style="max-width: 30%; border-radius: 8px; margin: var(--space-6) 0;" />
 <hr />
 <h2 id="v-gestion-de-projet">V. Gestion de Projet</h2>
 <h3 id="1-organisation-de-travail">1. Organisation de travail</h3>
@@ -1129,6 +1133,66 @@ Un bouton dans la sidebar permet de basculer entre la vue "arc" (trajet origine-
   );
 }</code></pre>
 </div>
+<div class="codeblock">
+  <div class="codeblock-header">
+    <span class="codeblock-title">frontend/components/AuthGate.tsx</span>
+    <span class="codeblock-tag">TypeScript · Next.js · React</span>
+  </div>
+  <pre><code><span class="tok-com">// Portail d'auth — intercepte tout rendu si JWT absent,</span>
+<span class="tok-com">// affiche login/register et le switch dark/light</span>
+
+<span class="tok-kw">export default function</span> <span class="tok-fn">AuthGate</span>({ <span class="tok-var">children</span> }: { <span class="tok-var">children</span>: React.ReactNode }) {
+  <span class="tok-kw">const</span> { <span class="tok-var">access</span>, <span class="tok-var">login</span>, <span class="tok-var">register</span> } = <span class="tok-fn">useAuth</span>();
+  <span class="tok-kw">const</span> { <span class="tok-var">theme</span>, <span class="tok-var">toggleTheme</span> } = <span class="tok-fn">useTheme</span>();
+  <span class="tok-kw">const</span> [<span class="tok-var">mode</span>, <span class="tok-var">setMode</span>] = <span class="tok-fn">useState</span>&lt;<span class="tok-str">"login"</span> | <span class="tok-str">"register"</span>&gt;(<span class="tok-str">"login"</span>);
+
+  <span class="tok-com">// Si token valide → on rend les enfants directement</span>
+  <span class="tok-kw">if</span> (<span class="tok-var">access</span>) <span class="tok-kw">return</span> &lt;&gt;{<span class="tok-var">children</span>}&lt;/&gt;;
+
+  <span class="tok-kw">const</span> <span class="tok-var">isDark</span> = <span class="tok-var">theme</span> === <span class="tok-str">"dark"</span>;
+  <span class="tok-kw">const</span> <span class="tok-var">assetBase</span> = <span class="tok-var">isDark</span> ? <span class="tok-str">"/assets/dark"</span> : <span class="tok-str">"/assets/light"</span>;
+
+  <span class="tok-kw">const</span> <span class="tok-fn">handleSubmit</span> = <span class="tok-kw">async</span> (<span class="tok-var">e</span>: React.FormEvent) =&gt; {
+    <span class="tok-var">e</span>.<span class="tok-fn">preventDefault</span>();
+    <span class="tok-kw">try</span> {
+      <span class="tok-kw">if</span> (<span class="tok-var">mode</span> === <span class="tok-str">"login"</span>) <span class="tok-kw">await</span> <span class="tok-fn">login</span>(<span class="tok-var">username</span>, <span class="tok-var">password</span>);
+      <span class="tok-kw">else</span> <span class="tok-kw">await</span> <span class="tok-fn">register</span>(<span class="tok-var">username</span>, <span class="tok-var">email</span>, <span class="tok-var">password</span>);
+    } <span class="tok-kw">catch</span> (<span class="tok-var">err</span>) { <span class="tok-fn">setError</span>(<span class="tok-var">err</span> <span class="tok-kw">instanceof</span> Error ? <span class="tok-var">err</span>.<span class="tok-var">message</span> : <span class="tok-str">"Erreur inconnue"</span>); }
+  };
+
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-fn">div</span> <span class="tok-var">style</span>={{ <span class="tok-var">position</span>: <span class="tok-str">"fixed"</span>, <span class="tok-var">inset</span>: <span class="tok-num">0</span>, <span class="tok-var">zIndex</span>: <span class="tok-num">9999</span>, <span class="tok-var">background</span>: <span class="tok-var">bg</span> }}&gt;
+
+      <span class="tok-com">{/* Switch dark/light (coin haut-droit) */}</span>
+      &lt;<span class="tok-fn">button</span> <span class="tok-var">role</span>=<span class="tok-str">"switch"</span> <span class="tok-var">aria-checked</span>={<span class="tok-var">isDark</span>} <span class="tok-var">onClick</span>={<span class="tok-var">toggleTheme</span>}
+        <span class="tok-var">style</span>={{ <span class="tok-var">position</span>: <span class="tok-str">"absolute"</span>, <span class="tok-var">top</span>: <span class="tok-num">16</span>, <span class="tok-var">right</span>: <span class="tok-num">16</span> }}&gt;
+        <span class="tok-com">{/* thumb positionné à gauche (clair) ou droite (sombre) */}</span>
+        &lt;<span class="tok-fn">span</span> <span class="tok-var">style</span>={{ <span class="tok-var">left</span>: <span class="tok-var">isDark</span> ? <span class="tok-num">22</span> : <span class="tok-num">4</span> }}&gt;
+          {<span class="tok-var">isDark</span> ? &lt;<span class="tok-fn">MoonIcon</span> /&gt; : &lt;<span class="tok-fn">SunIcon</span> /&gt;}
+        &lt;/<span class="tok-fn">span</span>&gt;
+      &lt;/<span class="tok-fn">button</span>&gt;
+
+      <span class="tok-com">{/* Logo vidéo thémé */}</span>
+      &lt;<span class="tok-fn">video</span> <span class="tok-var">autoPlay</span> <span class="tok-var">loop</span> <span class="tok-var">muted</span> <span class="tok-var">playsInline</span>&gt;
+        &lt;<span class="tok-fn">source</span> <span class="tok-var">src</span>={`${<span class="tok-var">assetBase</span>}/orbi7rack-video.mp4`} <span class="tok-var">type</span>=<span class="tok-str">"video/mp4"</span> /&gt;
+      &lt;/<span class="tok-fn">video</span>&gt;
+
+      <span class="tok-com">{/* Formulaire login / register */}</span>
+      &lt;<span class="tok-fn">form</span> <span class="tok-var">onSubmit</span>={<span class="tok-var">handleSubmit</span>}&gt;
+        {([<span class="tok-str">"login"</span>, <span class="tok-str">"register"</span>] <span class="tok-kw">as const</span>).<span class="tok-fn">map</span>(<span class="tok-var">m</span> =&gt; (
+          &lt;<span class="tok-fn">button</span> <span class="tok-var">key</span>={<span class="tok-var">m</span>} <span class="tok-var">type</span>=<span class="tok-str">"button"</span> <span class="tok-var">onPointerUp</span>={() =&gt; <span class="tok-fn">setMode</span>(<span class="tok-var">m</span>)}
+            <span class="tok-var">style</span>={{ <span class="tok-var">background</span>: <span class="tok-var">mode</span> === <span class="tok-var">m</span> ? <span class="tok-var">accent</span> : <span class="tok-str">"transparent"</span> }}&gt;
+            {<span class="tok-var">m</span> === <span class="tok-str">"login"</span> ? <span class="tok-str">"Connexion"</span> : <span class="tok-str">"Inscription"</span>}
+          &lt;/<span class="tok-fn">button</span>&gt;
+        ))}
+        &lt;<span class="tok-fn">input</span> <span class="tok-var">placeholder</span>=<span class="tok-str">"Nom d'utilisateur"</span> <span class="tok-var">value</span>={<span class="tok-var">username</span>} /&gt;
+        &lt;<span class="tok-fn">input</span> <span class="tok-var">type</span>=<span class="tok-str">"password"</span> <span class="tok-var">placeholder</span>=<span class="tok-str">"Mot de passe"</span> <span class="tok-var">value</span>={<span class="tok-var">password</span>} /&gt;
+        &lt;<span class="tok-fn">button</span> <span class="tok-var">type</span>=<span class="tok-str">"submit"</span>&gt;{<span class="tok-var">loading</span> ? <span class="tok-str">"..."</span> : <span class="tok-str">"Se connecter"</span>}&lt;/<span class="tok-fn">button</span>&gt;
+      &lt;/<span class="tok-fn">form</span>&gt;
+    &lt;/<span class="tok-fn">div</span>&gt;
+  );
+}</code></pre>
+</div>
 <p><strong>Page principale (globe + sidebar)</strong></p>
 <p>L'interface principale est une vue quasi plein-écran avec le globe 3D à droite et la sidebar à gauche. La sidebar liste les colis avec leurs badges de statut colorés (couleurs sémantiques : cyan pour "in_transit", vert pour "delivered", ambre pour "pending"). Un bouton flottant permet d'ajouter un colis.</p>
 <img src="media/screenshots/final.png" alt="Interface principale" style="max-width: 100%; border-radius: 8px; margin: var(--space-6) 0;" />
@@ -1179,8 +1243,94 @@ Un bouton dans la sidebar permet de basculer entre la vue "arc" (trajet origine-
 - <strong>Rings</strong> : animation pulsante sous le marqueur pour les colis "in_transit" et "out_for_delivery".<br />
 - <strong>Transport</strong> (sprites Three.js) : icône avion ou camion positionnée sur l'arc et orientée selon le cap de vol.</p>
 <img src="media/screenshots/globe.png" alt="Interface mode clair" style="max-width: 100%; border-radius: 8px; margin: var(--space-6) 0;" />
+<div class="codeblock">
+  <div class="codeblock-header">
+    <span class="codeblock-title">frontend/components/Globe.tsx — init globe.gl</span>
+    <span class="codeblock-tag">TypeScript · globe.gl · Three.js · postprocessing</span>
+  </div>
+  <pre><code><span class="tok-com">// Initialisation via globe.gl : fond océan, hexagones pays, bloom, rotation auto</span>
+
+      <span class="tok-kw">const</span> <span class="tok-var">globe</span> = (<span class="tok-var">GlobeGL</span> <span class="tok-kw">as any</span>)(
+        { <span class="tok-var">animateIn</span>: <span class="tok-ok">false</span>, <span class="tok-var">rendererConfig</span>: { <span class="tok-var">antialias</span>: <span class="tok-ok">true</span>, <span class="tok-var">alpha</span>: <span class="tok-ok">true</span> } }
+      )(<span class="tok-var">containerRef</span>.<span class="tok-var">current</span>)
+        .<span class="tok-fn">backgroundColor</span>(<span class="tok-str">"rgba(0,0,0,0)"</span>)
+        .<span class="tok-fn">showGraticules</span>(<span class="tok-ok">true</span>)
+        .<span class="tok-fn">atmosphereColor</span>(<span class="tok-var">isDark</span> ? <span class="tok-str">"#ff6600"</span> : <span class="tok-str">"#4db8ff"</span>)
+        .<span class="tok-fn">atmosphereAltitude</span>(<span class="tok-num">0.12</span>)
+        .<span class="tok-fn">globeMaterial</span>(<span class="tok-kw">new</span> THREE.<span class="tok-fn">MeshPhongMaterial</span>({
+          <span class="tok-var">color</span>:    <span class="tok-kw">new</span> THREE.<span class="tok-fn">Color</span>(<span class="tok-var">ocean</span>.<span class="tok-var">color</span>),
+          <span class="tok-var">emissive</span>: <span class="tok-kw">new</span> THREE.<span class="tok-fn">Color</span>(<span class="tok-var">ocean</span>.<span class="tok-var">emissive</span>),
+          <span class="tok-var">transparent</span>: <span class="tok-ok">true</span>, <span class="tok-var">opacity</span>: <span class="tok-num">0.95</span>,
+        }))
+        <span class="tok-com">// Hexagones pays colorés (biome par latitude en light, palette orange en dark)</span>
+        .<span class="tok-fn">hexPolygonsData</span>(<span class="tok-var">countries</span>.<span class="tok-var">features</span>)
+        .<span class="tok-fn">hexPolygonResolution</span>(<span class="tok-num">3</span>)
+        .<span class="tok-fn">hexPolygonMargin</span>(<span class="tok-num">0.3</span>)
+        .<span class="tok-fn">hexPolygonColor</span>((<span class="tok-var">feat</span>: <span class="tok-kw">any</span>) =&gt; <span class="tok-fn">stableHexColor</span>(<span class="tok-var">feat</span>, <span class="tok-var">isDark</span>))
+        .<span class="tok-fn">hexPolygonAltitude</span>(<span class="tok-num">0.01</span>)
+        .<span class="tok-fn">pointsData</span>([]).<span class="tok-fn">arcsData</span>([]).<span class="tok-fn">ringsData</span>([]);
+
+      <span class="tok-var">globe</span>.<span class="tok-fn">controls</span>().<span class="tok-var">autoRotate</span>      = <span class="tok-ok">true</span>;
+      <span class="tok-var">globe</span>.<span class="tok-fn">controls</span>().<span class="tok-var">autoRotateSpeed</span> = <span class="tok-num">0.6</span>;
+
+      <span class="tok-com">// Bloom (postprocessing) — intensité réduite en mode light</span>
+      <span class="tok-kw">const</span> <span class="tok-var">composer</span> = <span class="tok-kw">new</span> <span class="tok-fn">EffectComposer</span>(<span class="tok-var">renderer</span>);
+      <span class="tok-var">composer</span>.<span class="tok-fn">addPass</span>(<span class="tok-kw">new</span> <span class="tok-fn">RenderPass</span>(<span class="tok-var">scene</span>, <span class="tok-var">camera</span>));
+      <span class="tok-var">composer</span>.<span class="tok-fn">addPass</span>(<span class="tok-kw">new</span> <span class="tok-fn">EffectPass</span>(<span class="tok-var">camera</span>, <span class="tok-kw">new</span> <span class="tok-fn">BloomEffect</span>({
+        <span class="tok-var">intensity</span>:           <span class="tok-var">b</span>.<span class="tok-var">intensity</span>,   <span class="tok-com">// dark: 1.6 / light: 0.5</span>
+        <span class="tok-var">luminanceThreshold</span>:  <span class="tok-var">b</span>.<span class="tok-var">threshold</span>,   <span class="tok-com">// dark: 0.3 / light: 0.5</span>
+        <span class="tok-var">luminanceSmoothing</span>:  <span class="tok-var">b</span>.<span class="tok-var">smoothing</span>,
+        <span class="tok-var">mipmapBlur</span>:          <span class="tok-ok">true</span>,
+      })));
+
+      <span class="tok-com">// Boucle d'animation : mise à jour sprites (avions/colis) + rendu composer</span>
+      <span class="tok-kw">const</span> <span class="tok-fn">animate</span> = () =&gt; {
+        <span class="tok-var">frameRef</span>.<span class="tok-var">current</span> = <span class="tok-fn">requestAnimationFrame</span>(<span class="tok-var">animate</span>);
+        <span class="tok-var">globe</span>.<span class="tok-fn">controls</span>().<span class="tok-fn">update</span>();
+        <span class="tok-com">// ... interpolation LERP des sprites ...</span>
+        <span class="tok-var">composer</span>.<span class="tok-fn">render</span>();
+      };
+      <span class="tok-fn">animate</span>();</code></pre>
+</div>
 <p><strong>Toggle arc / live et changement de thème</strong></p>
-<p>Deux contrôles dans la barre supérieure permettent de basculer entre le mode arc (trajet complet) et le mode live (focus sur la position courante), et de switcher entre dark et light mode. Le changement de thème reconfigure l'ensemble des matériaux Three.js en temps réel.</p>
+<p>Il y a 2 toggle dans le projet : un dans le modal de colis qui permet de basculer entre le mode arc (aligné à l'arc de trajet) et le mode live (focus sur la position réelle) lorsqu'une position en direct en disponible, et un dans la barre supérieure afin d'alterner entre les modes clair et sombre. Le changement de thème reconfigure l'ensemble des matériaux Three.js en temps réel.</p>
+<div class="codeblock">
+  <div class="codeblock-header">
+    <span class="codeblock-title">frontend/hooks/useFlightPositions.ts — PositionMode</span>
+    <span class="codeblock-tag">TypeScript · React</span>
+  </div>
+  <pre><code><span class="tok-com">// Deux modes de rendu de la position courante sur le globe :</span>
+<span class="tok-com">//   "arc"  → icône interpolée sur la courbe de l'arc (SLERP) — toujours disponible</span>
+<span class="tok-com">//   "live" → icône positionnée sur les coordonnées GPS réelles du vol (si source live)</span>
+
+<span class="tok-kw">export type</span> <span class="tok-var">PositionMode</span>    = <span class="tok-str">"arc"</span> | <span class="tok-str">"live"</span>;
+<span class="tok-kw">export type</span> <span class="tok-var">PositionModeMap</span> = Record&lt;<span class="tok-kw">number</span>, <span class="tok-var">PositionMode</span>&gt;;
+
+<span class="tok-com">// Arc par défaut pour tous les colis (override possible par l'utilisateur)</span>
+<span class="tok-kw">const</span> <span class="tok-var">positionMode</span>: <span class="tok-var">PositionModeMap</span> = {};
+<span class="tok-kw">for</span> (<span class="tok-kw">const</span> [<span class="tok-var">idStr</span>] <span class="tok-kw">of</span> Object.<span class="tok-fn">entries</span>(<span class="tok-var">positions</span>)) {
+  <span class="tok-kw">const</span> <span class="tok-var">id</span> = <span class="tok-fn">Number</span>(<span class="tok-var">idStr</span>);
+  <span class="tok-var">positionMode</span>[<span class="tok-var">id</span>] = <span class="tok-var">modeOverrides</span>[<span class="tok-var">id</span>] ?? <span class="tok-str">"arc"</span>;
+}
+
+<span class="tok-com">// Dans Globe.tsx — boucle d'animation : branchement selon le mode actif</span>
+<span class="tok-kw">const</span> <span class="tok-var">mode</span> = <span class="tok-var">positionModeRef</span>.<span class="tok-var">current</span>[<span class="tok-var">arc</span>.<span class="tok-var">id</span>] ?? <span class="tok-str">"arc"</span>;
+
+<span class="tok-kw">if</span> (<span class="tok-var">mode</span> === <span class="tok-str">"live"</span>) {
+  <span class="tok-com">// GPS brut du vol — altitude réelle (normalisée sur ARC_ALTITUDE)</span>
+  <span class="tok-var">targetLat</span> = <span class="tok-var">livePos</span>.<span class="tok-var">lat</span>;
+  <span class="tok-var">targetLng</span> = <span class="tok-var">livePos</span>.<span class="tok-var">lng</span>;
+  <span class="tok-var">targetAlt</span> = Math.<span class="tok-fn">min</span>(<span class="tok-var">ARC_ALTITUDE</span>, ((<span class="tok-var">livePos</span>.<span class="tok-var">altitude</span> ?? <span class="tok-num">10000</span>) / <span class="tok-num">12000</span>) * <span class="tok-var">ARC_ALTITUDE</span>);
+} <span class="tok-kw">else</span> {
+  <span class="tok-com">// Mode arc : SLERP sur origin → destination selon progress (0.05 – 0.95)</span>
+  <span class="tok-kw">const</span> <span class="tok-var">origin</span> = <span class="tok-var">livePos</span>.<span class="tok-var">origin</span> ?? { <span class="tok-var">lat</span>: <span class="tok-var">arc</span>.<span class="tok-var">startLat</span>, <span class="tok-var">lng</span>: <span class="tok-var">arc</span>.<span class="tok-var">startLng</span> };
+  <span class="tok-kw">const</span> <span class="tok-var">dest</span>   = <span class="tok-var">livePos</span>.<span class="tok-var">destination</span> ?? { <span class="tok-var">lat</span>: <span class="tok-var">arc</span>.<span class="tok-var">endLat</span>,   <span class="tok-var">lng</span>: <span class="tok-var">arc</span>.<span class="tok-var">endLng</span>   };
+  [<span class="tok-var">targetLat</span>, <span class="tok-var">targetLng</span>] = <span class="tok-fn">slerpLatLng</span>(
+    <span class="tok-var">origin</span>.<span class="tok-var">lat</span>, <span class="tok-var">origin</span>.<span class="tok-var">lng</span>, <span class="tok-var">dest</span>.<span class="tok-var">lat</span>, <span class="tok-var">dest</span>.<span class="tok-var">lng</span>, <span class="tok-var">progress</span>
+  );
+  <span class="tok-var">targetAlt</span> = Math.<span class="tok-fn">sin</span>(<span class="tok-var">progress</span> * Math.<span class="tok-var">PI</span>) * <span class="tok-var">ARC_ALTITUDE</span>;
+}</code></pre>
+</div>
 <div class="codeblock">
   <div class="codeblock-header">
     <span class="codeblock-title">frontend/context/ThemeContext.tsx</span>
@@ -1225,6 +1375,7 @@ Un bouton dans la sidebar permet de basculer entre la vue "arc" (trajet origine-
 <p><strong>Pipeline de synchronisation</strong></p>
 <p>Quand un utilisateur ajoute un colis, le pipeline se déclenche :</p>
 <ol>
+  <li>Vérifie si le colis n'existe pas déjà en base de données.</li>
 <li>Appel à l'API 17TRACK → récupération des événements bruts.</li>
 <li>Parsing des événements : extraction des timestamps, descriptions, locations.</li>
 <li>Géocodage de chaque event : lookup dans la base de centroïdes IATA, puis fallback sur Nominatim ou la base statique pays.</li>
@@ -1233,6 +1384,43 @@ Un bouton dans la sidebar permet de basculer entre la vue "arc" (trajet origine-
 <li>SimulationEngine : calcul Haversine entre paires d'événements, estimation des départs/arrivées, calcul du <code>progress</code> courant.</li>
 <li>Persistance en base + envoi au frontend via la réponse API.</li>
 </ol>
+<div class="codeblock">
+  <div class="codeblock-header">
+    <span class="codeblock-title">backend/apps/tracking/services/parser.py — sync_parcel_from_17track()</span>
+    <span class="codeblock-tag">Python · Django ORM</span>
+  </div>
+  <pre><code>    <span class="tok-kw">for</span> event <span class="tok-kw">in</span> events:
+        timestamp   = <span class="tok-fn">parse_17track_datetime</span>(event.<span class="tok-fn">get</span>(<span class="tok-str">"a"</span>))
+        description = (event.<span class="tok-fn">get</span>(<span class="tok-str">"z"</span>) <span class="tok-kw">or</span> event.<span class="tok-fn">get</span>(<span class="tok-str">"ps"</span>) <span class="tok-kw">or</span> <span class="tok-str">""</span>).<span class="tok-fn">strip</span>()
+        location    = <span class="tok-fn">extract_event_location</span>(event)
+
+        <span class="tok-kw">if not</span> timestamp <span class="tok-kw">and not</span> description:
+            <span class="tok-kw">continue</span>
+
+        <span class="tok-com"># un event identique (colis + timestamp + description)</span>
+        <span class="tok-com"># n'est jamais inséré deux fois, même si l'API renvoie les mêmes données.</span>
+        event_obj, created = TrackingEvent.objects.<span class="tok-fn">get_or_create</span>(
+            parcel=parcel,
+            timestamp=timestamp <span class="tok-kw">or</span> timezone.<span class="tok-fn">now</span>(),
+            description=description,
+            defaults={
+                <span class="tok-str">"location"</span>:  location,
+                <span class="tok-str">"latitude"</span>:  <span class="tok-kw">None</span>,
+                <span class="tok-str">"longitude"</span>: <span class="tok-kw">None</span>,
+                <span class="tok-str">"status"</span>:    description[:<span class="tok-num">100</span>] <span class="tok-kw">if</span> description <span class="tok-kw">else</span> <span class="tok-str">"Inconnu"</span>,
+            },
+        )
+
+        <span class="tok-kw">if</span> created:
+            <span class="tok-fn">enrich_event_flight</span>(event_obj, carrier_name=parcel.carrier <span class="tok-kw">or</span> <span class="tok-str">""</span>)
+            event_obj.<span class="tok-fn">save</span>(update_fields=[<span class="tok-str">"flight_iata"</span>, <span class="tok-str">"transport_mode"</span>])
+            <span class="tok-kw">if</span> location:
+                created_event_ids.<span class="tok-fn">append</span>(event_obj.id)
+
+        <span class="tok-kw">if</span> event_obj.flight_iata <span class="tok-kw">and not</span> parcel.flight_number:
+            parcel.flight_number = event_obj.flight_iata
+            parcel.<span class="tok-fn">save</span>(update_fields=[<span class="tok-str">"flight_number"</span>])</code></pre>
+</div>
 <div class="codeblock">
   <div class="codeblock-header">
     <span class="codeblock-title">backend/apps/tracking/services/parser.py</span>
@@ -1279,8 +1467,59 @@ Un bouton dans la sidebar permet de basculer entre la vue "arc" (trajet origine-
 <p>Cette priorité a été affinée après plusieurs bugs où des colis livrés aux États-Unis se retrouvaient systématiquement affichés au centroïde géographique du pays (Kansas, 37°N / 95°W) au lieu de leur vraie destination.</p>
 <p><strong>Endpoint <code>flightposition</code></strong></p>
 <p>L'endpoint <code>/api/parcels/:id/flightposition/</code> retourne la position courante d'un transport en temps réel ou simulé :</p>
+<div class="codeblock">
+  <div class="codeblock-header">
+    <span class="codeblock-title">backend/apps/api/views.py — flight_position()</span>
+    <span class="codeblock-tag">Python · Django REST Framework</span>
+  </div>
+  <pre><code><span class="tok-com"># Accessible via GET /api/parcels/{id}/flight_position/</span>
+<span class="tok-com"># Renvoie la position live (OpenSky/FR24), stale (cache DB) ou simulée du colis</span>
 
-<p>Et le retour est le suivant :</p>
+    <span class="tok-dec">@action</span>(<span class="tok-var">detail</span>=<span class="tok-ok">True</span>, <span class="tok-var">methods</span>=[<span class="tok-str">"get"</span>])
+    <span class="tok-kw">def</span> <span class="tok-fn">flight_position</span>(<span class="tok-var">self</span>, <span class="tok-var">request</span>, <span class="tok-var">pk</span>=<span class="tok-ok">None</span>):
+        <span class="tok-var">parcel</span> = <span class="tok-var">self</span>.<span class="tok-fn">get_object</span>()
+
+        <span class="tok-com"># Coordonnées d'arc : centroid pays ou fallback sur geo_events</span>
+        <span class="tok-var">origin_coords</span> = <span class="tok-fn">_country_centroid</span>(<span class="tok-var">parcel</span>.<span class="tok-var">origin_country</span>)
+        <span class="tok-var">dest_coords</span>   = <span class="tok-fn">_country_centroid</span>(<span class="tok-var">parcel</span>.<span class="tok-var">dest_country</span>)
+
+        <span class="tok-kw">if not</span> <span class="tok-var">origin_coords</span> <span class="tok-kw">or not</span> <span class="tok-var">dest_coords</span>:
+            <span class="tok-var">geo_events</span> = <span class="tok-var">parcel</span>.<span class="tok-var">events</span>.<span class="tok-fn">filter</span>(
+                <span class="tok-var">latitude__isnull</span>=<span class="tok-ok">False</span>, <span class="tok-var">longitude__isnull</span>=<span class="tok-ok">False</span>
+            ).<span class="tok-fn">order_by</span>(<span class="tok-str">"timestamp"</span>)
+            <span class="tok-kw">if</span> <span class="tok-var">geo_events</span>.<span class="tok-fn">count</span>() >= <span class="tok-num">2</span>:
+                <span class="tok-var">first</span>, <span class="tok-var">last</span> = <span class="tok-var">geo_events</span>.<span class="tok-fn">first</span>(), <span class="tok-var">geo_events</span>.<span class="tok-fn">last</span>()
+                <span class="tok-var">origin_coords</span> = <span class="tok-var">origin_coords</span> <span class="tok-kw">or</span> (<span class="tok-var">first</span>.<span class="tok-var">latitude</span>, <span class="tok-var">first</span>.<span class="tok-var">longitude</span>)
+                <span class="tok-var">dest_coords</span>   = <span class="tok-var">dest_coords</span>   <span class="tok-kw">or</span> (<span class="tok-var">last</span>.<span class="tok-var">latitude</span>,  <span class="tok-var">last</span>.<span class="tok-var">longitude</span>)
+
+        <span class="tok-com"># --- Live (OpenSky / FR24) ---</span>
+        <span class="tok-kw">if</span> <span class="tok-var">parcel</span>.<span class="tok-var">flight_number</span>:
+            <span class="tok-var">position</span> = <span class="tok-fn">get_flight_live_position</span>(<span class="tok-var">parcel</span>.<span class="tok-var">flight_number</span>)
+            <span class="tok-kw">if</span> <span class="tok-var">position</span>:
+                <span class="tok-var">live_origin</span> = <span class="tok-fn">_airport_coords</span>(<span class="tok-var">position</span>.<span class="tok-fn">get</span>(<span class="tok-str">"origin_iata"</span>))
+                <span class="tok-var">live_dest</span>   = <span class="tok-fn">_airport_coords</span>(<span class="tok-var">position</span>.<span class="tok-fn">get</span>(<span class="tok-str">"destination_iata"</span>))
+                <span class="tok-var">final_origin</span> = <span class="tok-var">live_origin</span> <span class="tok-kw">or</span> <span class="tok-var">origin_coords</span>
+                <span class="tok-var">final_dest</span>   = <span class="tok-var">live_dest</span>   <span class="tok-kw">or</span> <span class="tok-var">dest_coords</span>
+                <span class="tok-kw">if</span> <span class="tok-var">final_origin</span> <span class="tok-kw">and</span> <span class="tok-var">final_dest</span>:
+                    <span class="tok-var">current</span> = (<span class="tok-var">position</span>[<span class="tok-str">"lat"</span>], <span class="tok-var">position</span>[<span class="tok-str">"lng"</span>])
+                    <span class="tok-var">position</span>[<span class="tok-str">"progress"</span>]    = <span class="tok-fn">_compute_progress</span>(<span class="tok-var">final_origin</span>, <span class="tok-var">final_dest</span>, <span class="tok-var">current</span>)
+                    <span class="tok-var">position</span>[<span class="tok-str">"origin"</span>]      = {<span class="tok-str">"lat"</span>: <span class="tok-var">final_origin</span>[<span class="tok-num">0</span>], <span class="tok-str">"lng"</span>: <span class="tok-var">final_origin</span>[<span class="tok-num">1</span>]}
+                    <span class="tok-var">position</span>[<span class="tok-str">"destination"</span>] = {<span class="tok-str">"lat"</span>: <span class="tok-var">final_dest</span>[<span class="tok-num">0</span>],   <span class="tok-str">"lng"</span>: <span class="tok-var">final_dest</span>[<span class="tok-num">1</span>]}
+                <span class="tok-var">parcel</span>.<span class="tok-fn">save</span>(<span class="tok-var">update_fields</span>=[<span class="tok-str">"last_live_lat"</span>, <span class="tok-str">"last_live_lng"</span>, <span class="tok-str">"last_live_at"</span>])
+                <span class="tok-kw">return</span> <span class="tok-fn">Response</span>(<span class="tok-var">position</span>)
+
+            <span class="tok-com"># Fallback stale : dernière position connue en cache DB</span>
+            <span class="tok-kw">if</span> <span class="tok-var">parcel</span>.<span class="tok-var">last_live_lat</span> <span class="tok-kw">is not None</span>:
+                <span class="tok-var">stale</span> = {<span class="tok-str">"lat"</span>: <span class="tok-var">parcel</span>.<span class="tok-var">last_live_lat</span>, <span class="tok-str">"lng"</span>: <span class="tok-var">parcel</span>.<span class="tok-var">last_live_lng</span>,
+                          <span class="tok-str">"source"</span>: <span class="tok-str">"live"</span>, <span class="tok-str">"stale"</span>: <span class="tok-ok">True</span>, <span class="tok-str">"provider"</span>: <span class="tok-str">"db_cache"</span>}
+                <span class="tok-kw">return</span> <span class="tok-fn">Response</span>(<span class="tok-var">stale</span>)
+
+        <span class="tok-com"># --- Fallback : simulation temporelle (interpolation sphérique) ---</span>
+        <span class="tok-var">progress</span> = <span class="tok-fn">_compute_simulated_progress</span>(<span class="tok-var">parcel</span>)
+        <span class="tok-var">position</span> = <span class="tok-fn">get_simulated_position</span>(<span class="tok-var">origin_coords</span>, <span class="tok-var">dest_coords</span>, <span class="tok-var">progress</span>)
+        <span class="tok-kw">return</span> <span class="tok-fn">Response</span>(<span class="tok-var">position</span>)</code></pre>
+</div>
+<p>Et le retour est le suivant (dans le cas live) :</p>
 <pre><code class="language-json">{
   &quot;lat&quot;: 4.71,
   &quot;lng&quot;: 99.90,
@@ -1494,8 +1733,8 @@ SPEED_KMH = {<span class="tok-str">"air"</span>: <span class="tok-num">900</span
 <li><strong>Vraie landing page</strong> : page de présentation publique, avec captures d'écran et informations.</li>
 </ul>
 <h3 id="3-evolution-personnelle">3. Évolution personnelle</h3>
-<p>Orbi7rack a été mon premier projet où j'ai dû gérer simultanément des couches techniques très différentes : une API REST Django avec des logiques métier complexes (géocodage, simulation, intégrations externes), un rendu 3D WebGL avec Three.js/globe.gl, et une interface React/Next.js avec gestion d'état asynchrone. La complexité n'était pas dans chaque couche individuellement, mais dans la façon dont elles s'articulent — et dans la façon dont un bug dans une couche peut se manifester visuellement dans une autre, plusieurs niveaux plus haut.</p>
-<p>J'ai aussi appris que les projets les plus intéressants sont ceux où le "waouh" visuel masque une quantité non-triviale de travail sur la qualité des données. Le globe 3D, c'est 20% du projet. Les 80% restants, c'est s'assurer que les données qui arrivent dessus sont correctes, cohérentes, et fiables même quand les sources externes font n'importe quoi.</p>
+<p>Orbi7rack a été mon premier projet où j'ai dû gérer simultanément des couches techniques très différentes : une API REST Django avec des logiques métier complexes (géocodage, simulation, intégrations externes), un rendu 3D WebGL avec Three.js/globe.gl, et une interface React/Next.js avec gestion d'état asynchrone. La complexité n'était pas dans chaque couche individuellement, mais dans la façon dont elles fonctionnent ensemble et dans la façon dont un bug dans une couche peut se manifester visuellement dans une autre, plusieurs niveaux plus haut.</p>
+<p>J'ai aussi appris que les projets les plus intéressants sont ceux où le visuel masque une quantité conséquente de travail sur la qualité des données. Le globe 3D, c'est 20% du projet. Les 80% restants, c'est s'assurer que les données qui arrivent dessus sont correctes, cohérentes, et fiables même quand les sources externes font n'importe quoi (dans ces 80% il y en a peut-être 20% dédiés à ce que ces données s'affichent comme souhaité sur le globe).</p>
 <hr />
 <h2 id="viii-annexes">VIII. Annexes</h2>
 <h3 id="1-mcd-modele-conceptuel-de-donnees">1. MCD (Modèle Conceptuel de Données)</h3>
