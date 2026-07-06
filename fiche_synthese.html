@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Fiche de synthèse — Orbi7rack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; font-size: 15px; }
+
+    /* ===== FONT CUSTOM ===== */
+    @font-face {
+      font-family: 'SF Intermosaic';
+      src: url('./fonts/sf-intermosaic.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* ===== DESIGN TOKENS — DARK (écran) ===== */
+    :root {
+      --font-body: 'JetBrains Mono', monospace;
+      --font-display: 'SF Intermosaic', Georgia, serif;
+
+      --color-bg:           #0b0f1a;
+      --color-surface:      #111827;
+      --color-surface-2:    #1a2035;
+      --color-border:       rgba(255,68,0,0.15);
+      --color-text:         #e2f0f1;
+      --color-text-muted:   #9a9a9a;
+      --color-text-faint:   #555a66;
+      --color-primary:      #ff4400;
+      --color-primary-light:rgba(255,68,0,0.10);
+      --color-accent:       #ffaa00;
+
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+    }
+
+    /* ===== BASE ===== */
+    body {
+      font-family: var(--font-body);
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+    }
+
+    /* Grille holographique fond (écran uniquement) */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,68,0,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,68,0,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* ===== PAGE WRAPPER (centrage écran) ===== */
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 2rem auto;
+      padding: 16mm 18mm 14mm;
+      background: var(--color-bg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-5);
+    }
+
+    /* ===== EN-TÊTE ===== */
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--color-primary);
+      padding-bottom: var(--space-4);
+    }
+    .header-left {}
+    .eyebrow {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      margin-bottom: 0.3rem;
+    }
+    .title {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 600;
+      line-height: 1.1;
+      color: var(--color-text);
+    }
+    .title span { color: var(--color-primary); }
+    .subtitle {
+      font-size: 0.72rem;
+      color: var(--color-text-muted);
+      margin-top: 0.3rem;
+      max-width: 52ch;
+    }
+    .header-meta {
+      text-align: right;
+      font-size: 0.65rem;
+      color: var(--color-text-faint);
+      line-height: 1.9;
+    }
+    .header-meta strong { color: var(--color-text-muted); }
+
+    /* ===== SECTION TITLE ===== */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      margin-bottom: var(--space-3);
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--color-border);
+    }
+
+    /* ===== DESCRIPTION ===== */
+    .description p {
+      font-size: 0.78rem;
+      line-height: 1.75;
+      color: var(--color-text);
+      max-width: 100%;
+      margin-bottom: var(--space-2);
+    }
+    .description p:last-child { margin-bottom: 0; }
+    .hl { color: var(--color-primary); font-weight: 600; }
+
+    /* ===== STACK GRID ===== */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+    }
+    .stack-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 0.6rem 0.75rem;
+    }
+    .stack-card-label {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 0.3rem;
+      margin-bottom: 0.45rem;
+    }
+    .chip-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+    .chip {
+      display: inline-block;
+      background: var(--color-primary-light);
+      border: 1px solid rgba(255,68,0,0.2);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 0.62rem;
+      color: var(--color-primary);
+    }
+
+    /* ===== PIPELINE ===== */
+    .pipeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+    .pipeline-row {
+      display: grid;
+      grid-template-columns: 16px 1fr auto;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .pipeline-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 8px rgba(255,68,0,0.6);
+    }
+    .pipeline-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .pipeline-step-num {
+      font-size: 0.58rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      opacity: 0.7;
+      flex-shrink: 0;
+    }
+    .pipeline-step-name {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--color-text);
+    }
+    .pipeline-step-desc {
+      font-size: 0.67rem;
+      color: var(--color-text-muted);
+    }
+    .pipeline-chip {
+      font-size: 0.6rem;
+      color: var(--color-accent);
+      background: rgba(255,170,0,0.08);
+      border: 1px solid rgba(255,170,0,0.18);
+      border-radius: 3px;
+      padding: 1px 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* Ligne verticale du pipeline */
+    .pipeline-connector {
+      width: 10px;
+      display: flex;
+      justify-content: center;
+    }
+    .pipeline-connector-line {
+      width: 1px;
+      height: 100%;
+      min-height: 0.4rem;
+      background: linear-gradient(180deg, var(--color-primary), transparent);
+      opacity: 0.3;
+    }
+
+    /* ===== CHIFFRES CLÉS ===== */
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.6rem;
+    }
+    .kpi-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 0.6rem 0.75rem;
+      text-align: center;
+    }
+    .kpi-value {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      line-height: 1;
+      margin-bottom: 0.2rem;
+    }
+    .kpi-label {
+      font-size: 0.6rem;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      margin-top: auto;
+      border-top: 1px solid var(--color-border);
+      padding-top: var(--space-3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.6rem;
+      color: var(--color-text-faint);
+    }
+    .footer a { color: var(--color-primary); text-decoration: none; }
+
+    /* ===== PRINT BTN (écran uniquement) ===== */
+    .print-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--color-primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.55rem 1.1rem;
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      z-index: 999;
+      transition: opacity 0.2s;
+    }
+    .print-btn:hover { opacity: 0.85; }
+    @media print { .print-btn { display: none; } }
+
+    /* ================================================================
+       MODE IMPRESSION — fond blanc, texte noir (identique dossier_orbi7rack.html)
+       ================================================================ */
+    @media print {
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+      :root {
+        --color-bg:            #ffffff;
+        --color-surface:       #f5f5f5;
+        --color-surface-2:     #ebebeb;
+        --color-border:        rgba(0,0,0,0.15);
+        --color-text:          #111111;
+        --color-text-muted:    #444444;
+        --color-text-faint:    #777777;
+        --color-primary:       #cc3300;
+        --color-primary-light: rgba(204,51,0,0.08);
+        --color-accent:        #cc7700;
+      }
+
+      body { background: #ffffff !important; color: #111111 !important; }
+      body::before { display: none !important; }
+
+      .page {
+        width: 100%;
+        min-height: auto;
+        margin: 0;
+        padding: 12mm 15mm;
+        background: #ffffff !important;
+        gap: 9pt;
+      }
+
+      .header { border-bottom-color: #cc3300 !important; }
+      .title span { color: #cc3300 !important; }
+      .eyebrow { color: #cc3300 !important; }
+      .subtitle { color: #444444 !important; }
+      .header-meta strong { color: #333333 !important; }
+      .header-meta { color: #666666 !important; }
+
+      .section-title { color: #cc3300 !important; }
+      .section-title::after { background: rgba(0,0,0,0.15) !important; }
+
+      .description p { color: #111111 !important; }
+      .hl { color: #cc3300 !important; }
+
+      .stack-card { background: #f5f5f5 !important; border-color: rgba(0,0,0,0.12) !important; page-break-inside: avoid; }
+      .stack-card-label { color: #cc3300 !important; border-bottom-color: rgba(0,0,0,0.12) !important; }
+      .chip { background: rgba(204,51,0,0.08) !important; border-color: rgba(204,51,0,0.2) !important; color: #cc3300 !important; }
+
+      .pipeline-card { background: #f5f5f5 !important; border-color: rgba(0,0,0,0.12) !important; page-break-inside: avoid; }
+      .pipeline-step-name { color: #111111 !important; }
+      .pipeline-step-desc { color: #444444 !important; }
+      .pipeline-step-num { color: #cc3300 !important; }
+      .pipeline-chip { background: rgba(204,119,0,0.08) !important; border-color: rgba(204,119,0,0.2) !important; color: #cc7700 !important; }
+      .pipeline-connector-line { background: linear-gradient(180deg, #cc3300, transparent) !important; }
+      .pipeline-dot { box-shadow: none !important; }
+
+      .kpi-card { background: #f5f5f5 !important; border-color: rgba(0,0,0,0.12) !important; }
+      .kpi-value { color: #cc3300 !important; }
+      .kpi-label { color: #555555 !important; }
+
+      .footer { border-top-color: rgba(0,0,0,0.12) !important; color: #888888 !important; }
+      .footer a { color: #cc3300 !important; }
+    }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">🖨️ Imprimer / PDF</button>
+
+<div class="page">
+
+  <!-- ===== EN-TÊTE ===== -->
+  <header class="header">
+    <div class="header-left">
+      <div class="eyebrow">Fiche de synthèse — Projet</div>
+      <h1 class="title"><span>Orbi7rack</span></h1>
+      <p class="subtitle">Suivi de colis en temps réel sur un globe 3D interactif — WebGL, Django & API 17TRACK</p>
+    </div>
+    <div class="header-meta">
+      <div><strong>Auteur :</strong> Thomas Virassamy</div>
+      <div><strong>Certification :</strong> RNCP Développeur Web et Web Mobile</div>
+      <div><strong>Session :</strong> Juillet 2026</div>
+    </div>
+  </header>
+
+  <!-- ===== DESCRIPTION ===== -->
+  <section>
+    <div class="section-title">Description</div>
+    <div class="description">
+      <p>
+        <span class="hl">Orbi7rack</span> est une application full-stack de suivi de colis qui remplace
+        les timelines textuelles classiques par un <span class="hl">globe 3D interactif</span> (globe.gl + Three.js).
+        Chaque colis est représenté par un arc lumineux animé entre son origine et sa destination,
+        avec un marqueur pulsant indiquant sa position courante.
+      </p>
+      <p>
+        Quand un numéro de vol est identifié dans les événements 17TRACK, la position de l'avion cargo
+        est récupérée en direct via <span class="hl">OpenSky Network</span>. En l'absence de données live,
+        un <span class="hl">SimulationEngine</span> calcule la progression interpolée (slerp Haversine multi-segments)
+        à partir des événements géocodés pour garantir une visualisation continue.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== CHIFFRES CLÉS ===== -->
+  <section>
+    <div class="section-title">Chiffres clés</div>
+    <div class="kpis">
+      <div class="kpi-card">
+        <div class="kpi-value">3 200+</div>
+        <div class="kpi-label">Transporteurs (17TRACK)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">4h / 7j</div>
+        <div class="kpi-label">Access / Refresh JWT</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">5</div>
+        <div class="kpi-label">Suites de tests pytest</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">85 %</div>
+        <div class="kpi-label">Couverture visée</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STACK ===== -->
+  <section>
+    <div class="section-title">Stack technique</div>
+    <div class="stack-grid">
+      <div class="stack-card">
+        <div class="stack-card-label">Frontend</div>
+        <div class="chip-list">
+          <span class="chip">Next.js 14</span>
+          <span class="chip">TypeScript</span>
+          <span class="chip">globe.gl</span>
+          <span class="chip">Three.js</span>
+          <span class="chip">postprocessing</span>
+          <span class="chip">Tailwind CSS</span>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-card-label">Backend</div>
+        <div class="chip-list">
+          <span class="chip">Django 5</span>
+          <span class="chip">DRF</span>
+          <span class="chip">SimpleJWT</span>
+          <span class="chip">PostgreSQL</span>
+          <span class="chip">Celery</span>
+          <span class="chip">Redis</span>
+          <span class="chip">geopy</span>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-card-label">Infra &amp; Qualité</div>
+        <div class="chip-list">
+          <span class="chip">Docker Compose</span>
+          <span class="chip">nginx</span>
+          <span class="chip">Gunicorn</span>
+          <span class="chip">GitHub Actions</span>
+          <span class="chip">pytest</span>
+          <span class="chip">drf-spectacular</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PIPELINE ===== -->
+  <section>
+    <div class="section-title">Pipeline de données — du numéro de tracking au globe</div>
+    <div class="pipeline">
+
+      <div class="pipeline-row">
+        <div class="pipeline-dot" style="background:#ff4400;"></div>
+        <div class="pipeline-card">
+          <span class="pipeline-step-num">01</span>
+          <div>
+            <div class="pipeline-step-name">Ajout du colis &amp; polling Celery</div>
+            <div class="pipeline-step-desc">L'utilisateur saisit un numéro de tracking → tâche Celery périodique → appel API 17TRACK → persistance <code style="font-size:0.6rem;">Parcel</code> + <code style="font-size:0.6rem;">TrackingEvent</code></div>
+          </div>
+          <span class="pipeline-chip">tasks.py · models.py</span>
+        </div>
+      </div>
+
+      <div class="pipeline-row">
+        <div style="display:flex;justify-content:center;width:10px;"><div style="width:1px;height:0.4rem;background:linear-gradient(180deg,#ff4400,transparent);opacity:0.3;"></div></div>
+        <div></div><div></div>
+      </div>
+
+      <div class="pipeline-row">
+        <div class="pipeline-dot" style="background:#ff6600;"></div>
+        <div class="pipeline-card">
+          <span class="pipeline-step-num">02</span>
+          <div>
+            <div class="pipeline-step-name">Extraction du vol &amp; identification cargo</div>
+            <div class="pipeline-step-desc">Regex <code style="font-size:0.6rem;">[A-Z]{2,3}\d{3,4}</code> sur les descriptions · mapping carrier→IATA (UPS→5X, FedEx→FX…) · fallback AviationStack</div>
+          </div>
+          <span class="pipeline-chip">flight_extractor.py</span>
+        </div>
+      </div>
+
+      <div class="pipeline-row">
+        <div style="display:flex;justify-content:center;width:10px;"><div style="width:1px;height:0.4rem;background:linear-gradient(180deg,#ff6600,transparent);opacity:0.3;"></div></div>
+        <div></div><div></div>
+      </div>
+
+      <div class="pipeline-row">
+        <div class="pipeline-dot" style="background:#ffaa00;box-shadow:0 0 8px rgba(255,170,0,0.6);"></div>
+        <div class="pipeline-card">
+          <span class="pipeline-step-num">03</span>
+          <div>
+            <div class="pipeline-step-name">Géocodage &amp; chaîne de fallback</div>
+            <div class="pipeline-step-desc">1. Position live OpenSky · 2. geopy sur l'événement · 3. centroïde pays destination · 4. centroïde pays origine</div>
+          </div>
+          <span class="pipeline-chip">geocoding.py</span>
+        </div>
+      </div>
+
+      <div class="pipeline-row">
+        <div style="display:flex;justify-content:center;width:10px;"><div style="width:1px;height:0.4rem;background:linear-gradient(180deg,#ffaa00,transparent);opacity:0.3;"></div></div>
+        <div></div><div></div>
+      </div>
+
+      <div class="pipeline-row">
+        <div class="pipeline-dot" style="background:#ff4400;opacity:0.7;"></div>
+        <div class="pipeline-card">
+          <span class="pipeline-step-num">04</span>
+          <div>
+            <div class="pipeline-step-name">SimulationEngine — mode &amp; progression</div>
+            <div class="pipeline-step-desc">Détection air/road/sea · Haversine multi-segments · <code style="font-size:0.6rem;">progress(t)</code> → slerp · flag <code style="font-size:0.6rem;">simulated: bool</code></div>
+          </div>
+          <span class="pipeline-chip">simulation_engine.py</span>
+        </div>
+      </div>
+
+      <div class="pipeline-row">
+        <div style="display:flex;justify-content:center;width:10px;"><div style="width:1px;height:0.4rem;background:linear-gradient(180deg,#ff4400,transparent);opacity:0.3;"></div></div>
+        <div></div><div></div>
+      </div>
+
+      <div class="pipeline-row">
+        <div class="pipeline-dot" style="background:#e2f0f1;box-shadow:0 0 8px rgba(226,240,241,0.4);"></div>
+        <div class="pipeline-card">
+          <span class="pipeline-step-num">05</span>
+          <div>
+            <div class="pipeline-step-name">Rendu Globe 3D</div>
+            <div class="pipeline-step-desc">Hexagones H3 · atmosphère bloom (UnrealBloomPass) · arcs cyan animés · marqueurs pulsants · sprites avion/camion orientables · zoom caméra 1,2 s</div>
+          </div>
+          <span class="pipeline-chip">Globe.tsx · useFlightPosition.ts</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <span>Thomas Virassamy — RNCP Développeur Web et Web Mobile · Session Juillet 2026</span>
+    <span><a href="https://github.com/windowMaker27/dossier_orbi7rack">github.com/windowMaker27/dossier_orbi7rack</a></span>
+  </footer>
+
+</div>
+</body>
+</html>
