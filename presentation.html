@@ -15,7 +15,7 @@
     <style>
         @font-face {
             font-family: 'SF Intermosaic';
-            src: url('./fonts/sf-intermosaic.ttf') format('ttf');
+            src: url('./fonts/sf-intermosaic.ttf') format('truetype');
             font-weight: 400 700;
             font-display: swap;
         }
@@ -209,7 +209,7 @@
             font-style: italic;
             letter-spacing: 0.05em;
         }
-
+        
         /* ─── Wireframe Carousel (slide 4) ─── */
         .wf-carousel {
             position: relative;
@@ -329,6 +329,315 @@
 
         #wfLightbox .wf-arrow-prev { left: 24px; }
         #wfLightbox .wf-arrow-next { right: 24px; }
+        .code-carousel{
+    position:relative;
+    overflow:hidden;
+    width:100%;
+    border:1px solid rgba(122,58,32,0.18);
+    border-radius:14px;
+}
+
+.code-track{
+    display:flex;
+    height:100%;
+    transition:transform .35s ease;
+}
+
+.code-slide{
+    min-width:100%;
+    height:100%;
+    padding:0.9rem 1rem 1rem;
+    display:flex;
+    align-items:stretch;
+}
+
+.code-slide pre{
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:auto;
+    border-radius:10px;
+    padding:1rem;
+    font-size:0.78rem;
+    line-height:1.45;
+    font-family:"SFMono-Regular","Consolas","Liberation Mono",monospace;
+    white-space:pre-wrap;
+}
+
+.code-arrow{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:30px;
+    height:30px;
+    border:none;
+    border-radius:999px;
+    background:#180700;
+    color:#ff4400;
+    box-shadow:0 4px 14px rgba(0,0,0,0.10);
+    cursor:pointer;
+    z-index:2;
+}
+
+.code-arrow-prev{ left:8px; }
+.code-arrow-next{ right:8px; }
+
+.code-dots{
+    position:absolute;
+    left:50%;
+    bottom:8px;
+    transform:translateX(-50%);
+    display:flex;
+    gap:0.35rem;
+    z-index:2;
+}
+
+.code-dots button{
+    width:7px;
+    height:7px;
+    border:none;
+    border-radius:999px;
+    background:rgba(122,58,32,0.28);
+    cursor:pointer;
+    padding:0;
+}
+
+.code-dots button.active{
+    background:#7a3a20;
+}
+             /* ===== CODEBLOCK ===== */
+  .codeblock {
+    margin: var(--space-6) 0 var(--space-8);
+    border: 1px solid rgba(255,68,0,0.2);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: #080c14;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,68,0,0.05);
+  }
+  .codeblock-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 10px 16px;
+    background: #0e1320;
+    border-bottom: 1px solid rgba(255,68,0,0.15);
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+  }
+  .codeblock-title {
+    font-weight: 600;
+    color: #c9d1d9;
+    letter-spacing: 0.01em;
+  }
+  .codeblock-tag {
+    font-size: 0.68rem;
+    padding: 3px 9px;
+    border: 1px solid rgba(255,68,0,0.28);
+    border-radius: 999px;
+    color: var(--color-primary);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .codeblock pre {
+    margin: 0;
+    padding: 18px 20px;
+    overflow-x: auto;
+    white-space: pre;
+    tab-size: 2;
+    line-height: 1.6;
+    font-size: 0.78rem;
+    font-family: var(--font-body);
+    color: #c9d1d9;
+  }
+  .codeblock code { font-family: inherit; }
+  .tok-com { color: #6e7681; font-style: italic; }
+  .tok-kw  { color: #ff7b72; }
+  .tok-fn  { color: #d2a8ff; }
+  .tok-str { color: #a5d6ff; }
+  .tok-num { color: #79c0ff; }
+  .tok-var { color: #ffa657; }
+  .tok-ok  { color: #3fb950; }
+  .tok-dec { color: #e8c06a; }
+  .codeblock {
+  cursor: zoom-in;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.codeblock.is-expanded {
+  position: fixed;
+  inset: 4vh 4vw;
+  z-index: 10050;
+  margin: 0;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  border-radius: 16px;
+  border-color: rgba(255,68,0,0.35);
+  box-shadow:
+    0 24px 80px rgba(0,0,0,0.72),
+    0 0 0 1px rgba(255,68,0,0.12);
+  cursor: zoom-out;
+}
+
+.codeblock.is-expanded pre {
+  height: calc(92vh - 56px);
+  max-height: calc(92vh - 56px);
+  overflow: auto;
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.codeblock-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10040;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.codeblock-backdrop.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.codeblock-lightbox {
+  position: fixed;
+  inset: 4vh 4vw;
+  z-index: 10060;
+  display: none;
+  border: 1px solid rgba(255,68,0,0.28);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #080c14;
+  box-shadow:
+    0 24px 80px rgba(0,0,0,0.72),
+    0 0 0 1px rgba(255,68,0,0.12);
+}
+
+.codeblock-lightbox.open {
+  display: flex;
+  flex-direction: column;
+}
+
+.codeblock-lightbox .codeblock-header {
+  flex-shrink: 0;
+}
+
+.codeblock-lightbox pre {
+  margin: 0;
+  padding: 18px 20px;
+  overflow: auto;
+  white-space: pre;
+  tab-size: 2;
+  font-size: 0.92rem;
+  font-family: var(--font-body);
+  color: #c9d1d9;
+  height: 100%;
+}
+
+.codeblock-lightbox-body {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+}
+
+.codeblock-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255,68,0,0.10);
+  color: #ff4400;
+  cursor: pointer;
+  z-index: 2;
+  font-size: 1.1rem;
+}
+#wfLightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,0.88);
+  backdrop-filter: blur(8px);
+  padding: 72px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  cursor: default;
+}
+
+#wfLightbox.open {
+  display: block;
+}
+
+#wfLightbox img {
+  display: block;
+  margin: 0 auto;
+  max-width: min(1200px, 100%);
+  max-height: none;
+  height: auto;
+}
+
+.codeblock.is-expanded {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.codeblock.is-expanded pre {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+    </style>
+
+    <style>
+        #wfLightbox {
+            display: none !important;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0,0,0,0.88);
+            backdrop-filter: blur(8px);
+            padding: 72px;
+            overflow: auto;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+            cursor: default;
+        }
+        #wfLightbox.open {
+            display: block !important;
+        }
+        #wfLightbox img {
+            display: block;
+            margin: 0 auto;
+            max-width: min(1200px, 100%);
+            max-height: none;
+            height: auto;
+            cursor: default;
+        }
+        .nav-controls .nav-btn {
+            width: 38px;
+            height: 38px;
+            border: none;
+            background: rgba(255,68,0,0.06);
+            color: #ff4400;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -692,9 +1001,8 @@
                         </div>
                     </div>
                 </div>
-                <img src="media/screenshots/pipeline.png" style="max-width: 100%; border-radius: 8px; margin: var(--space-6) 0;" />
             </div>
-            <div class="reveal" style="margin-top:1rem;"><span class="code-chip">geocoding.py</span>+<span class="code-chip">Globe.tsx</span></div>
+            <div class="reveal" style="margin-top:1rem;"><span class="code-chip">geocoding.py · Globe.tsx</span></div>
         </div>
     </div>
 
@@ -734,39 +1042,166 @@
                     <span class="code-chip">simulation_engine.py</span>
                 </div>
                 </div>
-                <div class="wf-carousel" id="wfCarousel" style="height:140px;">
-                    <div class="wf-track" id="wfTrack">
-                        <!-- Slide 1 -->
-                        <div class="wf-slide">
-                            <img src="media/screenshots/simengine.png" alt="Wireframe 1" onclick="openLightbox(9)" style="cursor:zoom-in;"
-                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                            <div class="wireframe-placeholder" style="display:none;height:100%;">
-                                <span style="font-size:1.2rem;opacity:0.4;">🖼️</span>
-                                <span>wireframe-1.png</span>
-                            </div>
-                        </div>
-                        <!-- Slide 2 -->
-                        <div class="wf-slide">
-                            <img src="media/screenshots/endpointflight.png" alt="Wireframe 1" onclick="openLightbox(9)" style="cursor:zoom-in;"
-                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                            <div class="wireframe-placeholder" style="display:none;height:100%;">
-                                <span style="font-size:1.2rem;opacity:0.4;">🖼️</span>
-                                <span>wireframe-1.png</span>
-                            </div>
-                        </div>
-                        <!-- Slide 3 -->
-                        <div class="wf-slide">
-                            <img src="media/screenshots/parser.png" alt="Wireframe 1" onclick="openLightbox(9)" style="cursor:zoom-in;"
-                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                            <div class="wireframe-placeholder" style="display:none;height:100%;">
-                                <span style="font-size:1.2rem;opacity:0.4;">🖼️</span>
-                                <span>wireframe-1.png</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        </div>
+                <div class="reveal" style="display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:center;">
+    <div style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#7a3a20;writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;">
+        Code
     </div>
+
+    <div class="code-carousel"style="height:220px;">
+        <div class="code-track">
+            <div class="code-slide">
+<div class="codeblock">
+  <div class="codeblock-header">
+    <span class="codeblock-title">frontend/hooks/useFlightPositions.ts — fetchAll + extraction</span>
+    <span class="codeblock-tag">TypeScript · React</span>
+  </div>
+  <pre><code><span class="tok-com">// Types des positions de vol récupérées via l'API backend</span>
+<span class="tok-kw">export interface</span> <span class="tok-var">FlightPosition</span> {
+  <span class="tok-var">lat</span>: <span class="tok-kw">number</span>;
+  <span class="tok-var">lng</span>: <span class="tok-kw">number</span>;
+  <span class="tok-var">altitude</span>: <span class="tok-kw">number</span> | <span class="tok-kw">null</span>;
+  <span class="tok-var">speed</span>: <span class="tok-kw">number</span> | <span class="tok-kw">null</span>;
+  <span class="tok-var">heading</span>: <span class="tok-kw">number</span> | <span class="tok-kw">null</span>;
+  <span class="tok-var">source</span>: <span class="tok-str">"live"</span> | <span class="tok-str">"simulated"</span>;
+  <span class="tok-var">provider</span>?: <span class="tok-kw">string</span>;
+  <span class="tok-var">progress</span>?: <span class="tok-kw">number</span>;
+  <span class="tok-var">origin</span>?: { <span class="tok-var">lat</span>: <span class="tok-kw">number</span>; <span class="tok-var">lng</span>: <span class="tok-kw">number</span> };
+  <span class="tok-var">destination</span>?: { <span class="tok-var">lat</span>: <span class="tok-kw">number</span>; <span class="tok-var">lng</span>: <span class="tok-kw">number</span> };
+  <span class="tok-var">stale</span>?: <span class="tok-kw">boolean</span>;
+  <span class="tok-var">stale_since</span>?: <span class="tok-kw">string</span> | <span class="tok-kw">null</span>;
+}
+
+<span class="tok-kw">export type</span> <span class="tok-var">FlightPositionMap</span> = Record&lt;<span class="tok-kw">number</span>, <span class="tok-var">FlightPosition</span>&gt;;
+
+<span class="tok-com">// Helper : si le backend ne donne pas une progression fiable, on la recalcule</span>
+<span class="tok-kw">function</span> <span class="tok-fn">haversineDeg</span>(<span class="tok-var">lat1</span>: <span class="tok-kw">number</span>, <span class="tok-var">lng1</span>: <span class="tok-kw">number</span>, <span class="tok-var">lat2</span>: <span class="tok-kw">number</span>, <span class="tok-var">lng2</span>: <span class="tok-kw">number</span>): <span class="tok-kw">number</span> {
+  <span class="tok-kw">const</span> <span class="tok-var">R</span> = <span class="tok-num">6371</span>;
+  <span class="tok-kw">const</span> <span class="tok-var">dLat</span> = (<span class="tok-var">lat2</span> - <span class="tok-var">lat1</span>) * Math.<span class="tok-var">PI</span> / <span class="tok-num">180</span>;
+  <span class="tok-kw">const</span> <span class="tok-var">dLng</span> = (<span class="tok-var">lng2</span> - <span class="tok-var">lng1</span>) * Math.<span class="tok-var">PI</span> / <span class="tok-num">180</span>;
+  <span class="tok-kw">const</span> <span class="tok-var">a</span> = Math.<span class="tok-fn">sin</span>(<span class="tok-var">dLat</span> / <span class="tok-num">2</span>) ** <span class="tok-num">2</span> +
+    Math.<span class="tok-fn">cos</span>(<span class="tok-var">lat1</span> * Math.<span class="tok-var">PI</span> / <span class="tok-num">180</span>) *
+    Math.<span class="tok-fn">cos</span>(<span class="tok-var">lat2</span> * Math.<span class="tok-var">PI</span> / <span class="tok-num">180</span>) *
+    Math.<span class="tok-fn">sin</span>(<span class="tok-var">dLng</span> / <span class="tok-num">2</span>) ** <span class="tok-num">2</span>;
+  <span class="tok-kw">return</span> <span class="tok-var">R</span> * <span class="tok-num">2</span> * Math.<span class="tok-fn">atan2</span>(Math.<span class="tok-fn">sqrt</span>(<span class="tok-var">a</span>), Math.<span class="tok-fn">sqrt</span>(<span class="tok-num">1</span> - <span class="tok-var">a</span>));
+}
+
+<span class="tok-com">// Polling des vols en transit / out_for_delivery via /flight_position/</span>
+<span class="tok-kw">const</span> <span class="tok-var">fetchAll</span> = <span class="tok-kw">async</span> () =&gt; {
+  <span class="tok-kw">if</span> (!<span class="tok-var">access</span> || <span class="tok-var">inTransitParcels</span>.<span class="tok-var">length</span> === <span class="tok-num">0</span>) <span class="tok-kw">return</span>;
+
+  <span class="tok-kw">const</span> <span class="tok-var">results</span> = <span class="tok-kw">await</span> Promise.<span class="tok-fn">allSettled</span>(
+    <span class="tok-var">inTransitParcels</span>.<span class="tok-fn">map</span>(<span class="tok-var">p</span> =&gt;
+      <span class="tok-fn">fetch</span>(<span class="tok-str">`${API}/api/parcels/${p.id}/flight_position/`</span>, {
+        <span class="tok-var">headers</span>: { <span class="tok-var">Authorization</span>: <span class="tok-str">`Bearer ${access}`</span> },
+      })
+        .<span class="tok-fn">then</span>(<span class="tok-var">res</span> =&gt; <span class="tok-var">res</span>.<span class="tok-var">ok</span> ? <span class="tok-var">res</span>.<span class="tok-fn">json</span>() : <span class="tok-kw">null</span>)
+        .<span class="tok-fn">then</span>(<span class="tok-var">data</span> =&gt; <span class="tok-var">data</span> ? ({ <span class="tok-var">id</span>: <span class="tok-var">p</span>.<span class="tok-var">id</span>, <span class="tok-var">data</span>, <span class="tok-var">parcel</span>: <span class="tok-var">p</span> }) : <span class="tok-kw">null</span>)
+        .<span class="tok-fn">catch</span>(() =&gt; <span class="tok-kw">null</span>)
+    )
+  );
+
+  <span class="tok-var">setPositions</span>(<span class="tok-var">prev</span> =&gt; {
+    <span class="tok-kw">const</span> <span class="tok-var">next</span>: <span class="tok-var">FlightPositionMap</span> = { ...<span class="tok-var">prev</span> };
+
+    <span class="tok-kw">for</span> (<span class="tok-kw">const</span> <span class="tok-var">r</span> <span class="tok-kw">of</span> <span class="tok-var">results</span>) {
+      <span class="tok-kw">if</span> (<span class="tok-var">r</span>.<span class="tok-var">status</span> !== <span class="tok-str">"fulfilled"</span> || !<span class="tok-var">r</span>.<span class="tok-var">value</span>) <span class="tok-kw">continue</span>;
+      <span class="tok-kw">const</span> { <span class="tok-var">id</span>, <span class="tok-var">data</span> } = <span class="tok-var">r</span>.<span class="tok-var">value</span>;
+
+      <span class="tok-kw">if</span> (<span class="tok-var">data</span>.<span class="tok-var">source</span> === <span class="tok-str">"live"</span> &amp;&amp; <span class="tok-var">data</span>.<span class="tok-var">lat</span> != <span class="tok-kw">null</span> &amp;&amp; <span class="tok-var">data</span>.<span class="tok-var">lng</span> != <span class="tok-kw">null</span>) {
+        <span class="tok-kw">if</span> (<span class="tok-var">data</span>.<span class="tok-var">stale</span>) {
+          <span class="tok-kw">const</span> <span class="tok-var">entry</span>: <span class="tok-var">FlightPosition</span> = {
+            ...<span class="tok-var">data</span>,
+            <span class="tok-var">stale</span>: <span class="tok-kw">true</span>,
+            <span class="tok-var">stale_since</span>: <span class="tok-var">data</span>.<span class="tok-var">stale_since</span> ?? <span class="tok-var">lastLiveRef</span>.<span class="tok-var">current</span>[<span class="tok-var">id</span>]?.<span class="tok-var">stale_since</span> ?? <span class="tok-kw">new</span> Date().<span class="tok-fn">toISOString</span>(),
+          };
+          <span class="tok-var">lastLiveRef</span>.<span class="tok-var">current</span>[<span class="tok-var">id</span>] = <span class="tok-var">entry</span>;
+          <span class="tok-var">next</span>[<span class="tok-var">id</span>] = <span class="tok-var">entry</span>;
+        } <span class="tok-kw">else</span> {
+          <span class="tok-kw">const</span> <span class="tok-var">entry</span>: <span class="tok-var">FlightPosition</span> = { ...<span class="tok-var">data</span>, <span class="tok-var">stale</span>: <span class="tok-kw">false</span>, <span class="tok-var">stale_since</span>: <span class="tok-kw">null</span> };
+          <span class="tok-var">lastLiveRef</span>.<span class="tok-var">current</span>[<span class="tok-var">id</span>] = <span class="tok-var">entry</span>;
+          <span class="tok-var">next</span>[<span class="tok-var">id</span>] = <span class="tok-var">entry</span>;
+        }
+      } <span class="tok-kw">else if</span> (<span class="tok-var">lastLiveRef</span>.<span class="tok-var">current</span>[<span class="tok-var">id</span>]) {
+        <span class="tok-kw">const</span> <span class="tok-var">cached</span> = <span class="tok-var">lastLiveRef</span>.<span class="tok-var">current</span>[<span class="tok-var">id</span>];
+        <span class="tok-var">next</span>[<span class="tok-var">id</span>] = {
+          ...<span class="tok-var">cached</span>,
+          <span class="tok-var">stale</span>: <span class="tok-kw">true</span>,
+          <span class="tok-var">stale_since</span>: <span class="tok-var">cached</span>.<span class="tok-var">stale_since</span> ?? <span class="tok-kw">new</span> Date().<span class="tok-fn">toISOString</span>(),
+        };
+      } <span class="tok-kw">else</span> {
+        <span class="tok-kw">const</span> <span class="tok-var">origin</span> = <span class="tok-var">data</span>.<span class="tok-var">origin</span>;
+        <span class="tok-kw">const</span> <span class="tok-var">dest</span> = <span class="tok-var">data</span>.<span class="tok-var">destination</span>;
+        <span class="tok-kw">let</span> <span class="tok-var">progress</span> = <span class="tok-var">data</span>.<span class="tok-var">progress</span>;
+
+        <span class="tok-kw">if</span> (<span class="tok-var">origin</span> &amp;&amp; <span class="tok-var">dest</span> &amp;&amp; (<span class="tok-var">progress</span> == <span class="tok-kw">null</span> || <span class="tok-var">progress</span> &gt;= <span class="tok-num">0.98</span>)) {
+          <span class="tok-kw">const</span> <span class="tok-var">totalDist</span> = <span class="tok-fn">haversineDeg</span>(<span class="tok-var">origin</span>.<span class="tok-var">lat</span>, <span class="tok-var">origin</span>.<span class="tok-var">lng</span>, <span class="tok-var">dest</span>.<span class="tok-var">lat</span>, <span class="tok-var">dest</span>.<span class="tok-var">lng</span>);
+          <span class="tok-kw">const</span> <span class="tok-var">doneDist</span> = <span class="tok-fn">haversineDeg</span>(<span class="tok-var">origin</span>.<span class="tok-var">lat</span>, <span class="tok-var">origin</span>.<span class="tok-var">lng</span>, <span class="tok-var">data</span>.<span class="tok-var">lat</span>, <span class="tok-var">data</span>.<span class="tok-var">lng</span>);
+          <span class="tok-var">progress</span> = <span class="tok-var">totalDist</span> &gt; <span class="tok-num">0</span> ? Math.<span class="tok-fn">min</span>(<span class="tok-num">0.98</span>, <span class="tok-var">doneDist</span> / <span class="tok-var">totalDist</span>) : <span class="tok-num">0.5</span>;
+        }
+
+        <span class="tok-var">next</span>[<span class="tok-var">id</span>] = { ...<span class="tok-var">data</span>, <span class="tok-var">progress</span>: <span class="tok-var">progress</span> ?? <span class="tok-num">0.5</span> };
+      }
+    }
+
+    <span class="tok-kw">return</span> <span class="tok-var">next</span>;
+  });
+};</code></pre>
+</div></code></pre>
+            </div>
+
+                <div class="code-slide">
+                    <div class="codeblock">
+                  <div class="codeblock-header">
+                    <span class="codeblock-title">backend/apps/tracking/services/simulation.py — SimulationEngine</span>
+                    <span class="codeblock-tag">Python · Haversine · SLERP</span>
+                  </div>
+                  <pre><code><span class="tok-kw">import</span> math
+                <span class="tok-kw">from</span> datetime <span class="tok-kw">import</span> timezone <span class="tok-kw">as</span> tz
+                
+                SPEED_KMH = {<span class="tok-str">"air"</span>: <span class="tok-num">900</span>, <span class="tok-str">"road"</span>: <span class="tok-num">80</span>, <span class="tok-str">"sea"</span>: <span class="tok-num">30</span>, <span class="tok-str">"unknown"</span>: <span class="tok-num">500</span>}
+                
+                <span class="tok-kw">def</span> <span class="tok-fn">haversine_km</span>(lat1, lon1, lat2, lon2):
+                    R = <span class="tok-num">6371</span>
+                    φ1, φ2 = math.<span class="tok-fn">radians</span>(lat1), math.<span class="tok-fn">radians</span>(lat2)
+                    dφ = math.<span class="tok-fn">radians</span>(lat2 - lat1)
+                    dλ = math.<span class="tok-fn">radians</span>(lon2 - lon1)
+                    a = math.<span class="tok-fn">sin</span>(dφ/<span class="tok-num">2</span>)**<span class="tok-num">2</span> + math.<span class="tok-fn">cos</span>(φ1)*math.<span class="tok-fn">cos</span>(φ2)*math.<span class="tok-fn">sin</span>(dλ/<span class="tok-num">2</span>)**<span class="tok-num">2</span>
+                    <span class="tok-kw">return</span> R * <span class="tok-num">2</span> * math.<span class="tok-fn">atan2</span>(math.<span class="tok-fn">sqrt</span>(a), math.<span class="tok-fn">sqrt</span>(<span class="tok-num">1</span> - a))
+                
+                <span class="tok-kw">class</span> <span class="tok-fn">SimulationEngine</span>:
+                    <span class="tok-kw">def</span> <span class="tok-fn">__init__</span>(self, parcel):
+                        self.parcel = parcel
+                        self.events = <span class="tok-fn">list</span>(
+                            parcel.events.<span class="tok-fn">filter</span>(latitude__isnull=<span class="tok-kw">False</span>).<span class="tok-fn">order_by</span>(<span class="tok-str">"timestamp"</span>)
+                        )
+                
+                    <span class="tok-kw">def</span> <span class="tok-fn">compute_current_position</span>(self):
+                        <span class="tok-kw">if</span> <span class="tok-fn">len</span>(self.events) &lt; <span class="tok-num">2</span>:
+                            <span class="tok-kw">return</span> <span class="tok-kw">None</span>
+                        now = datetime.<span class="tok-fn">now</span>(tz.utc)
+                        <span class="tok-kw">for</span> i <span class="tok-kw">in</span> <span class="tok-fn">range</span>(<span class="tok-fn">len</span>(self.events) - <span class="tok-num">1</span>):
+                            e1, e2 = self.events[i], self.events[i + <span class="tok-num">1</span>]
+                            <span class="tok-kw">if not</span> (e1.timestamp &lt;= now &lt;= e2.timestamp):
+                                <span class="tok-kw">continue</span>
+                            dist = <span class="tok-fn">haversine_km</span>(e1.latitude, e1.longitude, e2.latitude, e2.longitude)
+                            speed = SPEED_KMH.<span class="tok-fn">get</span>(e1.transport_mode, <span class="tok-num">500</span>)
+                            dur_h = dist / speed
+                            elapsed = (now - e1.timestamp).<span class="tok-fn">total_seconds</span>() / <span class="tok-num">3600</span>
+                            t = <span class="tok-fn">min</span>(elapsed / dur_h, <span class="tok-num">1.0</span>) <span class="tok-kw">if</span> dur_h &gt; <span class="tok-num">0</span> <span class="tok-kw">else</span> <span class="tok-num">0.5</span>
+                            lat, lng = <span class="tok-fn">slerp_position</span>(e1.latitude, e1.longitude, e2.latitude, e2.longitude, t)
+                            <span class="tok-kw">return</span> {<span class="tok-str">"lat"</span>: lat, <span class="tok-str">"lng"</span>: lng, <span class="tok-str">"progress"</span>: <span class="tok-fn">round</span>(t, <span class="tok-num">4</span>)}
+                        <span class="tok-kw">return</span> <span class="tok-kw">None</span></code></pre>
+                </div>
+            </div>
+            
+        </div>
+        <button class="code-arrow code-arrow-prev" type="button" aria-label="Précédent">&#8249;</button>
+        <button class="code-arrow code-arrow-next" type="button" aria-label="Suivant">&#8250;</button>
+        <div class="code-dots"></div>
+    </div>
+    </div>
+    </div>            
+</div>
 
     <!-- ═══════════════════════════════════════════
          SLIDE 9 — GLOBE 3D & ANIMATIONS
@@ -800,18 +1235,242 @@
                     <div style="color:#bb8870;font-size:0.75rem;">Avion / camion orientable<br>Mode arc vs live<br>slerp progress(t)</div>
                 </div>
             </div>
-            <div class="wf-carousel" id="wfCarousel" style="height:140px;">
-                    <div class="wf-track" id="wfTrack">
-                        <div class="wf-slide">
-                            <img src="media/screenshots/globetsx.png" alt="Wireframe 1" onclick="openLightbox(9)" style="cursor:zoom-in;"
-                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                            <div class="wireframe-placeholder" style="display:none;height:100%;">
-                                <span style="font-size:1.2rem;opacity:0.4;">🖼️</span>
-                                <span>wireframe-1.png</span>
-                            </div>
-                        </div>
-                    </div>
+            <div class="reveal" style="display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:center;">
+    <div style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#7a3a20;writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;">
+        Code
+    </div>
+    </div>
+    <div class="code-carousel"style="height:220px;">
+        <div class="code-track">
+            <div class="code-slide">
+                <div class="codeblock">
+  <div class="codeblock-header">
+    <span class="codeblock-title">frontend/components/Globe.tsx — init globe.gl</span>
+    <span class="codeblock-tag">TypeScript · globe.gl · Three.js · postprocessing</span>
+  </div>
+  <pre><code><span class="tok-com">// Initialisation via globe.gl : fond océan, hexagones pays, bloom, rotation auto</span>
+
+      <span class="tok-kw">const</span> <span class="tok-var">globe</span> = (<span class="tok-var">GlobeGL</span> <span class="tok-kw">as any</span>)(
+        { <span class="tok-var">animateIn</span>: <span class="tok-ok">false</span>, <span class="tok-var">rendererConfig</span>: { <span class="tok-var">antialias</span>: <span class="tok-ok">true</span>, <span class="tok-var">alpha</span>: <span class="tok-ok">true</span> } }
+      )(<span class="tok-var">containerRef</span>.<span class="tok-var">current</span>)
+        .<span class="tok-fn">backgroundColor</span>(<span class="tok-str">"rgba(0,0,0,0)"</span>)
+        .<span class="tok-fn">showGraticules</span>(<span class="tok-ok">true</span>)
+        .<span class="tok-fn">atmosphereColor</span>(<span class="tok-var">isDark</span> ? <span class="tok-str">"#ff6600"</span> : <span class="tok-str">"#4db8ff"</span>)
+        .<span class="tok-fn">atmosphereAltitude</span>(<span class="tok-num">0.12</span>)
+        .<span class="tok-fn">globeMaterial</span>(<span class="tok-kw">new</span> THREE.<span class="tok-fn">MeshPhongMaterial</span>({
+          <span class="tok-var">color</span>:    <span class="tok-kw">new</span> THREE.<span class="tok-fn">Color</span>(<span class="tok-var">ocean</span>.<span class="tok-var">color</span>),
+          <span class="tok-var">emissive</span>: <span class="tok-kw">new</span> THREE.<span class="tok-fn">Color</span>(<span class="tok-var">ocean</span>.<span class="tok-var">emissive</span>),
+          <span class="tok-var">transparent</span>: <span class="tok-ok">true</span>, <span class="tok-var">opacity</span>: <span class="tok-num">0.95</span>,
+        }))
+        <span class="tok-com">// Hexagones pays colorés (biome par latitude en light, palette orange en dark)</span>
+        .<span class="tok-fn">hexPolygonsData</span>(<span class="tok-var">countries</span>.<span class="tok-var">features</span>)
+        .<span class="tok-fn">hexPolygonResolution</span>(<span class="tok-num">3</span>)
+        .<span class="tok-fn">hexPolygonMargin</span>(<span class="tok-num">0.3</span>)
+        .<span class="tok-fn">hexPolygonColor</span>((<span class="tok-var">feat</span>: <span class="tok-kw">any</span>) =&gt; <span class="tok-fn">stableHexColor</span>(<span class="tok-var">feat</span>, <span class="tok-var">isDark</span>))
+        .<span class="tok-fn">hexPolygonAltitude</span>(<span class="tok-num">0.01</span>)
+        .<span class="tok-fn">pointsData</span>([]).<span class="tok-fn">arcsData</span>([]).<span class="tok-fn">ringsData</span>([]);
+
+      <span class="tok-var">globe</span>.<span class="tok-fn">controls</span>().<span class="tok-var">autoRotate</span>      = <span class="tok-ok">true</span>;
+      <span class="tok-var">globe</span>.<span class="tok-fn">controls</span>().<span class="tok-var">autoRotateSpeed</span> = <span class="tok-num">0.6</span>;
+
+      <span class="tok-com">// Bloom (postprocessing) — intensité réduite en mode light</span>
+      <span class="tok-kw">const</span> <span class="tok-var">composer</span> = <span class="tok-kw">new</span> <span class="tok-fn">EffectComposer</span>(<span class="tok-var">renderer</span>);
+      <span class="tok-var">composer</span>.<span class="tok-fn">addPass</span>(<span class="tok-kw">new</span> <span class="tok-fn">RenderPass</span>(<span class="tok-var">scene</span>, <span class="tok-var">camera</span>));
+      <span class="tok-var">composer</span>.<span class="tok-fn">addPass</span>(<span class="tok-kw">new</span> <span class="tok-fn">EffectPass</span>(<span class="tok-var">camera</span>, <span class="tok-kw">new</span> <span class="tok-fn">BloomEffect</span>({
+        <span class="tok-var">intensity</span>:           <span class="tok-var">b</span>.<span class="tok-var">intensity</span>,   <span class="tok-com">// dark: 1.6 / light: 0.5</span>
+        <span class="tok-var">luminanceThreshold</span>:  <span class="tok-var">b</span>.<span class="tok-var">threshold</span>,   <span class="tok-com">// dark: 0.3 / light: 0.5</span>
+        <span class="tok-var">luminanceSmoothing</span>:  <span class="tok-var">b</span>.<span class="tok-var">smoothing</span>,
+        <span class="tok-var">mipmapBlur</span>:          <span class="tok-ok">true</span>,
+      })));
+
+      <span class="tok-com">// Boucle d'animation : mise à jour sprites (avions/colis) + rendu composer</span>
+      <span class="tok-kw">const</span> <span class="tok-fn">animate</span> = () =&gt; {
+        <span class="tok-var">frameRef</span>.<span class="tok-var">current</span> = <span class="tok-fn">requestAnimationFrame</span>(<span class="tok-var">animate</span>);
+        <span class="tok-var">globe</span>.<span class="tok-fn">controls</span>().<span class="tok-fn">update</span>();
+        <span class="tok-com">// ... interpolation LERP des sprites ...</span>
+        <span class="tok-var">composer</span>.<span class="tok-fn">render</span>();
+      };
+      <span class="tok-fn">animate</span>();</code></pre>
+</div>
+            </div>
+                <div class="code-slide">
+<div class="codeblock">
+  <div class="codeblock-header">
+    <span class="codeblock-title">frontend/components/Globe.tsx — slerpLatLng + animate</span>
+    <span class="codeblock-tag">TypeScript · Three.js · globe.gl</span>
+  </div>
+  <pre><code><span class="tok-kw">const</span> <span class="tok-var">ARC_ALTITUDE</span> = <span class="tok-num">0.25</span>;
+<span class="tok-kw">const</span> <span class="tok-var">LERP_POS</span> = <span class="tok-num">0.018</span>;
+<span class="tok-kw">const</span> <span class="tok-var">LERP_HDG</span> = <span class="tok-num">0.06</span>;
+
+<span class="tok-com">// Interpolation sphérique (great-circle) entre origine et destination</span>
+<span class="tok-kw">function</span> <span class="tok-fn">slerpLatLng</span>(<span class="tok-var">lat1</span>: <span class="tok-kw">number</span>, <span class="tok-var">lng1</span>: <span class="tok-kw">number</span>, <span class="tok-var">lat2</span>: <span class="tok-kw">number</span>, <span class="tok-var">lng2</span>: <span class="tok-kw">number</span>, <span class="tok-var">t</span>: <span class="tok-kw">number</span>): [<span class="tok-kw">number</span>, <span class="tok-kw">number</span>] {
+  <span class="tok-kw">const</span> <span class="tok-var">toRad</span> = (<span class="tok-var">d</span>: <span class="tok-kw">number</span>) =&gt; <span class="tok-var">d</span> * Math.<span class="tok-var">PI</span> / <span class="tok-num">180</span>;
+  <span class="tok-kw">const</span> <span class="tok-var">toDeg</span> = (<span class="tok-var">r</span>: <span class="tok-kw">number</span>) =&gt; <span class="tok-var">r</span> * <span class="tok-num">180</span> / Math.<span class="tok-var">PI</span>;
+  <span class="tok-kw">const</span> <span class="tok-var">f1</span> = <span class="tok-fn">toRad</span>(<span class="tok-var">lat1</span>), <span class="tok-var">l1</span> = <span class="tok-fn">toRad</span>(<span class="tok-var">lng1</span>), <span class="tok-var">f2</span> = <span class="tok-fn">toRad</span>(<span class="tok-var">lat2</span>), <span class="tok-var">l2</span> = <span class="tok-fn">toRad</span>(<span class="tok-var">lng2</span>);
+  <span class="tok-kw">const</span> <span class="tok-var">x1</span> = Math.<span class="tok-fn">cos</span>(<span class="tok-var">f1</span>) * Math.<span class="tok-fn">cos</span>(<span class="tok-var">l1</span>), <span class="tok-var">y1</span> = Math.<span class="tok-fn">cos</span>(<span class="tok-var">f1</span>) * Math.<span class="tok-fn">sin</span>(<span class="tok-var">l1</span>), <span class="tok-var">z1</span> = Math.<span class="tok-fn">sin</span>(<span class="tok-var">f1</span>);
+  <span class="tok-kw">const</span> <span class="tok-var">x2</span> = Math.<span class="tok-fn">cos</span>(<span class="tok-var">f2</span>) * Math.<span class="tok-fn">cos</span>(<span class="tok-var">l2</span>), <span class="tok-var">y2</span> = Math.<span class="tok-fn">cos</span>(<span class="tok-var">f2</span>) * Math.<span class="tok-fn">sin</span>(<span class="tok-var">l2</span>), <span class="tok-var">z2</span> = Math.<span class="tok-fn">sin</span>(<span class="tok-var">f2</span>);
+  <span class="tok-kw">const</span> <span class="tok-var">dot</span> = Math.<span class="tok-fn">min</span>(<span class="tok-num">1</span>, <span class="tok-var">x1</span> * <span class="tok-var">x2</span> + <span class="tok-var">y1</span> * <span class="tok-var">y2</span> + <span class="tok-var">z1</span> * <span class="tok-var">z2</span>);
+  <span class="tok-kw">const</span> <span class="tok-var">omega</span> = Math.<span class="tok-fn">acos</span>(<span class="tok-var">dot</span>);
+  <span class="tok-kw">if</span> (<span class="tok-var">omega</span> &lt; <span class="tok-num">1e-10</span>) <span class="tok-kw">return</span> [<span class="tok-var">lat1</span>, <span class="tok-var">lng1</span>];
+  <span class="tok-kw">const</span> <span class="tok-var">s</span> = Math.<span class="tok-fn">sin</span>(<span class="tok-var">omega</span>);
+  <span class="tok-kw">const</span> <span class="tok-var">a</span> = Math.<span class="tok-fn">sin</span>((<span class="tok-num">1</span> - <span class="tok-var">t</span>) * <span class="tok-var">omega</span>) / <span class="tok-var">s</span>, <span class="tok-var">b</span> = Math.<span class="tok-fn">sin</span>(<span class="tok-var">t</span> * <span class="tok-var">omega</span>) / <span class="tok-var">s</span>;
+  <span class="tok-kw">return</span> [
+    <span class="tok-fn">toDeg</span>(Math.<span class="tok-fn">atan2</span>(<span class="tok-var">a</span> * <span class="tok-var">z1</span> + <span class="tok-var">b</span> * <span class="tok-var">z2</span>, Math.<span class="tok-fn">sqrt</span>((<span class="tok-var">a</span> * <span class="tok-var">x1</span> + <span class="tok-var">b</span> * <span class="tok-var">x2</span>) ** <span class="tok-num">2</span> + (<span class="tok-var">a</span> * <span class="tok-var">y1</span> + <span class="tok-var">b</span> * <span class="tok-var">y2</span>) ** <span class="tok-num">2</span>))),
+    <span class="tok-fn">toDeg</span>(Math.<span class="tok-fn">atan2</span>(<span class="tok-var">a</span> * <span class="tok-var">y1</span> + <span class="tok-var">b</span> * <span class="tok-var">y2</span>, <span class="tok-var">a</span> * <span class="tok-var">x1</span> + <span class="tok-var">b</span> * <span class="tok-var">x2</span>)),
+  ];
+}
+
+<span class="tok-com">// Dans la boucle d'animation, chaque sprite est placé soit en live GPS, soit sur l'arc</span>
+<span class="tok-kw">const</span> <span class="tok-var">animate</span> = () =&gt; {
+  <span class="tok-var">frameRef</span>.<span class="tok-var">current</span> = <span class="tok-fn">requestAnimationFrame</span>(<span class="tok-var">animate</span>);
+  <span class="tok-var">globe</span>.<span class="tok-fn">controls</span>().<span class="tok-fn">update</span>();
+
+  <span class="tok-var">spritesRef</span>.<span class="tok-var">current</span>.<span class="tok-fn">forEach</span>(({ <span class="tok-var">sprite</span>, <span class="tok-var">arc</span> }) =&gt; {
+    <span class="tok-kw">const</span> <span class="tok-var">livePos</span> = <span class="tok-var">flightPosRef</span>.<span class="tok-var">current</span>[<span class="tok-var">arc</span>.<span class="tok-var">id</span>];
+    <span class="tok-kw">const</span> <span class="tok-var">mode</span> = <span class="tok-var">positionModeRef</span>.<span class="tok-var">current</span>[<span class="tok-var">arc</span>.<span class="tok-var">id</span>] ?? <span class="tok-str">"arc"</span>;
+    <span class="tok-kw">let</span> <span class="tok-var">targetLat</span>: <span class="tok-kw">number</span>, <span class="tok-var">targetLng</span>: <span class="tok-kw">number</span>, <span class="tok-var">targetAlt</span>: <span class="tok-kw">number</span>;
+    <span class="tok-kw">let</span> <span class="tok-var">targetHdg</span>: <span class="tok-kw">number</span> | <span class="tok-kw">null</span> = <span class="tok-kw">null</span>;
+
+    <span class="tok-kw">if</span> (<span class="tok-var">livePos</span>?.<span class="tok-var">lat</span> != <span class="tok-kw">null</span> &amp;&amp; <span class="tok-var">livePos</span>?.<span class="tok-var">lng</span> != <span class="tok-kw">null</span>) {
+      <span class="tok-kw">const</span> <span class="tok-var">progress</span> = <span class="tok-var">livePos</span>.<span class="tok-var">progress</span> != <span class="tok-kw">null</span> &amp;&amp; <span class="tok-var">livePos</span>.<span class="tok-var">progress</span> &gt; <span class="tok-num">0</span> &amp;&amp; <span class="tok-var">livePos</span>.<span class="tok-var">progress</span> &lt; <span class="tok-num">1</span>
+        ? Math.<span class="tok-fn">max</span>(<span class="tok-num">0.05</span>, Math.<span class="tok-fn">min</span>(<span class="tok-num">0.95</span>, <span class="tok-var">livePos</span>.<span class="tok-var">progress</span>))
+        : <span class="tok-num">0.5</span>;
+
+      <span class="tok-kw">if</span> (<span class="tok-var">mode</span> === <span class="tok-str">"live"</span>) {
+        <span class="tok-var">targetLat</span> = <span class="tok-var">livePos</span>.<span class="tok-var">lat</span>;
+        <span class="tok-var">targetLng</span> = <span class="tok-var">livePos</span>.<span class="tok-var">lng</span>;
+        <span class="tok-var">targetAlt</span> = Math.<span class="tok-fn">min</span>(<span class="tok-var">ARC_ALTITUDE</span>, ((<span class="tok-var">livePos</span>.<span class="tok-var">altitude</span> ?? <span class="tok-num">10000</span>) / <span class="tok-num">12000</span>) * <span class="tok-var">ARC_ALTITUDE</span>);
+      } <span class="tok-kw">else</span> {
+        <span class="tok-kw">const</span> <span class="tok-var">origin</span> = <span class="tok-var">livePos</span>.<span class="tok-var">origin</span> ?? { <span class="tok-var">lat</span>: <span class="tok-var">arc</span>.<span class="tok-var">startLat</span>, <span class="tok-var">lng</span>: <span class="tok-var">arc</span>.<span class="tok-var">startLng</span> };
+        <span class="tok-kw">const</span> <span class="tok-var">dest</span> = <span class="tok-var">livePos</span>.<span class="tok-var">destination</span> ?? { <span class="tok-var">lat</span>: <span class="tok-var">arc</span>.<span class="tok-var">endLat</span>, <span class="tok-var">lng</span>: <span class="tok-var">arc</span>.<span class="tok-var">endLng</span> };
+        [<span class="tok-var">targetLat</span>, <span class="tok-var">targetLng</span>] = <span class="tok-fn">slerpLatLng</span>(<span class="tok-var">origin</span>.<span class="tok-var">lat</span>, <span class="tok-var">origin</span>.<span class="tok-var">lng</span>, <span class="tok-var">dest</span>.<span class="tok-var">lat</span>, <span class="tok-var">dest</span>.<span class="tok-var">lng</span>, <span class="tok-var">progress</span>);
+        <span class="tok-var">targetAlt</span> = Math.<span class="tok-fn">sin</span>(<span class="tok-var">progress</span> * Math.<span class="tok-var">PI</span>) * <span class="tok-var">ARC_ALTITUDE</span>;
+      }
+
+      <span class="tok-var">targetHdg</span> = <span class="tok-var">livePos</span>.<span class="tok-var">heading</span> ?? <span class="tok-kw">null</span>;
+    } <span class="tok-kw">else</span> {
+      [<span class="tok-var">targetLat</span>, <span class="tok-var">targetLng</span>] = <span class="tok-fn">slerpLatLng</span>(<span class="tok-var">arc</span>.<span class="tok-var">startLat</span>, <span class="tok-var">arc</span>.<span class="tok-var">startLng</span>, <span class="tok-var">arc</span>.<span class="tok-var">endLat</span>, <span class="tok-var">arc</span>.<span class="tok-var">endLng</span>, <span class="tok-num">0.5</span>);
+      <span class="tok-var">targetAlt</span> = Math.<span class="tok-fn">sin</span>(<span class="tok-num">0.5</span> * Math.<span class="tok-var">PI</span>) * <span class="tok-var">ARC_ALTITUDE</span>;
+    }
+
+    <span class="tok-var">arc</span>.<span class="tok-var">_curLat</span>! += (<span class="tok-var">targetLat</span> - <span class="tok-var">arc</span>.<span class="tok-var">_curLat</span>!) * <span class="tok-var">LERP_POS</span>;
+    <span class="tok-var">arc</span>.<span class="tok-var">_curLng</span>! += (<span class="tok-var">targetLng</span> - <span class="tok-var">arc</span>.<span class="tok-var">_curLng</span>!) * <span class="tok-var">LERP_POS</span>;
+    <span class="tok-var">arc</span>.<span class="tok-var">_curAlt</span>! += (<span class="tok-var">targetAlt</span> - <span class="tok-var">arc</span>.<span class="tok-var">_curAlt</span>!) * <span class="tok-var">LERP_POS</span>;
+    <span class="tok-kw">if</span> (<span class="tok-var">targetHdg</span> !== <span class="tok-kw">null</span>) <span class="tok-var">arc</span>.<span class="tok-var">_curHdg</span> = <span class="tok-fn">lerpAngle</span>(<span class="tok-var">arc</span>.<span class="tok-var">_curHdg</span>!, <span class="tok-var">targetHdg</span>, <span class="tok-var">LERP_HDG</span>);
+
+    <span class="tok-kw">const</span> <span class="tok-var">coords</span> = <span class="tok-var">globe</span>.<span class="tok-fn">getCoords</span>(<span class="tok-var">arc</span>.<span class="tok-var">_curLat</span>, <span class="tok-var">arc</span>.<span class="tok-var">_curLng</span>, <span class="tok-var">arc</span>.<span class="tok-var">_curAlt</span>);
+    <span class="tok-var">sprite</span>.<span class="tok-var">position</span>.<span class="tok-fn">set</span>(<span class="tok-var">coords</span>.<span class="tok-var">x</span>, <span class="tok-var">coords</span>.<span class="tok-var">y</span>, <span class="tok-var">coords</span>.<span class="tok-var">z</span>);
+    (<span class="tok-var">sprite</span>.<span class="tok-var">material</span> <span class="tok-kw">as</span> <span class="tok-var">THREE</span>.<span class="tok-var">SpriteMaterial</span>).<span class="tok-var">rotation</span> = -(<span class="tok-var">arc</span>.<span class="tok-var">_curHdg</span>! * Math.<span class="tok-var">PI</span>) / <span class="tok-num">180</span>;
+  });
+
+  <span class="tok-var">composer</span>.<span class="tok-fn">render</span>();
+};</code></pre>
+</div>
                 </div>
+                <div class="code-slide">
+<div class="codeblock">
+  <div class="codeblock-header">
+    <span class="codeblock-title">frontend/components/Globe.tsx — buildData + resolve helpers</span>
+    <span class="codeblock-tag">TypeScript · Three.js</span>
+  </div>
+  <pre><code><span class="tok-com">// Détermine le type de sprite affiché sur le globe</span>
+<span class="tok-kw">function</span> <span class="tok-fn">resolveTransportType</span>(<span class="tok-var">p</span>: <span class="tok-var">Parcel</span>): <span class="tok-str">"plane"</span> | <span class="tok-str">"parcel"</span> {
+  <span class="tok-kw">if</span> (<span class="tok-var">p</span>.<span class="tok-var">status</span> === <span class="tok-str">"out_for_delivery"</span>) <span class="tok-kw">return</span> <span class="tok-str">"parcel"</span>;
+  <span class="tok-kw">if</span> (<span class="tok-var">p</span>.<span class="tok-var">transport_mode</span> === <span class="tok-str">"air"</span>) <span class="tok-kw">return</span> <span class="tok-str">"plane"</span>;
+  <span class="tok-kw">return</span> <span class="tok-str">"parcel"</span>;
+}
+
+<span class="tok-com">// Origine = coordonnées explicites ou centroïde ISO/pseudo-aéroport</span>
+<span class="tok-kw">function</span> <span class="tok-fn">resolveOrigin</span>(<span class="tok-var">p</span>: <span class="tok-var">Parcel</span>): [<span class="tok-kw">number</span>, <span class="tok-kw">number</span>] | <span class="tok-kw">null</span> {
+  <span class="tok-kw">if</span> (<span class="tok-var">p</span>.<span class="tok-var">origin_coords</span>?.<span class="tok-var">lat</span> != <span class="tok-kw">null</span> &amp;&amp; <span class="tok-var">p</span>.<span class="tok-var">origin_coords</span>?.<span class="tok-var">lng</span> != <span class="tok-kw">null</span>) {
+    <span class="tok-kw">return</span> [<span class="tok-var">p</span>.<span class="tok-var">origin_coords</span>.<span class="tok-var">lat</span>, <span class="tok-var">p</span>.<span class="tok-var">origin_coords</span>.<span class="tok-var">lng</span>];
+  }
+  <span class="tok-kw">return</span> <span class="tok-fn">getCentroid</span>(<span class="tok-var">p</span>.<span class="tok-var">origin_country</span>);
+}
+
+<span class="tok-com">// Destination = coordonnées explicites, estimated_position ou centroïde pays</span>
+<span class="tok-kw">function</span> <span class="tok-fn">resolveDest</span>(<span class="tok-var">p</span>: <span class="tok-var">Parcel</span>): { <span class="tok-var">lat</span>: <span class="tok-kw">number</span>; <span class="tok-var">lng</span>: <span class="tok-kw">number</span> } | <span class="tok-kw">null</span> {
+  <span class="tok-kw">if</span> (<span class="tok-var">p</span>.<span class="tok-var">dest_coords</span>?.<span class="tok-var">lat</span> != <span class="tok-kw">null</span> &amp;&amp; <span class="tok-var">p</span>.<span class="tok-var">dest_coords</span>?.<span class="tok-var">lng</span> != <span class="tok-kw">null</span>) {
+    <span class="tok-kw">return</span> { <span class="tok-var">lat</span>: <span class="tok-var">p</span>.<span class="tok-var">dest_coords</span>.<span class="tok-var">lat</span>, <span class="tok-var">lng</span>: <span class="tok-var">p</span>.<span class="tok-var">dest_coords</span>.<span class="tok-var">lng</span> };
+  }
+  <span class="tok-kw">if</span> (<span class="tok-var">p</span>.<span class="tok-var">estimated_position</span>?.<span class="tok-var">lat</span> != <span class="tok-kw">null</span> &amp;&amp; <span class="tok-var">p</span>.<span class="tok-var">estimated_position</span>?.<span class="tok-var">lng</span> != <span class="tok-kw">null</span>) {
+    <span class="tok-kw">return</span> { <span class="tok-var">lat</span>: <span class="tok-var">p</span>.<span class="tok-var">estimated_position</span>.<span class="tok-var">lat</span>, <span class="tok-var">lng</span>: <span class="tok-var">p</span>.<span class="tok-var">estimated_position</span>.<span class="tok-var">lng</span> };
+  }
+  <span class="tok-kw">const</span> <span class="tok-var">c</span> = <span class="tok-fn">getCentroid</span>(<span class="tok-var">p</span>.<span class="tok-var">dest_country</span>);
+  <span class="tok-kw">return</span> <span class="tok-var">c</span> ? { <span class="tok-var">lat</span>: <span class="tok-var">c</span>[<span class="tok-num">0</span>], <span class="tok-var">lng</span>: <span class="tok-var">c</span>[<span class="tok-num">1</span>] } : <span class="tok-kw">null</span>;
+}
+
+<span class="tok-com">// Construit les couches consommées par globe.gl : points, arcs, rings et sprites</span>
+<span class="tok-kw">function</span> <span class="tok-fn">buildData</span>(<span class="tok-var">parcels</span>: <span class="tok-var">Parcel</span>[], <span class="tok-var">isDark</span>: <span class="tok-kw">boolean</span>, <span class="tok-var">flightPositions</span>: <span class="tok-var">FlightPositionMap</span> = {}) {
+  <span class="tok-kw">const</span> <span class="tok-var">SC</span> = <span class="tok-var">isDark</span> ? <span class="tok-var">STATUS_COLORS_DARK</span> : <span class="tok-var">STATUS_COLORS_LIGHT</span>;
+
+  <span class="tok-kw">const</span> <span class="tok-var">points</span> = <span class="tok-var">parcels</span>.<span class="tok-fn">map</span>(<span class="tok-var">p</span> =&gt; {
+    <span class="tok-kw">const</span> <span class="tok-var">pos</span> = <span class="tok-fn">resolveCurrentPosition</span>(<span class="tok-var">p</span>, <span class="tok-var">flightPositions</span>);
+    <span class="tok-kw">if</span> (!<span class="tok-var">pos</span>) <span class="tok-kw">return</span> <span class="tok-kw">null</span>;
+    <span class="tok-kw">return</span> {
+      <span class="tok-var">lat</span>: <span class="tok-var">pos</span>.<span class="tok-var">lat</span>,
+      <span class="tok-var">lng</span>: <span class="tok-var">pos</span>.<span class="tok-var">lng</span>,
+      <span class="tok-var">label</span>: <span class="tok-var">p</span>.<span class="tok-var">tracking_number</span>,
+      <span class="tok-var">status</span>: <span class="tok-var">p</span>.<span class="tok-var">status</span>,
+      <span class="tok-var">description</span>: <span class="tok-var">p</span>.<span class="tok-var">description</span>,
+      <span class="tok-var">color</span>: <span class="tok-var">SC</span>[<span class="tok-var">p</span>.<span class="tok-var">status</span>] ?? (<span class="tok-var">isDark</span> ? <span class="tok-str">"#ffffff"</span> : <span class="tok-str">"#1a1a2e"</span>),
+      <span class="tok-var">altitude</span>: <span class="tok-num">0.02</span>,
+      <span class="tok-var">radius</span>: <span class="tok-num">0.4</span>
+    };
+  }).<span class="tok-fn">filter</span>(Boolean);
+
+  <span class="tok-kw">const</span> <span class="tok-var">arcs</span> = <span class="tok-var">parcels</span>
+    .<span class="tok-fn">filter</span>(<span class="tok-var">p</span> =&gt; <span class="tok-var">p</span>.<span class="tok-var">status</span> !== <span class="tok-str">"delivered"</span> &amp;&amp; <span class="tok-var">p</span>.<span class="tok-var">status</span> !== <span class="tok-str">"expired"</span>)
+    .<span class="tok-fn">map</span>(<span class="tok-var">p</span> =&gt; {
+      <span class="tok-kw">const</span> <span class="tok-var">origin</span> = <span class="tok-fn">resolveOrigin</span>(<span class="tok-var">p</span>);
+      <span class="tok-kw">const</span> <span class="tok-var">dest</span> = <span class="tok-fn">resolveDest</span>(<span class="tok-var">p</span>);
+      <span class="tok-kw">if</span> (!<span class="tok-var">origin</span> || !<span class="tok-var">dest</span>) <span class="tok-kw">return</span> <span class="tok-kw">null</span>;
+      <span class="tok-kw">return</span> {
+        <span class="tok-var">startLat</span>: <span class="tok-var">origin</span>[<span class="tok-num">0</span>], <span class="tok-var">startLng</span>: <span class="tok-var">origin</span>[<span class="tok-num">1</span>],
+        <span class="tok-var">endLat</span>: <span class="tok-var">dest</span>.<span class="tok-var">lat</span>, <span class="tok-var">endLng</span>: <span class="tok-var">dest</span>.<span class="tok-var">lng</span>,
+        <span class="tok-var">color</span>: <span class="tok-var">SC</span>[<span class="tok-var">p</span>.<span class="tok-var">status</span>] ?? <span class="tok-str">"#ffffff"</span>,
+        <span class="tok-var">label</span>: <span class="tok-var">p</span>.<span class="tok-var">tracking_number</span>
+      };
+    }).<span class="tok-fn">filter</span>(Boolean);
+
+  <span class="tok-kw">const</span> <span class="tok-var">rings</span> = <span class="tok-var">parcels</span>
+    .<span class="tok-fn">filter</span>(<span class="tok-var">p</span> =&gt; <span class="tok-var">p</span>.<span class="tok-var">status</span> === <span class="tok-str">"in_transit"</span> || <span class="tok-var">p</span>.<span class="tok-var">status</span> === <span class="tok-str">"out_for_delivery"</span>)
+    .<span class="tok-fn">map</span>(<span class="tok-var">p</span> =&gt; {
+      <span class="tok-kw">const</span> <span class="tok-var">pos</span> = <span class="tok-fn">resolveCurrentPosition</span>(<span class="tok-var">p</span>, <span class="tok-var">flightPositions</span>);
+      <span class="tok-kw">if</span> (!<span class="tok-var">pos</span>) <span class="tok-kw">return</span> <span class="tok-kw">null</span>;
+      <span class="tok-kw">return</span> { <span class="tok-var">lat</span>: <span class="tok-var">pos</span>.<span class="tok-var">lat</span>, <span class="tok-var">lng</span>: <span class="tok-var">pos</span>.<span class="tok-var">lng</span>, <span class="tok-var">color</span>: <span class="tok-var">SC</span>[<span class="tok-var">p</span>.<span class="tok-var">status</span>] ?? <span class="tok-str">"#fff"</span> };
+    }).<span class="tok-fn">filter</span>(Boolean);
+
+  <span class="tok-kw">const</span> <span class="tok-var">transport</span> = <span class="tok-var">parcels</span>
+    .<span class="tok-fn">filter</span>(<span class="tok-var">p</span> =&gt; <span class="tok-var">p</span>.<span class="tok-var">status</span> === <span class="tok-str">"in_transit"</span> || <span class="tok-var">p</span>.<span class="tok-var">status</span> === <span class="tok-str">"out_for_delivery"</span>)
+    .<span class="tok-fn">map</span>(<span class="tok-var">p</span> =&gt; {
+      <span class="tok-kw">const</span> <span class="tok-var">origin</span> = <span class="tok-fn">resolveOrigin</span>(<span class="tok-var">p</span>);
+      <span class="tok-kw">const</span> <span class="tok-var">dest</span> = <span class="tok-fn">resolveDest</span>(<span class="tok-var">p</span>);
+      <span class="tok-kw">if</span> (!<span class="tok-var">origin</span> || !<span class="tok-var">dest</span>) <span class="tok-kw">return</span> <span class="tok-kw">null</span>;
+      <span class="tok-kw">return</span> {
+        <span class="tok-var">id</span>: <span class="tok-var">p</span>.<span class="tok-var">id</span>,
+        <span class="tok-var">startLat</span>: <span class="tok-var">origin</span>[<span class="tok-num">0</span>], <span class="tok-var">startLng</span>: <span class="tok-var">origin</span>[<span class="tok-num">1</span>],
+        <span class="tok-var">endLat</span>: <span class="tok-var">dest</span>.<span class="tok-var">lat</span>, <span class="tok-var">endLng</span>: <span class="tok-var">dest</span>.<span class="tok-var">lng</span>,
+        <span class="tok-var">color</span>: <span class="tok-var">SC</span>[<span class="tok-var">p</span>.<span class="tok-var">status</span>] ?? <span class="tok-str">"#fff"</span>,
+        <span class="tok-var">iconType</span>: <span class="tok-fn">resolveTransportType</span>(<span class="tok-var">p</span>),
+        <span class="tok-var">_curLat</span>: <span class="tok-kw">null</span> <span class="tok-kw">as</span> <span class="tok-kw">number</span> | <span class="tok-kw">null</span>,
+        <span class="tok-var">_curLng</span>: <span class="tok-kw">null</span> <span class="tok-kw">as</span> <span class="tok-kw">number</span> | <span class="tok-kw">null</span>,
+        <span class="tok-var">_curAlt</span>: <span class="tok-kw">null</span> <span class="tok-kw">as</span> <span class="tok-kw">number</span> | <span class="tok-kw">null</span>,
+        <span class="tok-var">_curHdg</span>: <span class="tok-kw">null</span> <span class="tok-kw">as</span> <span class="tok-kw">number</span> | <span class="tok-kw">null</span>
+      };
+    }).<span class="tok-fn">filter</span>(Boolean);
+
+  <span class="tok-kw">return</span> { <span class="tok-var">points</span>, <span class="tok-var">arcs</span>, <span class="tok-var">rings</span>, <span class="tok-var">transport</span> };
+}</code></pre>
+</div>
+            </div>
+            
+        </div>
+        <button class="code-arrow code-arrow-prev" type="button" aria-label="Précédent">&#8249;</button>
+        <button class="code-arrow code-arrow-next" type="button" aria-label="Suivant">&#8250;</button>
+        <div class="code-dots"></div>
+    </div>
             <div class="reveal" style="margin-top:1.25rem;display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center;">
                 <span style="color:#7a3a20;font-size:0.75rem;">Sources :</span>
                 <span class="code-chip">Globe.tsx</span>
@@ -1022,7 +1681,12 @@
     <button class="nav-btn" onclick="changeSlide(1)">&#8250;</button>
     <span class="slide-counter" id="counter">1 / 13</span>
 </div>
+<div id="codeblockBackdrop" class="codeblock-backdrop"></div>
 
+<div id="codeblockLightbox" class="codeblock-lightbox" aria-hidden="true">
+  <button id="codeblockClose" class="codeblock-close" aria-label="Fermer">✕</button>
+  <div id="codeblockLightboxContent"></div>
+</div>
 <script>
     /* ═══════════════════════════════════
        DECK NAVIGATION
@@ -1212,31 +1876,124 @@
       "./media/screenshots/6.png"
     ];
 
-    let wfLightboxIndex = 0;
+let wfLightboxIndex = 0;
 
-    function openLightbox(index) {
-      wfLightboxIndex = index;
-      updateLightboxImage();
-      document.getElementById('wfLightbox').classList.add('open');
-    }
+function openLightbox(index) {
+  const lightbox = document.getElementById('wfLightbox');
+  wfLightboxIndex = index;
+  updateLightboxImage();
+  lightbox.classList.add('open');
+  lightbox.scrollTop = 0;
+  lightbox.scrollLeft = 0;
+  document.body.style.overflow = 'hidden';
+}
 
-    function updateLightboxImage() {
-      const img = document.getElementById('wfLightboxImg');
-      img.src = wfImages[wfLightboxIndex];
-      img.alt = `Wireframe ${wfLightboxIndex + 1}`;
-    }
+function updateLightboxImage() {
+  const img = document.getElementById('wfLightboxImg');
+  img.src = wfImages[wfLightboxIndex];
+  img.alt = `Wireframe ${wfLightboxIndex + 1}`;
+}
 
-    function lightboxMove(direction) {
-      wfLightboxIndex = (wfLightboxIndex + direction + wfImages.length) % wfImages.length;
-      updateLightboxImage();
-      wfMove(direction);
-    }
+function lightboxMove(direction) {
+  wfLightboxIndex = (wfLightboxIndex + direction + wfImages.length) % wfImages.length;
+  updateLightboxImage();
+  const lightbox = document.getElementById('wfLightbox');
+  lightbox.scrollTop = 0;
+  lightbox.scrollLeft = 0;
+  wfMove(direction);
+}
 
-    function closeLightbox(e) {
-      if (e.target === document.getElementById('wfLightbox')) {
-        document.getElementById('wfLightbox').classList.remove('open');
-      }
-    }
+function closeLightbox(e) {
+  const lightbox = document.getElementById('wfLightbox');
+  if (!e || e.target === lightbox) {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+document.getElementById('wfLightboxImg')?.addEventListener('click', (e) => {
+  e.stopPropagation();
+});
+
+document.querySelectorAll('.code-carousel').forEach((codeCarousel) => {
+  const codeTrack = codeCarousel.querySelector('.code-track');
+  const codeSlides = Array.from(codeCarousel.querySelectorAll('.code-slide'));
+  const codeDotsWrap = codeCarousel.querySelector('.code-dots');
+  let codeIndex = 0;
+
+  function renderCodeDots() {
+    codeDotsWrap.innerHTML = '';
+    codeSlides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = i === codeIndex ? 'active' : '';
+      dot.setAttribute('aria-label', `Aller au code ${i + 1}`);
+      dot.onclick = () => {
+        codeIndex = i;
+        updateCodeCarousel();
+      };
+      codeDotsWrap.appendChild(dot);
+    });
+  }
+
+  function updateCodeCarousel() {
+    codeTrack.style.transform = `translateX(-${codeIndex * 100}%)`;
+    [...codeDotsWrap.children].forEach((dot, i) => {
+      dot.classList.toggle('active', i === codeIndex);
+    });
+  }
+
+  const prev = codeCarousel.querySelector('.code-arrow-prev');
+  const next = codeCarousel.querySelector('.code-arrow-next');
+
+  prev?.addEventListener('click', () => {
+    codeIndex = (codeIndex - 1 + codeSlides.length) % codeSlides.length;
+    updateCodeCarousel();
+  });
+
+  next?.addEventListener('click', () => {
+    codeIndex = (codeIndex + 1) % codeSlides.length;
+    updateCodeCarousel();
+  });
+
+  renderCodeDots();
+  updateCodeCarousel();
+});
+window.addEventListener('DOMContentLoaded', () => {
+  const backdrop = document.getElementById('codeblockBackdrop');
+  const lightbox = document.getElementById('codeblockLightbox');
+  const content = document.getElementById('codeblockLightboxContent');
+  const closeBtn = document.getElementById('codeblockClose');
+
+  if (!backdrop || !lightbox || !content || !closeBtn) return;
+
+  function closeCodeLightbox() {
+    lightbox.classList.remove('open');
+    backdrop.classList.remove('is-visible');
+    lightbox.setAttribute('aria-hidden', 'true');
+    content.innerHTML = '';
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.codeblock').forEach((block) => {
+    block.addEventListener('click', (e) => {
+      if (e.target.closest('.code-arrow') || e.target.closest('.code-dots')) return;
+      e.stopPropagation();
+
+      content.innerHTML = block.innerHTML;
+      lightbox.classList.add('open');
+      backdrop.classList.add('is-visible');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  backdrop.addEventListener('click', closeCodeLightbox);
+  closeBtn.addEventListener('click', closeCodeLightbox);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeCodeLightbox();
+  });
+});
 </script>
 <div id="wfLightbox" onclick="closeLightbox(event)">
   <button
